@@ -15,7 +15,7 @@
       "prefix": "app",
       "architect": {
         "deploy": {
-          "builder": "angular-cli-ghpages:github-pages",
+          "builder": "angular-cli-ghpages:deploy",
           "options": {
             "baseHref": "/moviengine/",
             "name": "Sofiia Anenko",

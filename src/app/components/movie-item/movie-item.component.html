@@ -1,0 +1,45 @@
+<li class="movie__item">
+  <a class="movie__link">
+    <img [src]="imageUrl" [alt]="item.title" class="movie__picture">
+    <div class="movie__information">
+      <h3 class="movie__title">{{ item.title }}</h3>
+      <p class="movie__overview">{{ shorterDescription }}</p>
+      <ul class="movie__controls-list">
+        <li>
+          <ul class="movie__controls-list movie__controls-list_left">
+            <li>
+              <button type="button"
+                      title="Add to Favorites"
+                      class="movie__controls-button"
+                      (click)="addToFavorites(item.id)">
+                <svg-icon src="assets/svg/heart.svg"></svg-icon>
+              </button>
+            </li>
+            <li>
+              <button type="button"
+                      title="Add to Watchlist"
+                      class="movie__controls-button"
+                      (click)="addToWatchlist(item.id)">
+                <svg-icon src="assets/svg/add.svg"></svg-icon>
+              </button>
+            </li>
+          </ul>
+        </li>
+        <li class="movie__controls-list_right">
+          <button type="button" title="Show more Information" class="movie__controls-button">
+            <svg-icon src="assets/svg/information.svg"></svg-icon>
+          </button>
+        </li>
+      </ul>
+      <ul class="movie__rating">
+        <li *ngFor="let item of rating" class="movie__star"
+            [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
+          <svg-icon src="assets/svg/star.svg"></svg-icon>
+        </li>
+      </ul>
+      <ul class="movie__genres">
+        <li *ngFor="let item of genres">{{ item }}</li>
+      </ul>
+    </div>
+  </a>
+</li>

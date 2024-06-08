@@ -1,0 +1,18 @@
+.movie {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 0;
+
+  h2 {
+    text-align: center;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    width: calc((364px * 3) + (32px * 2));
+    margin: 0 auto;
+  }
+}

@@ -77,21 +77,21 @@ export class MovieListComponent {
   favoriteMovies: Movie[] = [];
   watchLaterMovies: Movie[] = [];
 
-  onAddToFavorites(id: number) {
-    const isMovieInList = Boolean(this.favoriteMovies.find((movie) => movie.id === id));
-    if (isMovieInList) return;
+  private addToList(list: Movie[], id: number) {
+    const isMovieInList = Boolean(list.find((movie) => movie.id === id));
+    if (isMovieInList) return list;
     const addedMovie = this.movies.find((movie) => movie.id === id);
     if (addedMovie) {
-      this.favoriteMovies = [...this.favoriteMovies, addedMovie];
+      return [...list, addedMovie];
     }
+    return list;
+  }
+
+  onAddToFavorites(id: number) {
+    this.favoriteMovies = this.addToList(this.favoriteMovies, id);
   }
 
   onAddToWatchlist(id: number) {
-    const isMovieInList = Boolean(this.watchLaterMovies.find((movie) => movie.id === id));
-    if (isMovieInList) return;
-    const addedMovie = this.movies.find((movie) => movie.id === id);
-    if (addedMovie) {
-      this.watchLaterMovies = [...this.watchLaterMovies, addedMovie];
-    }
+    this.watchLaterMovies = this.addToList(this.watchLaterMovies, id);
   }
 }

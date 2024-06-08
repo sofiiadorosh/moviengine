@@ -51,6 +51,39 @@
       width: 32px;
       height: 32px;
     }
+
+    &[title="Add to Favorites"] {
+      svg {
+        fill: currentColor;
+      }
+      &:hover {
+        svg {
+          fill: $red;
+        }
+      }
+    }
+
+    &[title="Add to Watchlist"] {
+      svg {
+        fill: currentColor;
+      }
+      &:hover {
+        svg {
+          fill: $green;
+        }
+      }
+    }
+
+    &[title="Show more Information"] {
+      svg {
+        stroke: currentColor;
+      }
+      &:hover {
+        svg {
+          stroke: $purple;
+        }
+      }
+    }
   }
 
   &__rating {

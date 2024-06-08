@@ -26,6 +26,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          npm ci --legacy-peer-deps  # Use npm ci with legacy-peer-deps flag to handle dependency conflicts
+          npm ci --legacy-peer-deps
           npm run lint
-          npm run ng -- deploy --base-href=/moviengine/ --name="Sofiia Anenko" --email=anenko.sofiia@gmail.com
+          npx angular-cli-ghpages --dir=dist/moviengine --name="Sofiia Anenko" --email=anenko.sofiia@gmail.com
+

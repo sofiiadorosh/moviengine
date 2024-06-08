@@ -39,7 +39,7 @@
           "error",
           2
         ],
-        "@typescript-eslint/comma-dangle": "on",
+        "@typescript-eslint/comma-dangle": 2,
         "@typescript-eslint/lines-between-class-members": "off",
         "@typescript-eslint/quotes": ["error", "double"],
         "@typescript-eslint/no-shadow": "error",

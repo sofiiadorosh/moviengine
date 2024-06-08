@@ -14,6 +14,14 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+        "deploy": {
+          "builder": "@angular/cli:github-pages",
+          "options": {
+            "baseHref": "/moviengine/",
+            "name": "Sofiia Anenko",
+            "email": "anenko.sofiia@gmail.com"
+          }
+        },
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {

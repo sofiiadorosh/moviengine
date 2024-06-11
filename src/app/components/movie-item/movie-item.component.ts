@@ -26,7 +26,7 @@ export class MovieItemComponent implements OnInit {
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
-    this.genres = this.transformGenreIds();
+    this.genres = this.transformGenreIds(genreIds);
     this.shorterDescription = this.truncateDescription();
     this.rating = this.generateRatingArray();
   }
@@ -39,9 +39,8 @@ export class MovieItemComponent implements OnInit {
     this.addedToWatchlist.emit(id);
   }
 
-  transformGenreIds(): string[] {
-    const genres: Record<number, string> = genreIds;
-    return this.item.genre_ids.map((id) => genres[id].toLowerCase());
+  transformGenreIds(genres: Record<string, string>): string[] {
+    return this.item.genre_ids.map((id) => genres[String(id)].toLowerCase());
   }
 
   truncateDescription(): string {

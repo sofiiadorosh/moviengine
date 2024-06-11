@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
+import movies from "@assets/json/movies.json";
 import { MovieItemComponent } from "@components/movie-item/movie-item.component";
 import { Movie } from "@models/movie.model";
-import movies from "@assets/json/movies.json";
 
 @Component({
   selector: "app-movies-list",

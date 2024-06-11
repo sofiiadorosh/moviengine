@@ -2,9 +2,9 @@ import { CommonModule } from "@angular/common";
 import {
   Component, EventEmitter, Input, OnInit, Output,
 } from "@angular/core";
+import genreIds from "@assets/json/genreIds.json";
 import { Movie } from "@models/movie.model";
 import { SvgIconComponent } from "angular-svg-icon";
-import genreIds from "@assets/json/genreIds.json";
 
 @Component({
   selector: "app-movie-item",

@@ -1,9 +1,10 @@
 import { CommonModule } from "@angular/common";
 import {
-  Component, EventEmitter, Input, Output,
+  Component, EventEmitter, Input, OnInit, Output,
 } from "@angular/core";
 import { Movie } from "@models/movie.model";
 import { SvgIconComponent } from "angular-svg-icon";
+import genreIds from "@assets/json/genreIds.json";
 
 @Component({
   selector: "app-movie-item",
@@ -12,32 +13,22 @@ import { SvgIconComponent } from "angular-svg-icon";
   templateUrl: "./movie-item.component.html",
   styleUrl: "./movie-item.component.scss",
 })
-export class MovieItemComponent {
+export class MovieItemComponent implements OnInit {
   @Input() item!: Movie;
   @Output() addedToFavorites: EventEmitter<number> = new EventEmitter<number>();
   @Output() addedToWatchlist: EventEmitter<number> = new EventEmitter<number>();
   baseImageUrl = "https://image.tmdb.org/t/p/original";
   maxOverviewLength = 178;
+  imageUrl!: string;
+  genres!: string[];
+  shorterDescription!: string;
+  rating!: number[];
 
-  get imageUrl(): string {
-    return `${this.baseImageUrl}/${this.item.backdrop_path}`;
-  }
-
-  get genres(): string[] {
-    return this.transformGenreIds();
-  }
-
-  get shorterDescription(): string {
-    if (this.item.overview.length > this.maxOverviewLength) {
-      return `${this.item.overview.substring(0, this.maxOverviewLength + 1)}...`;
-    }
-    return this.item.overview;
-  }
-
-  get rating(): number[] {
-    const rate = Math.round(this.item.vote_average / 2);
-    return Array.from({ length: 5 }, (_, i) => i + 1)
-      .map((number) => (number <= rate ? 1 : 0));
+  ngOnInit() {
+    this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
+    this.genres = this.transformGenreIds();
+    this.shorterDescription = this.truncateDescription();
+    this.rating = this.generateRatingArray();
   }
 
   addToFavorites(id: number) {
@@ -49,27 +40,20 @@ export class MovieItemComponent {
   }
 
   transformGenreIds(): string[] {
-    const genres: Record<number, string> = {
-      12: "Adventure",
-      14: "Fantasy",
-      16: "Animation",
-      18: "Drama",
-      27: "Horror",
-      28: "Action",
-      35: "Comedy",
-      36: "History",
-      37: "Western",
-      53: "Thriller",
-      80: "Crime",
-      99: "Documentary",
-      878: "Sci-Fi",
-      9648: "Mystery",
-      10402: "Music",
-      10749: "Romance",
-      10751: "Family",
-      10752: "War",
-      10770: "TV Movie",
-    };
+    const genres: Record<number, string> = genreIds;
     return this.item.genre_ids.map((id) => genres[id].toLowerCase());
+  }
+
+  truncateDescription(): string {
+    if (this.item.overview.length > this.maxOverviewLength) {
+      return `${this.item.overview.substring(0, this.maxOverviewLength + 1)}...`;
+    }
+    return this.item.overview;
+  }
+
+  generateRatingArray(): number[] {
+    const rate = Math.round(this.item.vote_average / 2);
+    return Array.from({ length: 5 }, (_, i) => i + 1)
+      .map((number) => (number <= rate ? 1 : 0));
   }
 }

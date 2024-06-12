@@ -3,7 +3,7 @@
     <img [src]="imageUrl" [alt]="item.title" class="movie__picture">
     <div class="movie__information">
       <h3 class="movie__title">{{ item.title }}</h3>
-      <p class="movie__overview">{{ shorterDescription }}</p>
+      <p class="movie__overview">{{ item.overview | truncateDescription:maxOverviewLength }}</p>
       <ul class="movie__controls-list">
         <li>
           <ul class="movie__controls-list movie__controls-list_left">
@@ -32,13 +32,17 @@
         </li>
       </ul>
       <ul class="movie__rating">
-        <li *ngFor="let item of rating" class="movie__star"
-            [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
-          <svg-icon src="assets/svg/star.svg"></svg-icon>
-        </li>
+        @for (item of rating; track $index) {
+          <li class="movie__star"
+              [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
+            <svg-icon src="assets/svg/star.svg"></svg-icon>
+          </li>
+        }
       </ul>
       <ul class="movie__genres">
-        <li *ngFor="let item of genres">{{ item }}</li>
+        @for (item of genres; track $index) {
+          <li>{{ item }}</li>
+        }
       </ul>
     </div>
   </a>

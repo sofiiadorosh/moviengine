@@ -4,12 +4,13 @@ import {
 } from "@angular/core";
 import genreIds from "@assets/json/genreIds.json";
 import { Movie } from "@models/movie.model";
+import { TruncateDescriptionPipe } from "@pipes/truncate-description/truncate-description.pipe";
 import { SvgIconComponent } from "angular-svg-icon";
 
 @Component({
   selector: "app-movie-item",
   standalone: true,
-  imports: [CommonModule, SvgIconComponent],
+  imports: [CommonModule, SvgIconComponent, TruncateDescriptionPipe],
   templateUrl: "./movie-item.component.html",
   styleUrl: "./movie-item.component.scss",
 })
@@ -21,13 +22,11 @@ export class MovieItemComponent implements OnInit {
   maxOverviewLength = 178;
   imageUrl!: string;
   genres!: string[];
-  shorterDescription!: string;
   rating!: number[];
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
     this.genres = this.transformGenreIds(genreIds);
-    this.shorterDescription = this.truncateDescription();
     this.rating = this.generateRatingArray();
   }
 
@@ -41,13 +40,6 @@ export class MovieItemComponent implements OnInit {
 
   transformGenreIds(genres: Record<string, string>): string[] {
     return this.item.genre_ids.map((id) => genres[String(id)].toLowerCase());
-  }
-
-  truncateDescription(): string {
-    if (this.item.overview.length > this.maxOverviewLength) {
-      return `${this.item.overview.substring(0, this.maxOverviewLength + 1)}...`;
-    }
-    return this.item.overview;
   }
 
   generateRatingArray(): number[] {

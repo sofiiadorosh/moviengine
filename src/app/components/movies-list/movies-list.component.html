@@ -1,26 +1,30 @@
 <section class="movies">
   <h2>All movies</h2>
   <ul class="movies__list">
-    <app-movie-item *ngFor="let movie of movies"
-                    [item]="movie"
-                    (addedToFavorites)="onAddToFavorites($event)"
-                    (addedToWatchlist)="onAddToWatchlist($event)">
-    </app-movie-item>
+    @for (movie of movies; track movie.id) {
+      <app-movie-item [item]="movie"
+                      (addedToFavorites)="onAddToFavorites($event)"
+                      (addedToWatchlist)="onAddToWatchlist($event)">
+      </app-movie-item>    }
   </ul>
 </section>
 <section class="movies">
   <h2>Favorite movies</h2>
   <ul class="movies__list">
-    <app-movie-item *ngFor="let movie of favoriteMovies"
-                    [item]="movie">
-    </app-movie-item>
+    @for (movie of favoriteMovies; track  movie.id) {
+      <app-movie-item [item]="movie"></app-movie-item>
+    } @empty {
+      <li>There are no movies 🙃</li>
+    }
   </ul>
 </section>
 <section class="movies">
   <h2>Watch later movies</h2>
   <ul class="movies__list">
-    <app-movie-item *ngFor="let movie of watchLaterMovies"
-                    [item]="movie">
-    </app-movie-item>
+    @for (movie of watchLaterMovies; track movie.id) {
+      <app-movie-item [item]="movie"></app-movie-item>
+    } @empty {
+      <li>There are no movies 🙃</li>
+    }
   </ul>
 </section>

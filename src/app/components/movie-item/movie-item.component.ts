@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import {
   Component, EventEmitter, Input, OnInit, Output,
 } from "@angular/core";
-import genreIds from "@assets/json/genreIds.json";
+import { genreIds } from "@constants/genreIds";
 import { Movie } from "@models/movie.model";
 import { TruncateDescriptionPipe } from "@pipes/truncate-description/truncate-description.pipe";
 import { SvgIconComponent } from "angular-svg-icon";
@@ -38,8 +38,8 @@ export class MovieItemComponent implements OnInit {
     this.addedToWatchlist.emit(id);
   }
 
-  transformGenreIds(genres: Record<string, string>): string[] {
-    return this.item.genre_ids.map((id) => genres[String(id)].toLowerCase());
+  transformGenreIds(genres: Record<number, string>): string[] {
+    return this.item.genre_ids.map((id) => genres[id].toLowerCase());
   }
 
   generateRatingArray(): number[] {

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import movies from "@assets/json/movies.json";
 import { MovieItemComponent } from "@components/movie-item/movie-item.component";
+import { movies } from "@constants/movies";
 import { Movie } from "@models/movie.model";
 
 @Component({

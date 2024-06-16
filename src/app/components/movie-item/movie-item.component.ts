@@ -2,15 +2,21 @@ import { CommonModule } from "@angular/common";
 import {
   Component, EventEmitter, Input, OnInit, Output,
 } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 import { genreIds } from "@constants/genreIds";
 import { Movie } from "@models/movie.model";
 import { TruncateDescriptionPipe } from "@pipes/truncate-description/truncate-description.pipe";
 import { SvgIconComponent } from "angular-svg-icon";
+import { Button } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { ChipModule } from "primeng/chip";
+import { RatingModule } from "primeng/rating";
 
 @Component({
   selector: "app-movie-item",
   standalone: true,
-  imports: [CommonModule, SvgIconComponent, TruncateDescriptionPipe],
+  imports: [CommonModule, SvgIconComponent, TruncateDescriptionPipe, CardModule, Button, RatingModule, FormsModule,
+    ChipModule],
   templateUrl: "./movie-item.component.html",
   styleUrl: "./movie-item.component.scss",
 })
@@ -22,12 +28,12 @@ export class MovieItemComponent implements OnInit {
   maxOverviewLength = 178;
   imageUrl!: string;
   genres!: string[];
-  rating!: number[];
+  rating!: number;
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
     this.genres = this.transformGenreIds(genreIds);
-    this.rating = this.generateRatingArray();
+    this.rating = this.getRating();
   }
 
   addToFavorites(id: number) {
@@ -42,9 +48,7 @@ export class MovieItemComponent implements OnInit {
     return this.item.genre_ids.map((id) => genres[id].toLowerCase());
   }
 
-  generateRatingArray(): number[] {
-    const rate = Math.round(this.item.vote_average / 2);
-    return Array.from({ length: 5 }, (_, i) => i + 1)
-      .map((number) => (number <= rate ? 1 : 0));
+  getRating(): number {
+    return Math.round(this.item.vote_average / 2);
   }
 }

@@ -1,49 +1,36 @@
-<li class="movie__item">
-  <a class="movie__link">
-    <img [src]="imageUrl" [alt]="item.title" class="movie__picture">
-    <div class="movie__information">
-      <h3 class="movie__title">{{ item.title }}</h3>
-      <p class="movie__overview">{{ item.overview | truncateDescription:maxOverviewLength }}</p>
-      <ul class="movie__controls-list">
-        <li>
-          <ul class="movie__controls-list movie__controls-list_left">
-            <li>
-              <button type="button"
-                      title="Add to Favorites"
-                      class="movie__controls-button"
-                      (click)="addToFavorites(item.id)">
-                <svg-icon src="assets/svg/heart.svg"></svg-icon>
-              </button>
-            </li>
-            <li>
-              <button type="button"
-                      title="Add to Watchlist"
-                      class="movie__controls-button"
-                      (click)="addToWatchlist(item.id)">
-                <svg-icon src="assets/svg/add.svg"></svg-icon>
-              </button>
-            </li>
-          </ul>
-        </li>
-        <li class="movie__controls-list_right">
-          <button type="button" title="Show more Information" class="movie__controls-button">
-            <svg-icon src="assets/svg/information.svg"></svg-icon>
-          </button>
-        </li>
-      </ul>
-      <ul class="movie__rating">
-        @for (item of rating; track $index) {
-          <li class="movie__star"
-              [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
-            <svg-icon src="assets/svg/star.svg"></svg-icon>
-          </li>
-        }
-      </ul>
-      <ul class="movie__genres">
-        @for (item of genres; track $index) {
-          <li>{{ item }}</li>
-        }
-      </ul>
+<p-card [header]="item.title" [style]="{ width: '364px' }" class="movie__item">
+  <ng-template pTemplate="header">
+    <img [alt]="item.title" [src]="imageUrl" class="movie__picture"/>
+  </ng-template>
+  <p>{{ item.overview | truncateDescription:maxOverviewLength }}</p>
+  <ng-template pTemplate="footer">
+    <div class="movie__controls">
+      <div class="movie__controls movie__controls_left">
+        <p-button
+          [rounded]="true"
+          icon="pi pi-heart"
+          (click)="addToFavorites(item.id)"
+          title="Add to Favorites"
+        />
+        <p-button
+          [rounded]="true"
+          icon="pi pi-plus"
+          (click)="addToWatchlist(item.id)"
+          title="Add to Watchlist"
+        />
+      </div>
+      <p-button
+        [rounded]="true"
+        icon="pi pi-info-circle"
+        class="movie__controls_right"
+        title="Show more Information"
+      />
     </div>
-  </a>
-</li>
+    <p-rating [(ngModel)]="rating" [readonly]="true" [cancel]="false" class="movie__rating" />
+    <div class="movie__genres">
+      @for (item of genres; track $index) {
+        <p-chip [label]="item" class="movie__genre" />
+      }
+    </div>
+  </ng-template>
+</p-card>

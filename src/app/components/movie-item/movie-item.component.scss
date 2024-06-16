@@ -1,124 +1,31 @@
-@import "../../styles/shared.scss";
-
-:host {
-  display: flex;
-}
-
 .movie {
-  &__item {
-    display: flex;
-    flex: 1 1 364px;
-    max-width: 364px;
-    border: 1px solid $primary-grey;
-    border-radius: 16px;
-  }
-
-  &__link {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-  }
-
   &__picture {
-    width: 100%;
-    object-fit: cover;
-    border-radius: 16px;
+    border-radius: 6px;
   }
 
-  &__information {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    gap: 12px;
-    padding: 24px;
-  }
-
-  &__controls-list {
+  &__controls {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 12px;
 
     &_left {
       gap: 12px;
-    }
-  }
-
-  &__controls-button {
-    @extend %icon-button;
-
-    svg {
-      width: 32px;
-      height: 32px;
+      margin: 0;
     }
 
-    &[title="Add to Favorites"] {
-      svg {
-        fill: currentColor;
-      }
-      &:hover {
-        svg {
-          fill: $red;
-        }
-      }
-    }
-
-    &[title="Add to Watchlist"] {
-      svg {
-        fill: currentColor;
-      }
-      &:hover {
-        svg {
-          fill: $green;
-        }
-      }
-    }
-
-    &[title="Show more Information"] {
-      svg {
-        stroke: currentColor;
-      }
-      &:hover {
-        svg {
-          stroke: $purple;
-        }
-      }
+    &_right {
+      margin: 0;
     }
   }
 
   &__rating {
-    display: flex;
-  }
-
-  &__star {
-    width: 24px;
-    height: 24px;
-
-    svg {
-      width: 20px;
-      height: 20px;
-      fill: transparent;
-      stroke: $primary-grey;
-    }
-
-    &_filled {
-      svg {
-        fill: $yellow;
-        stroke: $yellow;
-      }
-    }
+    display: block;
+    margin-bottom: 12px;
   }
 
   &__genres {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-
-    li {
-      padding: 4px 8px;
-      color: $green;
-      border: 1px solid $green;
-      border-radius: 4px;
-    }
   }
 }

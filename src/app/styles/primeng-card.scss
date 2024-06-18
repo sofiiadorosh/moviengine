@@ -1,0 +1,36 @@
+.p-card {
+  display: block;
+  height: 100%;
+  box-shadow: none;
+  border: 1px solid #ebebeb;
+}
+
+.p-card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.p-button {
+  background: #00a698;
+  border: 1px solid #00a698;
+
+  &:focus {
+    box-shadow: none;
+  }
+  &:active {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #00a698, 0 1px 2px 0 black;
+  }
+}
+
+.p-rating {
+  gap: 4px;
+}
+
+.p-rating-icon {
+  color: #ebebeb;
+  cursor: default;
+
+  &-active {
+    color: #ffb800;
+  }
+}

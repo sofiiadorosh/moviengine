@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { MoviesListComponent } from "@components/movies-list/movies-list.component";
-import { ContainerComponent } from "@shared/container/container.component";
+import { RouterOutlet } from "@angular/router";
+import { SidebarComponent } from "@components/sidebar/sidebar.component";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [ContainerComponent, MoviesListComponent],
+  imports: [RouterOutlet, SidebarComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
 })

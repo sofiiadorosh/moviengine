@@ -1,0 +1,59 @@
+@import "../../styles/shared.scss";
+
+:host {
+  width: 25%;
+}
+
+.sidebar {
+  padding: 24px 36px;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+
+    svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    span {
+      font-family: $secondary-font-stack;
+      font-size: 21px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__link {
+    display: block;
+    padding: 16px 16px;
+
+
+    span {
+      font-family: $secondary-font-stack;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    &_active {
+      color: $primary-dark-white;
+      background-color: $green;
+      border-radius: 4px;
+      cursor: default;
+    }
+
+    &:hover {
+      color: $primary-dark-white;
+      background-color: $green;
+      border-radius: 4px;
+    }
+  }
+}

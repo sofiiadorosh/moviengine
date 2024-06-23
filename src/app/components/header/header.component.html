@@ -1,0 +1,19 @@
+<header class="header">
+  <app-container>
+    <ul class="header__list">
+      @for (item of headerLinks; track $index) {
+        <li class="header__item">
+          <a routerLinkActive="header__link_active"
+             role="button"
+             tabindex="0"
+             class="header__link"
+             (click)="addIdsToQuery(item.href)"
+             (keydown.enter)="addIdsToQuery(item.href)">
+            <svg-icon [src]="'assets/svg/' + item.icon + '.svg'"></svg-icon>
+            <span>{{ item.name }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </app-container>
+</header>

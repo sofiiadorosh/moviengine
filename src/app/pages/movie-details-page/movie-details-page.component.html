@@ -1,0 +1,38 @@
+@if (movie) {
+  <section class="movie">
+    <div class="movie__information">
+      <h1 class="movie__title">{{ movie.title }}</h1>
+      <ul class="movie__controls-list">
+        <li>
+          <button type="button"
+                  title="Add to Favorites"
+                  class="movie__controls-button">
+            <svg-icon src="assets/svg/heart.svg"></svg-icon>
+          </button>
+        </li>
+        <li>
+          <button type="button"
+                  title="Add to Watchlist"
+                  class="movie__controls-button">
+            <svg-icon src="assets/svg/add.svg"></svg-icon>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <img [src]="imageUrl" [alt]="movie.title" class="movie__picture">
+    <ul class="movie__rating">
+      @for (item of rating; track $index) {
+        <li class="movie__star"
+            [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
+          <svg-icon src="assets/svg/star.svg"></svg-icon>
+        </li>
+      }
+    </ul>
+    <ul class="movie__genres">
+      @for (item of genres; track $index) {
+        <li>{{ item }}</li>
+      }
+    </ul>
+    <p class="movie__overview">{{ movie.overview }}</p>
+  </section>
+}

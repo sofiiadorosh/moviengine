@@ -1,30 +1,10 @@
 <section class="movies">
-  <h2>All movies</h2>
   <ul class="movies__list">
     @for (movie of movies; track movie.id) {
       <app-movie-item [item]="movie"
-                      (addedToFavorites)="onAddToFavorites($event)"
-                      (addedToWatchlist)="onAddToWatchlist($event)">
+                      (addedToFavorites)="addToFavorites($event)"
+                      (addedToWatchlist)="addToWatchlist($event)">
       </app-movie-item>    }
   </ul>
 </section>
-<section class="movies">
-  <h2>Favorite movies</h2>
-  <ul class="movies__list">
-    @for (movie of favoriteMovies; track  movie.id) {
-      <app-movie-item [item]="movie"></app-movie-item>
-    } @empty {
-      <li>There are no movies 🙃</li>
-    }
-  </ul>
-</section>
-<section class="movies">
-  <h2>Watch later movies</h2>
-  <ul class="movies__list">
-    @for (movie of watchLaterMovies; track movie.id) {
-      <app-movie-item [item]="movie"></app-movie-item>
-    } @empty {
-      <li>There are no movies 🙃</li>
-    }
-  </ul>
-</section>
+

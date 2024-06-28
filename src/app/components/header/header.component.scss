@@ -1,0 +1,35 @@
+@import "../../styles/shared.scss";
+
+.header {
+  border-bottom: 1px solid $primary-grey;
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 0;
+    font-family: $secondary-font-stack;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    &_active {
+      color: $green;
+
+      svg {
+        fill: $green;
+      }
+    }
+  }
+}

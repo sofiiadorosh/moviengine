@@ -1,0 +1,6 @@
+<app-layout [movies]="movies"
+            [favoritesIds]="favoritesMovies"
+            [watchLaterIds]="watchLaterMovies"
+            (addedToFavorites)="onAddToFavorites($event)"
+            (addedToWatchlist)="onAddToWatchlist($event)">
+</app-layout>

@@ -1,8 +1,9 @@
-import {RoutePaths} from "@models/route-paths.enum";
+import { RoutePaths } from "@models/route-paths.enum";
+import { Route } from "@models/route.interface";
 
-export const sidebarLinks: { name: string, href: RoutePaths }[] = [
-  { name: "Now playing", href: RoutePaths.NOW_PLAYING },
-  { name: "Popular", href: RoutePaths.POPULAR },
-  { name: "Top rate", href: RoutePaths.TOP_RATE},
-  { name: "Upcoming", href: RoutePaths.UPCOMING },
+export const sidebarLinks: Route[] = [
+  { routeName: "Now playing", routePath: RoutePaths.NOW_PLAYING },
+  { routeName: "Popular", routePath: RoutePaths.POPULAR },
+  { routeName: "Top rate", routePath: RoutePaths.TOP_RATE},
+  { routeName: "Upcoming", routePath: RoutePaths.UPCOMING },
 ]

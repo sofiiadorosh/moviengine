@@ -1,6 +1,7 @@
 import { RoutePaths } from "@models/route-paths.enum";
+import { Route } from "@models/route.interface";
 
-export const headerLinks: { name: string, href: RoutePaths, icon: string }[] = [
-  { name: "Favorites", href: RoutePaths.FAVORITES, icon: "heart-shine" },
-  { name: "Watch later", href: RoutePaths.WATCH_LATER, icon: "star-shine" },
+export const headerLinks: Route[] = [
+  { routeName: "Favorites", routePath: RoutePaths.FAVORITES, routeIcon: "heart-shine" },
+  { routeName: "Watch later", routePath: RoutePaths.WATCH_LATER, routeIcon: "star-shine" },
 ]

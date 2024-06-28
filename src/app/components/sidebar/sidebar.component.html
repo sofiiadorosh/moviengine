@@ -6,10 +6,10 @@
   <ul class="sidebar__list">
     @for (item of sidebarLinks; track $index) {
       <li class="sidebar__item">
-        <a [routerLink]="item.href"
+        <a [routerLink]="item.routePath"
            routerLinkActive="sidebar__link_active"
            class="sidebar__link">
-          <span>{{ item.name }}</span>
+          <span>{{ item.routeName }}</span>
         </a>
       </li>
     }

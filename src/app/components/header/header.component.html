@@ -7,10 +7,10 @@
              role="button"
              tabindex="0"
              class="header__link"
-             (click)="addIdsToQuery(item.href)"
-             (keydown.enter)="addIdsToQuery(item.href)">
-            <svg-icon [src]="'assets/svg/' + item.icon + '.svg'"></svg-icon>
-            <span>{{ item.name }}</span>
+             (click)="addIdsToQuery(item.routePath)"
+             (keydown.enter)="addIdsToQuery(item.routePath)">
+            <svg-icon [src]="'assets/svg/' + item.routeIcon + '.svg'"></svg-icon>
+            <span>{{ item.routeName }}</span>
           </a>
         </li>
       }

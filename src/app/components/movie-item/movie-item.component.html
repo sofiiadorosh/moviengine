@@ -2,8 +2,8 @@
   <a role="button"
      tabindex="0"
      class="movie__link"
-     (click)="navigateToMovieDetails(item.id)"
-     (keydown.enter)="navigateToMovieDetails(item.id)">
+     (click)="navigateToMovieDetails()"
+     (keydown)="navigateToMovieDetails()">
     <img [src]="imageUrl" [alt]="item.title" class="movie__picture">
     <div class="movie__information">
       <h3 class="movie__title">{{ item.title }}</h3>
@@ -15,22 +15,25 @@
               <button type="button"
                       title="Add to Favorites"
                       class="movie__controls-button"
-                      (click)="addToFavorites(item.id, $event)">
+                      (click)="onUpdateFavorites(item.id, $event)">
                 <svg-icon src="assets/svg/heart.svg"></svg-icon>
               </button>
             </li>
             <li>
               <button type="button"
-                      title="Add to Watchlist"
+                      title="Add to Watch Later"
                       class="movie__controls-button"
-                      (click)="addToWatchlist(item.id, $event)">
+                      (click)="onUpdateWatchLater(item.id, $event)">
                 <svg-icon src="assets/svg/add.svg"></svg-icon>
               </button>
             </li>
           </ul>
         </li>
         <li class="movie__controls-list_right">
-          <button type="button" title="Show more Information" class="movie__controls-button">
+          <button type="button"
+                  title="Show more Information"
+                  class="movie__controls-button"
+                  (click)="navigateToMovieDetails()">
             <svg-icon src="assets/svg/information.svg"></svg-icon>
           </button>
         </li>

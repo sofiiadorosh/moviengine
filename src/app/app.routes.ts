@@ -16,8 +16,8 @@ export const routes: Routes = [
   { path: RoutePaths.POPULAR, component: PopularMoviesPageComponent },
   { path: RoutePaths.TOP_RATE, component: TopRateMoviesPageComponent },
   { path: RoutePaths.UPCOMING, component: UpcomingMoviesPageComponent },
-  { path: RoutePaths.FAVORITES, component: FavoritesPageComponent, outlet: "fwl-outlet" },
-  { path: RoutePaths.WATCH_LATER, component: WatchLaterPageComponent, outlet: "fwl-outlet" },
+  { path: RoutePaths.FAVORITES, component: FavoritesPageComponent },
+  { path: RoutePaths.WATCH_LATER, component: WatchLaterPageComponent },
   { path: RoutePaths.MOVIE_ID, component: MovieDetailsPageComponent },
   { path: RoutePaths.NOT_FOUND, component: NotFoundPageComponent },
 ];

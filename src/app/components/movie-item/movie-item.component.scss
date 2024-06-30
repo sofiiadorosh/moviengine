@@ -64,7 +64,7 @@
       }
     }
 
-    &[title="Add to Watchlist"] {
+    &[title="Add to Watch Later"] {
       svg {
         fill: currentColor;
       }
@@ -82,6 +82,20 @@
       &:hover {
         svg {
           stroke: $purple;
+        }
+      }
+    }
+
+    &_active {
+      &[title="Add to Favorites"] {
+        svg {
+          fill: $red;
+        }
+      }
+
+      &[title="Add to Watch Later"] {
+        svg {
+          fill: $green;
         }
       }
     }

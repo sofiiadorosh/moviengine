@@ -1,12 +1,11 @@
 import { CommonModule } from "@angular/common";
-import {
-  Component, EventEmitter, Input, OnInit, Output,
-} from "@angular/core";
-import {Router, RouterLink} from "@angular/router";
+import { Component, Input, OnInit } from "@angular/core";
+import { Router, RouterLink } from "@angular/router";
 import { genreIds } from "@constants/genre-ids";
 import { Movie } from "@models/movie.interface";
 import { RoutePaths } from "@models/route-paths.enum";
 import { TruncateDescriptionPipe } from "@pipes/truncate-description/truncate-description.pipe";
+import { MovieService} from "@services/movie/movie.service";
 import { SvgIconComponent } from "angular-svg-icon";
 
 @Component({
@@ -18,16 +17,17 @@ import { SvgIconComponent } from "angular-svg-icon";
 })
 export class MovieItemComponent implements OnInit {
   @Input() item!: Movie;
-  @Output() addedToFavorites: EventEmitter<number> = new EventEmitter<number>();
-  @Output() addedToWatchlist: EventEmitter<number> = new EventEmitter<number>();
   baseImageUrl = "https://image.tmdb.org/t/p/original";
   maxOverviewLength = 178;
   imageUrl!: string;
   genres!: string[];
   rating!: number[];
   movieId!: string;
+  isInFavorites = false;
+  isInWatchLater = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+    private movieService: MovieService) {}
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
@@ -36,14 +36,14 @@ export class MovieItemComponent implements OnInit {
     this.movieId = this.replaceId(this.item.id);
   }
 
-  addToFavorites(id: number, e: Event) {
+  onUpdateFavorites(id: number, e: Event) {
     e.stopPropagation();
-    this.addedToFavorites.emit(id);
+    this.movieService.updateFavorites(id);
   }
 
-  addToWatchlist(id: number, e: Event) {
+  onUpdateWatchLater(id: number, e: Event) {
     e.stopPropagation();
-    this.addedToWatchlist.emit(id);
+    this.movieService.updateWatchLater(id);
   }
 
   transformGenreIds(genres: Record<number, string>): string[] {
@@ -60,8 +60,7 @@ export class MovieItemComponent implements OnInit {
     return `/${RoutePaths.MOVIE_ID.replace(":id", String(id))}`;
   }
 
-  navigateToMovieDetails(id: number) {
-    const movieId = this.replaceId(id);
-    this.router.navigate([movieId]);
+  navigateToMovieDetails() {
+    this.router.navigate([this.movieId]);
   }
 }

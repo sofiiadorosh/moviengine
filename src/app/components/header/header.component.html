@@ -3,12 +3,10 @@
     <ul class="header__list">
       @for (item of headerLinks; track $index) {
         <li class="header__item">
-          <a routerLinkActive="header__link_active"
+          <a [routerLink]="item.routePath"
+             routerLinkActive="header__link_active"
              role="button"
-             tabindex="0"
-             class="header__link"
-             (click)="addIdsToQuery(item.routePath)"
-             (keydown.enter)="addIdsToQuery(item.routePath)">
+             class="header__link">
             <svg-icon [src]="'assets/svg/' + item.routeIcon + '.svg'"></svg-icon>
             <span>{{ item.routeName }}</span>
           </a>

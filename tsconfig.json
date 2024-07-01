@@ -45,9 +45,6 @@
       "@constants/*": [
         "./src/app/constants/*"
       ],
-      "@utilities/*": [
-        "./src/app/utilities/*"
-      ],
       "@assets/*": [
         "./src/assets/*"
       ]

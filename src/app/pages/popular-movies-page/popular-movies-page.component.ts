@@ -1,36 +1,25 @@
-import {Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
-import { popularMovies } from "@constants/movies";
 import { Movie } from "@models/movie.interface";
-import { LayoutComponent } from "@shared/layout/layout.component";
+import { MovieService } from "@services/movie/movie.service";
+
 
 @Component({
   selector: "app-popular-movies-page",
   standalone: true,
   imports: [
-    LayoutComponent,
     MoviesListComponent
   ],
   templateUrl: "./popular-movies-page.component.html",
   styleUrl: "./popular-movies-page.component.scss"
 })
-export class PopularMoviesPageComponent {
-  movies: Movie[] = popularMovies;
-  favoritesMovies: number[] = [];
-  watchLaterMovies: number[] = [];
+export class PopularMoviesPageComponent implements OnInit {
+  movies: Movie[] = [];
 
-  private addToList(list: number[], id: number) {
-    const movieInList = list.find((movieId) => movieId === id);
-    if (movieInList) return list;
-    return [...list, id];
+  constructor(private movieService: MovieService) {
   }
 
-  onAddToFavorites(id: number) {
-    this.favoritesMovies = this.addToList(this.favoritesMovies, id);
+  ngOnInit() {
+    this.movies = this.movieService.getPopularMovies();
   }
-
-  onAddToWatchlist(id: number) {
-    this.watchLaterMovies = this.addToList(this.watchLaterMovies, id);
-  }
-
 }

@@ -1,1 +1,7 @@
-<app-movies-list [movies]="movies"></app-movies-list>
+<section class="favorites">
+  @if (movies.length) {
+    <app-movies-list [movies]="movies"></app-movies-list>
+  } @else {
+    <p>Sorry, you have not add any movies to Favorites 😔</p>
+  }
+</section>

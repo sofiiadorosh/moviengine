@@ -1,1 +1,7 @@
-<p>watch-later-page works!</p>
+<section class="watch-later">
+  @if (movies.length) {
+    <app-movies-list [movies]="movies"></app-movies-list>
+  } @else {
+    <p>Sorry, you have not add any movies to Watch Later 😔</p>
+  }
+</section>

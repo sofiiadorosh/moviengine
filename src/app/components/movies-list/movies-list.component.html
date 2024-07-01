@@ -1,10 +1,5 @@
-<section class="movies">
-  <ul class="movies__list">
-    @for (movie of movies; track movie.id) {
-      <app-movie-item [item]="movie"
-                      (addedToFavorites)="addToFavorites($event)"
-                      (addedToWatchlist)="addToWatchlist($event)">
-      </app-movie-item>    }
-  </ul>
-</section>
+<ul class="movies__list">
+  @for (movie of movies; track movie.id) {
+    <app-movie-item [item]="movie"></app-movie-item>    }
+</ul>
 

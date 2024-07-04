@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { MoviesListComponent } from "@components/movies-list/movies-list.component";
-import { Movie } from "@models/movie.interface";
-import { MovieService } from "@services/movie/movie.service";
+import {Component, OnInit} from "@angular/core";
+import {MoviesListComponent} from "@components/movies-list/movies-list.component";
+import {Movie} from "@models/movie.interface";
+import {MovieService} from "@services/movie/movie.service";
 
 @Component({
   selector: "app-upcoming-movies-page",
@@ -15,8 +15,7 @@ import { MovieService } from "@services/movie/movie.service";
 export class UpcomingMoviesPageComponent implements OnInit {
   movies: Movie[] = [];
 
-  constructor(private movieService: MovieService) {
-  }
+  constructor(private movieService: MovieService) {}
 
   ngOnInit() {
     this.movies = this.movieService.getUpcomingMovies();

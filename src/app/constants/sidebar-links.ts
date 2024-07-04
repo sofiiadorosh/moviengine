@@ -1,5 +1,5 @@
-import { Route } from "@models/route.interface";
-import { RoutePaths } from "@models/route-paths.enum";
+import {Route} from "@models/route.interface";
+import {RoutePaths} from "@models/route-paths.enum";
 
 export const sidebarLinks: Route[] = [
   { routeName: "Now playing", routePath: RoutePaths.NOW_PLAYING },

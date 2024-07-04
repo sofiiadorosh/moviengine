@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { nowPlayingMovies, popularMovies, topRatedMovies, upcomingMovies } from "@constants/movies";
-import { Movie } from "@models/movie.interface";
+import {Injectable} from "@angular/core";
+import {nowPlayingMovies, popularMovies, topRatedMovies, upcomingMovies} from "@constants/movies";
+import {Movie} from "@models/movie.interface";
 
 @Injectable({
   providedIn: "root"
@@ -9,7 +9,7 @@ export class MovieService {
   favoriteMovies: Movie[] = [];
   watchLaterMovies: Movie[] = [];
 
-  constructor() { }
+  constructor() {}
 
   getNowPlayingMovies() {
     return nowPlayingMovies;

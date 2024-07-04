@@ -1,10 +1,10 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { genreIds } from "@constants/genre-ids";
-import { Movie } from "@models/movie.interface";
+import {CommonModule} from "@angular/common";
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {genreIds} from "@constants/genre-ids";
+import {Movie} from "@models/movie.interface";
 import {MovieService} from "@services/movie/movie.service";
-import { SvgIconComponent } from "angular-svg-icon";
+import {SvgIconComponent} from "angular-svg-icon";
 
 @Component({
   selector: "app-movie-details-page",
@@ -23,7 +23,7 @@ export class MovieDetailsPageComponent implements OnInit {
   genres: string[] | undefined;
   rating: number[] | undefined;
 
-  constructor(private route: ActivatedRoute, private movieService: MovieService) { }
+  constructor(private route: ActivatedRoute, private movieService: MovieService) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {

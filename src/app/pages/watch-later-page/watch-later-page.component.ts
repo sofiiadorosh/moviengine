@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
-import { MoviesListComponent } from "@components/movies-list/movies-list.component";
-import { Movie } from "@models/movie.interface";
-import { MovieService } from "@services/movie/movie.service";
+import {MoviesListComponent} from "@components/movies-list/movies-list.component";
+import {Movie} from "@models/movie.interface";
+import {MovieService} from "@services/movie/movie.service";
 
 @Component({
   selector: "app-watch-later-page",

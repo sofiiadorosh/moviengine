@@ -1,12 +1,12 @@
-import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
-import { Router, RouterLink } from "@angular/router";
-import { genreIds } from "@constants/genre-ids";
-import { Movie } from "@models/movie.interface";
-import { RoutePaths } from "@models/route-paths.enum";
-import { TruncateDescriptionPipe } from "@pipes/truncate-description/truncate-description.pipe";
-import { MovieService} from "@services/movie/movie.service";
-import { SvgIconComponent } from "angular-svg-icon";
+import {CommonModule} from "@angular/common";
+import {Component, Input, OnInit} from "@angular/core";
+import {Router, RouterLink} from "@angular/router";
+import {genreIds} from "@constants/genre-ids";
+import {Movie} from "@models/movie.interface";
+import {RoutePaths} from "@models/route-paths.enum";
+import {TruncateDescriptionPipe} from "@pipes/truncate-description/truncate-description.pipe";
+import {MovieService} from "@services/movie/movie.service";
+import {SvgIconComponent} from "angular-svg-icon";
 
 @Component({
   selector: "app-movie-item",

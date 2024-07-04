@@ -1,4 +1,4 @@
-import { Movie } from "@models/movie.interface";
+import {Movie} from "@models/movie.interface";
 
 export const nowPlayingMovies: Movie[] = [
   {

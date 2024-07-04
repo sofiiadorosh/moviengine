@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import {Component} from "@angular/core";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {sidebarLinks} from "@constants/sidebar-links";
 import {SvgIconComponent} from "angular-svg-icon";
@@ -15,6 +15,6 @@ import {SvgIconComponent} from "angular-svg-icon";
   styleUrl: "./sidebar.component.scss"
 })
 export class SidebarComponent {
-
   protected readonly sidebarLinks = sidebarLinks;
+
 }

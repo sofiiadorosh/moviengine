@@ -1,6 +1,11 @@
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {nowPlayingMovies, popularMovies, topRatedMovies, upcomingMovies} from "@constants/movies";
+import {environment} from "@environments/environment";
 import {Movie} from "@models/movie.interface";
+import {MovieDetails} from "@models/movie-details.interface";
+import {MovieListResponse} from "@models/response.interface";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -9,22 +14,30 @@ export class MovieService {
   favoriteMovies: Movie[] = [];
   watchLaterMovies: Movie[] = [];
 
-  constructor() {}
+  constructor(private httpClient: HttpClient) {}
 
-  getNowPlayingMovies() {
-    return nowPlayingMovies;
+  private getOptions() {
+    return { params: new HttpParams().set("api_key", environment.apiKey) };
   }
 
-  getPopularMovies() {
-    return popularMovies;
+  getNowPlayingMovies(): Observable<MovieListResponse> {
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}/movie/now_playing`,
+      this.getOptions());
   }
 
-  getTopRateMovies() {
-    return topRatedMovies;
+  getPopularMovies(): Observable<MovieListResponse> {
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}/movie/popular`,
+      this.getOptions());
   }
 
-  getUpcomingMovies() {
-    return upcomingMovies;
+  getTopRateMovies(): Observable<MovieListResponse> {
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}/movie/top_rated`,
+      this.getOptions());
+  }
+
+  getUpcomingMovies(): Observable<MovieListResponse> {
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}/movie/upcoming`,
+      this.getOptions());
   }
 
   updateList(list: Movie[], id: number) {
@@ -33,7 +46,6 @@ export class MovieService {
     if (movieIndex !== -1) {
       list.splice(movieIndex, 1);
     } else {
-      // Movie is not in the list, so add it
       const addedMovie = [...new Set([
         ...nowPlayingMovies,
         ...popularMovies,
@@ -63,20 +75,8 @@ export class MovieService {
     return this.watchLaterMovies;
   }
 
-  getMovieById(id: number) {
-    return [...new Set([
-      ...nowPlayingMovies,
-      ...popularMovies,
-      ...topRatedMovies,
-      ...upcomingMovies])]
-      .find((movie) => movie.id === id);
-  }
-
-  isMovieInFavorites(id: number) {
-    return this.favoriteMovies.some(movie => movie.id === id);
-  }
-
-  isMovieInWatchLater(id: number) {
-    return this.watchLaterMovies.some(movie => movie.id === id);
+  getMovieById(id: number): Observable<MovieDetails> {
+    return this.httpClient.get<MovieDetails>(`${environment.apiBaseUrl}/movie/${id}`,
+      this.getOptions());
   }
 }

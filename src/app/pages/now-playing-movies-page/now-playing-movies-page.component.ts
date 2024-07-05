@@ -1,7 +1,8 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {MoviesListComponent} from "@components/movies-list/movies-list.component";
 import {Movie} from "@models/movie.interface";
 import {MovieService} from "@services/movie/movie.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: "app-now-playing-movies-page",
@@ -12,12 +13,20 @@ import {MovieService} from "@services/movie/movie.service";
   templateUrl: "./now-playing-movies-page.component.html",
   styleUrl: "./now-playing-movies-page.component.scss"
 })
-export class NowPlayingMoviesPageComponent implements OnInit {
+export class NowPlayingMoviesPageComponent implements OnInit, OnDestroy {
   movies: Movie[] = [];
+  private moviesSubscription: Subscription = new Subscription();
 
   constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.movies = this.movieService.getNowPlayingMovies();
+    this.moviesSubscription = this.movieService.getNowPlayingMovies().subscribe((response) =>
+      this.movies = response.results);
+  }
+
+  ngOnDestroy() {
+    if (this.moviesSubscription) {
+      this.moviesSubscription.unsubscribe();
+    }
   }
 }

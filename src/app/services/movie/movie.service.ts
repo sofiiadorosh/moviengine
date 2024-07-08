@@ -16,8 +16,11 @@ export class MovieService {
 
   constructor(private httpClient: HttpClient) {}
 
-  private getOptions() {
-    return { params: new HttpParams().set("api_key", environment.apiKey) };
+  private getOptions(params: Record<string, string> = {}): { params: HttpParams } {
+    const accessParams = { api_key: environment.apiKey };
+    const allParams = { ...accessParams, ...params };
+    const httpParams = new HttpParams({ fromObject: allParams });
+    return { params: httpParams };
   }
 
   getNowPlayingMovies(): Observable<MovieListResponse> {
@@ -40,39 +43,35 @@ export class MovieService {
       this.getOptions());
   }
 
-  updateList(list: Movie[], id: number) {
-    const movieIndex = list.findIndex((movie) => movie.id === id);
-
-    if (movieIndex !== -1) {
-      list.splice(movieIndex, 1);
-    } else {
-      const addedMovie = [...new Set([
-        ...nowPlayingMovies,
-        ...popularMovies,
-        ...topRatedMovies,
-        ...upcomingMovies])]
-        .find((movie) => movie.id === id);
-
-      if (addedMovie) {
-        list.push(addedMovie);
-      }
-    }
+  updateList(listType: string, id: number, params: Record<string, string>) {
+    const body = {
+      media_type: "movie",
+      media_id: id,
+      [listType]: true,
+    };
+    return this.httpClient.post(
+      `${environment.apiBaseUrl}/account/${environment.accountId}/${listType}`,
+      body,
+      this.getOptions(params)
+    );
   }
 
-  updateFavorites(id: number) {
-    this.updateList(this.favoriteMovies, id);
+  updateFavorites(id: number, params: Record<string, string>) {
+    return this.updateList("favorite", id, params);
   }
 
-  getFavoritesMovies() {
-    return this.favoriteMovies;
+  getFavoritesMovies(params: Record<string, string>): Observable<MovieListResponse> {
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}/account/${environment.accountId}/favorite/movies`,
+      this.getOptions(params));
   }
 
-  updateWatchLater(id: number) {
-    this.updateList(this.watchLaterMovies, id);
+  updateWatchLater(id: number, params: Record<string, string>) {
+    return this.updateList("watchlist", id, params);
   }
 
-  getWatchLaterMovies() {
-    return this.watchLaterMovies;
+  getWatchLaterMovies(params: Record<string, string>) {
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}/account/${environment.accountId}/watchlist/movies`,
+      this.getOptions(params));
   }
 
   getMovieById(id: number): Observable<MovieDetails> {

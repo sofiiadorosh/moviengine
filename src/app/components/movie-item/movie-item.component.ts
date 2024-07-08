@@ -7,6 +7,7 @@ import {RoutePaths} from "@models/route-paths.enum";
 import {TruncateDescriptionPipe} from "@pipes/truncate-description/truncate-description.pipe";
 import {MovieService} from "@services/movie/movie.service";
 import {SvgIconComponent} from "angular-svg-icon";
+import {AuthenticationService} from "@services/authentication/authentication.service";
 
 @Component({
   selector: "app-movie-item",
@@ -23,11 +24,10 @@ export class MovieItemComponent implements OnInit {
   genres!: string[];
   rating!: number[];
   movieId!: string;
-  isInFavorites = false;
-  isInWatchLater = false;
 
   constructor(private router: Router,
-    private movieService: MovieService) {}
+              private movieService: MovieService,
+              private authenticationService: AuthenticationService) {}
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
@@ -36,14 +36,36 @@ export class MovieItemComponent implements OnInit {
     this.movieId = this.replaceId(this.item.id);
   }
 
-  onUpdateFavorites(id: number, e: Event) {
+  private onUpdateList(
+    id: number,
+    e: Event,
+    listType: "favorite" | "watchlist"
+  ) {
     e.stopPropagation();
-    this.movieService.updateFavorites(id);
+    const sessionId = this.authenticationService.getSessionId();
+    if (sessionId) {
+      const params = { session_id: sessionId };
+      const method =
+        listType === "favorite"
+          ? this.movieService.updateFavorites(id, params)
+          : this.movieService.updateWatchLater(id, params);
+
+      method.subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          console.error(`Error adding movie to ${listType}:`, error);
+        },
+      });
+    }
   }
 
-  onUpdateWatchLater(id: number, e: Event) {
-    e.stopPropagation();
-    this.movieService.updateWatchLater(id);
+  onAddToFavorites(id: number, e: Event) {
+    this.onUpdateList(id, e, "favorite");
+  }
+
+  onAddToWatchLater(id: number, e: Event) {
+    this.onUpdateList(id, e, "watchlist");
   }
 
   transformGenreIds(genres: Record<number, string>): string[] {

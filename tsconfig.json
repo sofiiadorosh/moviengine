@@ -47,6 +47,9 @@
       ],
       "@assets/*": [
         "./src/assets/*"
+      ],
+      "@environments/*": [
+        "./src/app/environments/*"
       ]
     }
   },

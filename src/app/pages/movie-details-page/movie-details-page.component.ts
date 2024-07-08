@@ -1,10 +1,10 @@
 import {CommonModule} from "@angular/common";
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {genreIds} from "@constants/genre-ids";
-import {Movie} from "@models/movie.interface";
+import {MovieDetails} from "@models/movie-details.interface";
 import {MovieService} from "@services/movie/movie.service";
 import {SvgIconComponent} from "angular-svg-icon";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: "app-movie-details-page",
@@ -16,31 +16,27 @@ import {SvgIconComponent} from "angular-svg-icon";
   templateUrl: "./movie-details-page.component.html",
   styleUrl: "./movie-details-page.component.scss"
 })
-export class MovieDetailsPageComponent implements OnInit {
-  movie: Movie | undefined;
+export class MovieDetailsPageComponent implements OnInit, OnDestroy {
+  movie: MovieDetails | undefined;
   baseImageUrl = "https://image.tmdb.org/t/p/original";
   imageUrl!: string;
-  genres: string[] | undefined;
+  backdropUrl!: string;
   rating: number[] | undefined;
+  private movieSubscription: Subscription = new Subscription();
 
-  constructor(private route: ActivatedRoute, private movieService: MovieService) {}
+  constructor(private route: ActivatedRoute,
+    private movieService: MovieService,) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const movieId = Number(params.get("id"));
-      this.movie = this.movieService.getMovieById(movieId);
+      this.movieSubscription = this.movieService.getMovieById(movieId).subscribe((movie) => {
+        this.movie = movie;
+        this.imageUrl = `${this.baseImageUrl}/${this.movie?.poster_path}`;
+        this.backdropUrl = `${this.baseImageUrl}/${this.movie?.backdrop_path}`;
+        this.rating = this.generateRatingArray();
+      });
     });
-
-    this.imageUrl = `${this.baseImageUrl}/${this.movie?.poster_path}`;
-    this.genres = this.transformGenreIds(genreIds);
-    this.rating = this.generateRatingArray();
-  }
-
-  transformGenreIds(genres: Record<number, string>): string[] | undefined {
-    if (this.movie) {
-      return this.movie.genre_ids.map((id) => genres[id].toLowerCase());
-    }
-    return undefined;
   }
 
   generateRatingArray(): number[] | undefined {
@@ -52,12 +48,35 @@ export class MovieDetailsPageComponent implements OnInit {
     return undefined;
   }
 
-  onUpdateFavorites(id: number) {
-    this.movieService.updateFavorites(id);
+  private onUpdateList(
+    id: number,
+    listType: "favorite" | "watchlist"
+  ) {
+    const method =
+      listType === "favorite"
+        ? this.movieService.updateFavorites(id)
+        : this.movieService.updateWatchLater(id);
+
+    method.subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        console.error(`Error adding movie to ${listType}:`, error);
+      },
+    });
   }
 
-  onUpdateWatchLater(id: number) {
-    this.movieService.updateWatchLater(id);
+  onAddToFavorites(id: number) {
+    this.onUpdateList(id, "favorite");
   }
 
+  onAddToWatchLater(id: number) {
+    this.onUpdateList(id, "watchlist");
+  }
+
+  ngOnDestroy() {
+    if (this.movieSubscription) {
+      this.movieSubscription.unsubscribe();
+    }
+  }
 }

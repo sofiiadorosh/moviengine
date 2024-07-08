@@ -23,11 +23,9 @@ export class MovieItemComponent implements OnInit {
   genres!: string[];
   rating!: number[];
   movieId!: string;
-  isInFavorites = false;
-  isInWatchLater = false;
 
   constructor(private router: Router,
-    private movieService: MovieService) {}
+    private movieService: MovieService,) {}
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
@@ -36,14 +34,32 @@ export class MovieItemComponent implements OnInit {
     this.movieId = this.replaceId(this.item.id);
   }
 
-  onUpdateFavorites(id: number, e: Event) {
+  private onUpdateList(
+    id: number,
+    e: Event,
+    listType: "favorite" | "watchlist"
+  ) {
     e.stopPropagation();
-    this.movieService.updateFavorites(id);
+    const method =
+      listType === "favorite"
+        ? this.movieService.updateFavorites(id)
+        : this.movieService.updateWatchLater(id);
+
+    method.subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        console.error(`Error adding movie to ${listType}:`, error);
+      },
+    });
   }
 
-  onUpdateWatchLater(id: number, e: Event) {
-    e.stopPropagation();
-    this.movieService.updateWatchLater(id);
+  onAddToFavorites(id: number, e: Event) {
+    this.onUpdateList(id, e, "favorite");
+  }
+
+  onAddToWatchLater(id: number, e: Event) {
+    this.onUpdateList(id, e, "watchlist");
   }
 
   transformGenreIds(genres: Record<number, string>): string[] {

@@ -1,0 +1,57 @@
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {environment} from "@environments/environment";
+import {CreateSessionIdResponse, RequestTokenResponse} from "@models/response.interface";
+import {Observable} from "rxjs";
+
+@Injectable({
+  providedIn: "root"
+})
+export class AuthenticationService {
+  private token: string | null = null;
+  private sessionId: string | null = null;
+
+  constructor(private httpClient: HttpClient) {}
+
+  private getOptions() {
+    return { params: new HttpParams().set("api_key", environment.apiKey) };
+  }
+
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  setSessionId(sessionId: string) {
+    this.sessionId = sessionId;
+  }
+
+  getSessionId(): string | null {
+    return this.sessionId;
+  }
+
+  getRequestToken(): Observable<RequestTokenResponse> {
+    return this.httpClient.get<RequestTokenResponse>(`${environment.apiBaseUrl}/authentication/token/new`,
+      this.getOptions());
+  }
+
+  askForPermission(token: string): Observable<RequestTokenResponse> {
+    const body = {
+      username: "sofidorosh",
+      password: "Thesadness86",
+      request_token: token,
+    }
+    return this.httpClient.post<RequestTokenResponse>(
+      `${environment.apiBaseUrl}/authentication/token/validate_with_login`,
+      body,
+      this.getOptions());
+  }
+
+  createSessionId(token: string): Observable<CreateSessionIdResponse> {
+    const body = {
+      request_token: token,
+    }
+    return this.httpClient.post<CreateSessionIdResponse>(`${environment.apiBaseUrl}/authentication/session/new`,
+      body,
+      this.getOptions());
+  }
+}

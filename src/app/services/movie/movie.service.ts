@@ -1,82 +1,98 @@
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {nowPlayingMovies, popularMovies, topRatedMovies, upcomingMovies} from "@constants/movies";
+import {environment} from "@environments/environment";
 import {Movie} from "@models/movie.interface";
+import {MovieDetails} from "@models/movie-details.interface";
+import {MovieListResponse} from "@models/response.interface";
+import {AuthenticationService} from "@services/authentication/authentication.service";
+import {map, Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class MovieService {
-  favoriteMovies: Movie[] = [];
-  watchLaterMovies: Movie[] = [];
 
-  constructor() {}
+  constructor(private httpClient: HttpClient,
+    private authenticationService: AuthenticationService) {}
 
-  getNowPlayingMovies() {
-    return nowPlayingMovies;
+  private getOptions(params: Record<string, string> = {}): { params: HttpParams } {
+    const accessParams = { api_key: environment.apiKey };
+    const allParams = { ...accessParams, ...params };
+    const httpParams = new HttpParams({ fromObject: allParams });
+    return { params: httpParams };
   }
 
-  getPopularMovies() {
-    return popularMovies;
+  private getMovies(endpoint: string): Observable<Movie[]> {
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}${endpoint}`, this.getOptions())
+      .pipe(map((response) => response.results));
   }
 
-  getTopRateMovies() {
-    return topRatedMovies;
+  getNowPlayingMovies(): Observable<Movie[]> {
+    return this.getMovies("/movie/now_playing");
   }
 
-  getUpcomingMovies() {
-    return upcomingMovies;
+  getPopularMovies(): Observable<Movie[]> {
+    return this.getMovies("/movie/popular");
   }
 
-  updateList(list: Movie[], id: number) {
-    const movieIndex = list.findIndex((movie) => movie.id === id);
+  getTopRateMovies(): Observable<Movie[]> {
+    return this.getMovies("/movie/top_rated");
+  }
 
-    if (movieIndex !== -1) {
-      list.splice(movieIndex, 1);
-    } else {
-      // Movie is not in the list, so add it
-      const addedMovie = [...new Set([
-        ...nowPlayingMovies,
-        ...popularMovies,
-        ...topRatedMovies,
-        ...upcomingMovies])]
-        .find((movie) => movie.id === id);
+  getUpcomingMovies(): Observable<Movie[]> {
+    return this.getMovies("/movie/upcoming");
+  }
 
-      if (addedMovie) {
-        list.push(addedMovie);
-      }
+  updateList(listType: string, id: number) {
+    const body = {
+      media_type: "movie",
+      media_id: id,
+      [listType]: true,
+    };
+    const sessionId = this.authenticationService.getSessionId();
+    if (sessionId) {
+      const params: Record<string, string> = { session_id: sessionId };
+      return this.httpClient.post(
+        `${environment.apiBaseUrl}/account/${environment.accountId}/${listType}`,
+        body,
+        this.getOptions(params)
+      );
     }
+    return of([]);
   }
 
   updateFavorites(id: number) {
-    this.updateList(this.favoriteMovies, id);
+    return this.updateList("favorite", id);
   }
 
   getFavoritesMovies() {
-    return this.favoriteMovies;
+    const sessionId = this.authenticationService.getSessionId();
+    if (sessionId) {
+      const params: Record<string, string> = { session_id: sessionId };
+      return this.httpClient.get<MovieListResponse>(
+        `${environment.apiBaseUrl}/account/${environment.accountId}/favorite/movies`,
+        this.getOptions(params)).pipe(map((response) => response.results));
+    }
+    return of([]);
   }
 
   updateWatchLater(id: number) {
-    this.updateList(this.watchLaterMovies, id);
+    return this.updateList("watchlist", id);
   }
 
   getWatchLaterMovies() {
-    return this.watchLaterMovies;
+    const sessionId = this.authenticationService.getSessionId();
+    if (sessionId) {
+      const params: Record<string, string> = { session_id: sessionId };
+      return this.httpClient.get<MovieListResponse>(
+        `${environment.apiBaseUrl}/account/${environment.accountId}/watchlist/movies`,
+        this.getOptions(params)).pipe(map((response) => response.results));
+    }
+    return of([]);
   }
 
-  getMovieById(id: number) {
-    return [...new Set([
-      ...nowPlayingMovies,
-      ...popularMovies,
-      ...topRatedMovies,
-      ...upcomingMovies])]
-      .find((movie) => movie.id === id);
-  }
-
-  isMovieInFavorites(id: number) {
-    return this.favoriteMovies.some(movie => movie.id === id);
-  }
-
-  isMovieInWatchLater(id: number) {
-    return this.watchLaterMovies.some(movie => movie.id === id);
+  getMovieById(id: number): Observable<MovieDetails> {
+    return this.httpClient.get<MovieDetails>(`${environment.apiBaseUrl}/movie/${id}`,
+      this.getOptions());
   }
 }

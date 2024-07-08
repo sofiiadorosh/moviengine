@@ -5,7 +5,6 @@ import {MovieDetails} from "@models/movie-details.interface";
 import {MovieService} from "@services/movie/movie.service";
 import {SvgIconComponent} from "angular-svg-icon";
 import {Subscription} from "rxjs";
-import {AuthenticationService} from "@services/authentication/authentication.service";
 
 @Component({
   selector: "app-movie-details-page",
@@ -26,8 +25,7 @@ export class MovieDetailsPageComponent implements OnInit, OnDestroy {
   private movieSubscription: Subscription = new Subscription();
 
   constructor(private route: ActivatedRoute,
-              private movieService: MovieService,
-              private authenticationService: AuthenticationService,) {}
+    private movieService: MovieService,) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -54,22 +52,18 @@ export class MovieDetailsPageComponent implements OnInit, OnDestroy {
     id: number,
     listType: "favorite" | "watchlist"
   ) {
-    const sessionId = this.authenticationService.getSessionId();
-    if (sessionId) {
-      const params = { session_id: sessionId };
-      const method =
-        listType === "favorite"
-          ? this.movieService.updateFavorites(id, params)
-          : this.movieService.updateWatchLater(id, params);
+    const method =
+      listType === "favorite"
+        ? this.movieService.updateFavorites(id)
+        : this.movieService.updateWatchLater(id);
 
-      method.subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          console.error(`Error adding movie to ${listType}:`, error);
-        },
-      });
-    }
+    method.subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        console.error(`Error adding movie to ${listType}:`, error);
+      },
+    });
   }
 
   onAddToFavorites(id: number) {

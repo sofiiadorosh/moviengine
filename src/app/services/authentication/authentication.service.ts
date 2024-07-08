@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {CreateSessionIdResponse, RequestTokenResponse} from "@models/response.interface";
+import {Injectable} from "@angular/core";
 import {environment} from "@environments/environment";
+import {CreateSessionIdResponse, RequestTokenResponse} from "@models/response.interface";
 import {Observable} from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthenticationService {
   private token: string | null = null;

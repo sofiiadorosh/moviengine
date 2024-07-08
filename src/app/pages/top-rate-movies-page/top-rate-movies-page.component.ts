@@ -20,8 +20,8 @@ export class TopRateMoviesPageComponent implements OnInit, OnDestroy {
   constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.moviesSubscription = this.movieService.getTopRateMovies().subscribe((response) =>
-      this.movies = response.results);
+    this.moviesSubscription = this.movieService.getTopRateMovies().subscribe((results) =>
+      this.movies = results);
   }
 
   ngOnDestroy() {

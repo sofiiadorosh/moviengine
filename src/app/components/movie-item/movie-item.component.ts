@@ -7,7 +7,6 @@ import {RoutePaths} from "@models/route-paths.enum";
 import {TruncateDescriptionPipe} from "@pipes/truncate-description/truncate-description.pipe";
 import {MovieService} from "@services/movie/movie.service";
 import {SvgIconComponent} from "angular-svg-icon";
-import {AuthenticationService} from "@services/authentication/authentication.service";
 
 @Component({
   selector: "app-movie-item",
@@ -26,8 +25,7 @@ export class MovieItemComponent implements OnInit {
   movieId!: string;
 
   constructor(private router: Router,
-              private movieService: MovieService,
-              private authenticationService: AuthenticationService) {}
+    private movieService: MovieService,) {}
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
@@ -42,22 +40,18 @@ export class MovieItemComponent implements OnInit {
     listType: "favorite" | "watchlist"
   ) {
     e.stopPropagation();
-    const sessionId = this.authenticationService.getSessionId();
-    if (sessionId) {
-      const params = { session_id: sessionId };
-      const method =
-        listType === "favorite"
-          ? this.movieService.updateFavorites(id, params)
-          : this.movieService.updateWatchLater(id, params);
+    const method =
+      listType === "favorite"
+        ? this.movieService.updateFavorites(id)
+        : this.movieService.updateWatchLater(id);
 
-      method.subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          console.error(`Error adding movie to ${listType}:`, error);
-        },
-      });
-    }
+    method.subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        console.error(`Error adding movie to ${listType}:`, error);
+      },
+    });
   }
 
   onAddToFavorites(id: number, e: Event) {

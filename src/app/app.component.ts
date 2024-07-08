@@ -31,18 +31,18 @@ export class AppComponent implements OnInit {
         this.askForPermission(token);
       },
       error: (error) => {
-        console.error('Error requesting token:', error);
+        console.error("Error requesting token:", error);
       }
     });
   }
 
   askForPermission(token: string) {
     this.authenticationService.askForPermission(token).subscribe({
-      next: (response) => {
+      next: () => {
         this.createSessionId(token);
       },
       error: (error) => {
-        console.error('Error asking for permission:', error);
+        console.error("Error asking for permission:", error);
       }
     });
   }
@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
         this.authenticationService.setSessionId(sessionId);
       },
       error: (error) => {
-        console.error('Error creating session ID:', error);
+        console.error("Error creating session ID:", error);
       }
     });
   }

@@ -4,7 +4,6 @@ import {Movie} from "@models/movie.interface";
 import {MovieService} from "@services/movie/movie.service";
 import {Subscription} from "rxjs";
 
-
 @Component({
   selector: "app-popular-movies-page",
   standalone: true,
@@ -21,8 +20,8 @@ export class PopularMoviesPageComponent implements OnInit, OnDestroy {
   constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.moviesSubscription = this.movieService.getPopularMovies().subscribe((response) =>
-      this.movies = response.results);
+    this.moviesSubscription = this.movieService.getPopularMovies().subscribe((results) =>
+      this.movies = results);
   }
 
   ngOnDestroy() {

@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy,OnInit} from "@angular/core";
 import {MoviesListComponent} from "@components/movies-list/movies-list.component";
 import {Movie} from "@models/movie.interface";
+import {AuthenticationService} from "@services/authentication/authentication.service";
 import {MovieService} from "@services/movie/movie.service";
 import {Subscription} from "rxjs";
-import {AuthenticationService} from "@services/authentication/authentication.service";
 
 @Component({
   selector: "app-watch-later-page",
@@ -14,20 +14,16 @@ import {AuthenticationService} from "@services/authentication/authentication.ser
   templateUrl: "./watch-later-page.component.html",
   styleUrl: "./watch-later-page.component.scss"
 })
-export class WatchLaterPageComponent implements OnInit {
+export class WatchLaterPageComponent implements OnInit, OnDestroy {
   movies: Movie[] = [];
   private moviesSubscription: Subscription = new Subscription();
 
   constructor(private movieService: MovieService,
-              private authenticationService: AuthenticationService,) {}
+    private authenticationService: AuthenticationService,) {}
 
   ngOnInit() {
-    const sessionId = this.authenticationService.getSessionId();
-    if (sessionId) {
-      const params = { session_id: sessionId };
-      this.moviesSubscription = this.movieService.getWatchLaterMovies(params).subscribe(response =>
-        this.movies = response.results);
-    }
+    this.moviesSubscription = this.movieService.getWatchLaterMovies().subscribe(results =>
+      this.movies = results);
   }
 
   ngOnDestroy() {

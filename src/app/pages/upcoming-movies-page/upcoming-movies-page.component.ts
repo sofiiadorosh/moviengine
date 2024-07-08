@@ -20,8 +20,8 @@ export class UpcomingMoviesPageComponent implements OnInit, OnDestroy {
   constructor(private movieService: MovieService) {}
 
   ngOnInit() {
-    this.moviesSubscription = this.movieService.getUpcomingMovies().subscribe((response) =>
-      this.movies = response.results);
+    this.moviesSubscription = this.movieService.getUpcomingMovies().subscribe((results) =>
+      this.movies = results);
   }
 
   ngOnDestroy() {

@@ -1,8 +1,8 @@
-import {Component, OnInit} from "@angular/core";
-import {RouterOutlet} from "@angular/router";
-import {HeaderComponent} from "@components/header/header.component";
-import {SidebarComponent} from "@components/sidebar/sidebar.component";
-import {AuthenticationService} from "@services/authentication/authentication.service";
+import { Component, OnInit } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
+import { HeaderComponent } from "@components/header/header.component";
+import { SidebarComponent } from "@components/sidebar/sidebar.component";
+import { AuthenticationService } from "@services/authentication/authentication.service";
 
 @Component({
   selector: "app-root",

@@ -1,10 +1,10 @@
-import {CommonModule} from "@angular/common";
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {MovieDetails} from "@models/movie-details.interface";
-import {MovieService} from "@services/movie/movie.service";
-import {SvgIconComponent} from "angular-svg-icon";
-import {Subscription} from "rxjs";
+import { CommonModule } from "@angular/common";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { MovieDetails } from "@models/movie-details.interface";
+import { MovieService } from "@services/movie/movie.service";
+import { SvgIconComponent } from "angular-svg-icon";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-movie-details-page",

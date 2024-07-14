@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {MoviesListComponent} from "@components/movies-list/movies-list.component";
-import {Movie} from "@models/movie.interface";
-import {MovieService} from "@services/movie/movie.service";
-import {Subscription} from "rxjs";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { MoviesListComponent } from "@components/movies-list/movies-list.component";
+import { Movie } from "@models/movie.interface";
+import { MovieService } from "@services/movie/movie.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-top-rate-movies-page",

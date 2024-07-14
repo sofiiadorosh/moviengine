@@ -1,11 +1,11 @@
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {environment} from "@environments/environment";
-import {Movie} from "@models/movie.interface";
-import {MovieDetails} from "@models/movie-details.interface";
-import {MovieListResponse} from "@models/response.interface";
-import {AuthenticationService} from "@services/authentication/authentication.service";
-import {map, Observable, of} from "rxjs";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { environment } from "@environments/environment";
+import { Movie } from "@models/movie.interface";
+import { MovieDetails } from "@models/movie-details.interface";
+import { MovieListResponse } from "@models/response.interface";
+import { AuthenticationService } from "@services/authentication/authentication.service";
+import { map, Observable, of } from "rxjs";
 
 @Injectable({
   providedIn: "root"

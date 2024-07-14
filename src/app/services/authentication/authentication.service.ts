@@ -1,8 +1,8 @@
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {environment} from "@environments/environment";
-import {CreateSessionIdResponse, RequestTokenResponse} from "@models/response.interface";
-import {Observable} from "rxjs";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { environment } from "@environments/environment";
+import { CreateSessionIdResponse, RequestTokenResponse } from "@models/response.interface";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"

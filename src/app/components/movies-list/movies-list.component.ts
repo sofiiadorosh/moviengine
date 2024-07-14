@@ -1,7 +1,7 @@
-import {CommonModule} from "@angular/common";
-import {Component, Input} from "@angular/core";
-import {MovieItemComponent} from "@components/movie-item/movie-item.component";
-import {Movie} from "@models/movie.interface";
+import { CommonModule } from "@angular/common";
+import { Component, Input } from "@angular/core";
+import { MovieItemComponent } from "@components/movie-item/movie-item.component";
+import { Movie } from "@models/movie.interface";
 
 @Component({
   selector: "app-movies-list",

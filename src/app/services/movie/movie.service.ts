@@ -4,8 +4,14 @@ import { environment } from "@environments/environment";
 import { Movie } from "@models/movie.interface";
 import { MovieDetails } from "@models/movie-details.interface";
 import { MovieListResponse } from "@models/response.interface";
+import { Store } from "@ngrx/store";
 import { AuthenticationService } from "@services/authentication/authentication.service";
-import { map, Observable, of } from "rxjs";
+import { AppState } from "@store/index";
+import {
+  selectFavoriteMoviesIds,
+  selectWatchLaterMoviesIds
+} from "@store/movies/selectors";
+import { map, Observable, of, take } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -13,7 +19,8 @@ import { map, Observable, of } from "rxjs";
 export class MovieService {
 
   constructor(private httpClient: HttpClient,
-    private authenticationService: AuthenticationService) {}
+    private authenticationService: AuthenticationService,
+    private store: Store<AppState>) {}
 
   private getOptions(params: Record<string, string> = {}): { params: HttpParams } {
     const accessParams = { api_key: environment.apiKey };
@@ -35,7 +42,7 @@ export class MovieService {
     return this.getMovies("/movie/popular");
   }
 
-  getTopRateMovies(): Observable<Movie[]> {
+  getTopRatedMovies(): Observable<Movie[]> {
     return this.getMovies("/movie/top_rated");
   }
 
@@ -43,26 +50,30 @@ export class MovieService {
     return this.getMovies("/movie/upcoming");
   }
 
-  updateList(listType: string, id: number) {
-    const body = {
-      media_type: "movie",
-      media_id: id,
-      [listType]: true,
-    };
-    const sessionId = this.authenticationService.getSessionId();
-    if (sessionId) {
-      const params: Record<string, string> = { session_id: sessionId };
-      return this.httpClient.post(
-        `${environment.apiBaseUrl}/account/${environment.accountId}/${listType}`,
-        body,
-        this.getOptions(params)
-      );
-    }
-    return of([]);
-  }
+  updateList(listType: "favorite" | "watchlist", id: number) {
+    const selector = listType === "favorite" ? selectFavoriteMoviesIds : selectWatchLaterMoviesIds;
 
-  updateFavorites(id: number) {
-    return this.updateList("favorite", id);
+    return this.store.select(selector).pipe(
+      take(1),
+      map(ids => {
+        const movieInList = ids.includes(id);
+        const body = {
+          media_type: "movie",
+          media_id: id,
+          [listType]: !movieInList,
+        };
+        const sessionId = this.authenticationService.getSessionId();
+        if (sessionId) {
+          const params: Record<string, string> = { session_id: sessionId };
+          return this.httpClient.post(
+            `${environment.apiBaseUrl}/account/${environment.accountId}/${listType}`,
+            body,
+            this.getOptions(params)
+          );
+        }
+        return of([]);
+      })
+    );
   }
 
   getFavoritesMovies() {
@@ -74,10 +85,6 @@ export class MovieService {
         this.getOptions(params)).pipe(map((response) => response.results));
     }
     return of([]);
-  }
-
-  updateWatchLater(id: number) {
-    return this.updateList("watchlist", id);
   }
 
   getWatchLaterMovies() {

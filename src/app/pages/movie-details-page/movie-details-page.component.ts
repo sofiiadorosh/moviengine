@@ -1,69 +1,74 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MovieDetails } from "@models/movie-details.interface";
-import { MovieService } from "@services/movie/movie.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "@store/index";
+import {
+  favoriteMoviesActions,
+  movieDetailsActions,
+  watchLaterActions,
+} from "@store/movies/actions";
+import {
+  selectIsLoading,
+  selectIsMovieInWatchLater,
+  selectIsMovieLiked,
+  selectMovieDetails,
+} from "@store/movies/selectors";
 import { SvgIconComponent } from "angular-svg-icon";
-import { Subscription } from "rxjs";
+import { Observable, of } from "rxjs";
 
 @Component({
   selector: "app-movie-details-page",
   standalone: true,
-  imports: [
-    SvgIconComponent,
-    CommonModule,
-  ],
+  imports: [SvgIconComponent, CommonModule],
   templateUrl: "./movie-details-page.component.html",
-  styleUrl: "./movie-details-page.component.scss"
+  styleUrls: ["./movie-details-page.component.scss"],
 })
-export class MovieDetailsPageComponent implements OnInit, OnDestroy {
-  movie: MovieDetails | undefined;
+export class MovieDetailsPageComponent implements OnInit {
+  movie$: Observable<MovieDetails | null>;
+  isLoading$: Observable<boolean> = of(false);
+  liked$: Observable<boolean> = of(false);
+  watchedLater$: Observable<boolean> = of(false);
   baseImageUrl = "https://image.tmdb.org/t/p/original";
   imageUrl!: string;
   backdropUrl!: string;
-  rating: number[] | undefined;
-  private movieSubscription: Subscription = new Subscription();
+  rating: number[] = [];
 
-  constructor(private route: ActivatedRoute,
-    private movieService: MovieService,) {}
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+    this.movie$ = this.store.select(selectMovieDetails);
+    this.isLoading$ = this.store.select(selectIsLoading);
+  }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const movieId = Number(params.get("id"));
-      this.movieSubscription = this.movieService.getMovieById(movieId).subscribe((movie) => {
-        this.movie = movie;
-        this.imageUrl = `${this.baseImageUrl}/${this.movie?.poster_path}`;
-        this.backdropUrl = `${this.baseImageUrl}/${this.movie?.backdrop_path}`;
-        this.rating = this.generateRatingArray();
+      this.store.dispatch(movieDetailsActions.load({ movieId }));
+
+      this.liked$ = this.store.select(selectIsMovieLiked(movieId));
+      this.watchedLater$ = this.store.select(selectIsMovieInWatchLater(movieId));
+
+      this.movie$.subscribe((movie) => {
+        if (movie) {
+          this.imageUrl = `${this.baseImageUrl}${movie.poster_path}`;
+          this.backdropUrl = `${this.baseImageUrl}${movie.backdrop_path}`;
+          this.rating = this.generateRatingArray(movie.vote_average);
+        }
       });
     });
   }
 
-  generateRatingArray(): number[] | undefined {
-    if (this.movie) {
-      const rate = Math.round(this.movie?.vote_average / 2);
-      return Array.from({ length: 5 }, (_, i) => i + 1)
-        .map((number) => (number <= rate ? 1 : 0));
-    }
-    return undefined;
+  generateRatingArray(voteAverage: number): number[] {
+    const rate = Math.round(voteAverage / 2);
+    return Array.from({ length: 5 }, (_, i) => (i < rate ? 1 : 0));
   }
 
-  private onUpdateList(
-    id: number,
-    listType: "favorite" | "watchlist"
-  ) {
-    const method =
-      listType === "favorite"
-        ? this.movieService.updateFavorites(id)
-        : this.movieService.updateWatchLater(id);
-
-    method.subscribe({
-      next: () => {
-      },
-      error: (error) => {
-        console.error(`Error adding movie to ${listType}:`, error);
-      },
-    });
+  private onUpdateList(id: number, listType: "favorite" | "watchlist") {
+    if (listType === "favorite") {
+      this.store.dispatch(favoriteMoviesActions.update({ movieId: id }));
+    } else {
+      this.store.dispatch(watchLaterActions.update({ movieId: id }));
+    }
   }
 
   onAddToFavorites(id: number) {
@@ -72,11 +77,5 @@ export class MovieDetailsPageComponent implements OnInit, OnDestroy {
 
   onAddToWatchLater(id: number) {
     this.onUpdateList(id, "watchlist");
-  }
-
-  ngOnDestroy() {
-    if (this.movieSubscription) {
-      this.movieSubscription.unsubscribe();
-    }
   }
 }

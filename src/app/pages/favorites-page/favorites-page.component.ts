@@ -1,34 +1,28 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
+import { Component } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
-import { AuthenticationService } from "@services/authentication/authentication.service";
-import { MovieService } from "@services/movie/movie.service";
-import { Subscription } from "rxjs";
+import { Store} from "@ngrx/store";
+import { AppState} from "@store/index";
+import { selectFavoriteMovies, selectIsLoading } from "@store/movies/selectors";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-favorites-page",
   standalone: true,
   imports: [
-    MoviesListComponent
+    MoviesListComponent,
+    AsyncPipe
   ],
   templateUrl: "./favorites-page.component.html",
   styleUrl: "./favorites-page.component.scss"
 })
-export class FavoritesPageComponent implements OnInit, OnDestroy {
-  movies: Movie[] = [];
-  private moviesSubscription: Subscription = new Subscription();
+export class FavoritesPageComponent {
+  movies$: Observable<Movie[]>;
+  isLoading$: Observable<boolean>;
 
-  constructor(private movieService: MovieService,
-    private authenticationService: AuthenticationService,) {}
-
-  ngOnInit() {
-    this.moviesSubscription = this.movieService.getFavoritesMovies().subscribe(results =>
-      this.movies = results);
-  }
-
-  ngOnDestroy() {
-    if (this.moviesSubscription) {
-      this.moviesSubscription.unsubscribe();
-    }
+  constructor(private store: Store<AppState>) {
+    this.movies$ = this.store.select(selectFavoriteMovies);
+    this.isLoading$ = this.store.select(selectIsLoading);
   }
 }

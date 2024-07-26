@@ -1,34 +1,34 @@
-import { Component, OnDestroy,OnInit } from "@angular/core";
+import {AsyncPipe} from "@angular/common";
+import { Component } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
-import { AuthenticationService } from "@services/authentication/authentication.service";
-import { MovieService } from "@services/movie/movie.service";
-import { Subscription } from "rxjs";
+import { Store } from "@ngrx/store";
+import { AppState } from "@store/index";
+import { watchLaterActions } from "@store/movies/actions";
+import { selectIsLoading, selectWatchLaterMovies } from "@store/movies/selectors";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-watch-later-page",
   standalone: true,
   imports: [
-    MoviesListComponent
+    MoviesListComponent,
+    AsyncPipe
   ],
   templateUrl: "./watch-later-page.component.html",
   styleUrl: "./watch-later-page.component.scss"
 })
-export class WatchLaterPageComponent implements OnInit, OnDestroy {
-  movies: Movie[] = [];
-  private moviesSubscription: Subscription = new Subscription();
+export class WatchLaterPageComponent {
+  movies$: Observable<Movie[]>;
+  isLoading$: Observable<boolean>;
 
-  constructor(private movieService: MovieService,
-    private authenticationService: AuthenticationService,) {}
-
-  ngOnInit() {
-    this.moviesSubscription = this.movieService.getWatchLaterMovies().subscribe(results =>
-      this.movies = results);
+  constructor(private store: Store<AppState>) {
+    this.movies$ = this.store.select(selectWatchLaterMovies);
+    this.isLoading$ = this.store.select(selectIsLoading);
+    this.loadMovies();
   }
 
-  ngOnDestroy() {
-    if (this.moviesSubscription) {
-      this.moviesSubscription.unsubscribe();
-    }
+  loadMovies() {
+    this.store.dispatch(watchLaterActions.load());
   }
 }

@@ -4,9 +4,15 @@ import { Router, RouterLink } from "@angular/router";
 import { genreIds } from "@constants/genre-ids";
 import { Movie } from "@models/movie.interface";
 import { RoutePaths } from "@models/route-paths.enum";
+import { Store } from "@ngrx/store";
 import { TruncateDescriptionPipe } from "@pipes/truncate-description/truncate-description.pipe";
-import { MovieService } from "@services/movie/movie.service";
+import { AppState } from "@store/index";
+import { favoriteMoviesActions, watchLaterActions } from "@store/movies/actions";
+import {
+  selectIsMovieInWatchLater, selectIsMovieLiked,
+} from "@store/movies/selectors";
 import { SvgIconComponent } from "angular-svg-icon";
+import { Observable, of } from "rxjs";
 
 @Component({
   selector: "app-movie-item",
@@ -23,35 +29,28 @@ export class MovieItemComponent implements OnInit {
   genres!: string[];
   rating!: number[];
   movieId!: string;
+  liked$: Observable<boolean> = of(false);
+  watchedLater$: Observable<boolean> = of(false);
 
   constructor(private router: Router,
-    private movieService: MovieService,) {}
+    private store: Store<AppState>,) {}
 
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
     this.genres = this.transformGenreIds(genreIds);
     this.rating = this.generateRatingArray();
     this.movieId = this.replaceId(this.item.id);
+    this.liked$ = this.store.select(selectIsMovieLiked(this.item.id));
+    this.watchedLater$ = this.store.select(selectIsMovieInWatchLater(this.item.id));
   }
 
-  private onUpdateList(
-    id: number,
-    e: Event,
-    listType: "favorite" | "watchlist"
-  ) {
+  private onUpdateList(id: number, e: Event, listType: "favorite" | "watchlist") {
     e.stopPropagation();
-    const method =
-      listType === "favorite"
-        ? this.movieService.updateFavorites(id)
-        : this.movieService.updateWatchLater(id);
-
-    method.subscribe({
-      next: () => {
-      },
-      error: (error) => {
-        console.error(`Error adding movie to ${listType}:`, error);
-      },
-    });
+    if (listType === "favorite") {
+      this.store.dispatch(favoriteMoviesActions.update({ movieId: id }));
+    } else {
+      this.store.dispatch(watchLaterActions.update({ movieId: id }));
+    }
   }
 
   onAddToFavorites(id: number, e: Event) {

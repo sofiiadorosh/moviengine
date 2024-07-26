@@ -1,43 +1,53 @@
-@if (movie) {
-  <section class="movie" [ngStyle]="{'background-image': 'url(' + backdropUrl + ')'}">
-    <div class="movie__overlay"></div>
-    <div class="movie__content">
-      <div class="movie__information">
-        <h1 class="movie__title">{{ movie.title }}</h1>
-        <ul class="movie__controls-list">
-          <li>
-            <button type="button"
-                    title="Add to Favorites"
-                    class="movie__controls-button"
-                    (click)="onAddToFavorites(movie.id)">
-              <svg-icon src="assets/svg/heart.svg"></svg-icon>
-            </button>
-          </li>
-          <li>
-            <button type="button"
-                    title="Add to Watch Later"
-                    class="movie__controls-button"
-                    (click)="onAddToWatchLater(movie.id)">
-              <svg-icon src="assets/svg/add.svg"></svg-icon>
-            </button>
-          </li>
+@if (movie$ | async; as movie) {
+  @if ((isLoading$ | async) === false) {
+    <section class="movie" [ngStyle]="{'background-image': 'url(' + backdropUrl + ')'}">
+      <div class="movie__overlay"></div>
+      <div class="movie__content">
+        <div class="movie__information">
+          <h1 class="movie__title">{{ movie.title }}</h1>
+          <ul class="movie__controls-list">
+            <li>
+              <button type="button"
+                      title="Add to Favorites"
+                      [ngClass]="{ 'movie__controls-button_active': liked$ | async }"
+                      class="movie__controls-button"
+                      (click)="onAddToFavorites(movie.id)">
+                <svg-icon src="assets/svg/heart.svg"></svg-icon>
+              </button>
+            </li>
+            <li>
+              <button type="button"
+                      title="Add to Watch Later"
+                      [ngClass]="{ 'movie__controls-button_active': watchedLater$ | async }"
+                      class="movie__controls-button"
+                      (click)="onAddToWatchLater(movie.id)">
+                <svg-icon src="assets/svg/add.svg"></svg-icon>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <img [src]="imageUrl" [alt]="movie.title" class="movie__picture">
+        <ul class="movie__rating">
+          @for (item of rating; track $index) {
+            <li class="movie__star"
+                [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
+              <svg-icon src="assets/svg/star.svg"></svg-icon>
+            </li>
+          }
         </ul>
+        <ul class="movie__genres">
+          @for (item of movie.genres; track $index) {
+            <li>{{ item.name }}</li>
+          }
+        </ul>
+        <p class="movie__overview">{{ movie.overview }}</p>
       </div>
-      <img [src]="imageUrl" [alt]="movie.title" class="movie__picture">
-      <ul class="movie__rating">
-        @for (item of rating; track $index) {
-          <li class="movie__star"
-              [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
-            <svg-icon src="assets/svg/star.svg"></svg-icon>
-          </li>
-        }
-      </ul>
-      <ul class="movie__genres">
-        @for (item of movie.genres; track $index) {
-          <li>{{ item.name }}</li>
-        }
-      </ul>
-      <p class="movie__overview">{{ movie.overview }}</p>
-    </div>
-  </section>
+    </section>
+  }
+} @else {
+  <div>Sorry, but we did not find a movie :(</div>
+}
+
+@if (isLoading$ | async) {
+  <div>Loading...</div>
 }

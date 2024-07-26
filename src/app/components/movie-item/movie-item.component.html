@@ -14,6 +14,7 @@
             <li>
               <button type="button"
                       title="Add to Favorites"
+                      [ngClass]="{ 'movie__controls-button_active': liked$ | async }"
                       class="movie__controls-button"
                       (click)="onAddToFavorites(item.id, $event)">
                 <svg-icon src="assets/svg/heart.svg"></svg-icon>
@@ -22,6 +23,7 @@
             <li>
               <button type="button"
                       title="Add to Watch Later"
+                      [ngClass]="{ 'movie__controls-button_active': watchedLater$ | async }"
                       class="movie__controls-button"
                       (click)="onAddToWatchLater(item.id, $event)">
                 <svg-icon src="assets/svg/add.svg"></svg-icon>

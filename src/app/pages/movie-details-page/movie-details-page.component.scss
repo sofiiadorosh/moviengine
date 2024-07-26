@@ -80,6 +80,20 @@
         }
       }
     }
+
+    &_active {
+      &[title="Add to Favorites"] {
+        svg {
+          fill: $red;
+        }
+      }
+
+      &[title="Add to Watch Later"] {
+        svg {
+          fill: $green;
+        }
+      }
+    }
   }
 
   &__picture {

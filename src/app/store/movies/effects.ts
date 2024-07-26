@@ -10,7 +10,7 @@ import {
   watchLaterActions,
 } from "@store/movies/actions";
 import { of, switchMap } from "rxjs";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 
 @Injectable()
 export class MoviesEffects {
@@ -22,7 +22,7 @@ export class MoviesEffects {
   loadNowPlayingMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(nowPlayingMoviesActions.load),
-      mergeMap(() => {
+      switchMap(() => {
         return this.movieService.getNowPlayingMovies().pipe(
           map(movies => nowPlayingMoviesActions.loadSuccess({ movies })),
           catchError(error => of(nowPlayingMoviesActions.loadFailure({ error: error.message })))
@@ -34,7 +34,7 @@ export class MoviesEffects {
   loadPopularMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(popularMoviesActions.load),
-      mergeMap(() => {
+      switchMap(() => {
         return this.movieService.getPopularMovies().pipe(
           map(movies => popularMoviesActions.loadSuccess({ movies })),
           catchError(error => of(popularMoviesActions.loadFailure({ error: error.message })))
@@ -46,7 +46,7 @@ export class MoviesEffects {
   loadTopRatedMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(topRatedMoviesActions.load),
-      mergeMap(() => {
+      switchMap(() => {
         return this.movieService.getTopRatedMovies().pipe(
           map(movies => topRatedMoviesActions.loadSuccess({ movies })),
           catchError(error => of(topRatedMoviesActions.loadFailure({ error: error.message })))
@@ -58,7 +58,7 @@ export class MoviesEffects {
   loadUpcomingMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(upcomingMoviesActions.load),
-      mergeMap(() => {
+      switchMap(() => {
         return this.movieService.getUpcomingMovies().pipe(
           map(movies => upcomingMoviesActions.loadSuccess({ movies })),
           catchError(error => of(upcomingMoviesActions.loadFailure({ error: error.message })))
@@ -70,7 +70,7 @@ export class MoviesEffects {
   loadFavoriteMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(favoriteMoviesActions.load),
-      mergeMap(() => {
+      switchMap(() => {
         return this.movieService.getFavoritesMovies().pipe(
           map(movies => {
             const movieIds = movies.map(movie => movie.id);
@@ -80,7 +80,7 @@ export class MoviesEffects {
               favoriteMoviesActions.setFavoriteMovieIds({ movieIds }),
             ];
           }),
-          mergeMap(actions => actions),
+          switchMap(actions => actions),
           catchError(error => of(favoriteMoviesActions.loadFailure({ error: error.message })))
         );
       })
@@ -92,7 +92,7 @@ export class MoviesEffects {
   loadWatchLaterMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(watchLaterActions.load),
-      mergeMap(() => {
+      switchMap(() => {
         return this.movieService.getWatchLaterMovies().pipe(
           map(movies => {
             const movieIds = movies.map(movie => movie.id);
@@ -102,7 +102,7 @@ export class MoviesEffects {
               watchLaterActions.setWatchLaterMovieIds({ movieIds }),
             ];
           }),
-          mergeMap(actions => actions),
+          switchMap(actions => actions),
           catchError(error => of(watchLaterActions.loadFailure({ error: error.message })))
         );
       })

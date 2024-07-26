@@ -5,7 +5,7 @@ import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
 import { AppState } from "@store/index";
 import { topRatedMoviesActions } from "@store/movies/actions";
-import {selectIsLoading, selectTopRatedMovies } from "@store/movies/selectors";
+import { selectIsLoading, selectTopRatedMovies } from "@store/movies/selectors";
 import { Observable } from "rxjs";
 
 @Component({

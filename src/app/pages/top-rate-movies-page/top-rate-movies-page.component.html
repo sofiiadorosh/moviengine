@@ -3,6 +3,6 @@
     <app-movies-list [movies]="movies"></app-movies-list>
   }
   @if ((isLoading$ | async)) {
-    <div>Loading...</div>
+    <app-loader></app-loader>
   }
 </section>

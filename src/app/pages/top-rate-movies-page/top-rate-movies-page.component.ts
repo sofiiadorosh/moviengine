@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
+import { LoaderComponent } from "@shared/loader/loader.component";
 import { AppState } from "@store/index";
 import { topRatedMoviesActions } from "@store/movies/actions";
 import { selectIsLoading, selectTopRatedMovies } from "@store/movies/selectors";
@@ -13,7 +14,8 @@ import { Observable } from "rxjs";
   standalone: true,
   imports: [
     MoviesListComponent,
-    AsyncPipe
+    AsyncPipe,
+    LoaderComponent
   ],
   templateUrl: "./top-rate-movies-page.component.html",
   styleUrls: ["./top-rate-movies-page.component.scss"]

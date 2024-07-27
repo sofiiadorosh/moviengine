@@ -3,6 +3,7 @@ import { Component, OnInit} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MovieDetails } from "@models/movie-details.interface";
 import { Store } from "@ngrx/store";
+import { LoaderComponent } from "@shared/loader/loader.component";
 import { AppState } from "@store/index";
 import {
   favoriteMoviesActions,
@@ -21,7 +22,7 @@ import { Observable, of } from "rxjs";
 @Component({
   selector: "app-movie-details-page",
   standalone: true,
-  imports: [SvgIconComponent, CommonModule],
+  imports: [SvgIconComponent, CommonModule, LoaderComponent],
   templateUrl: "./movie-details-page.component.html",
   styleUrls: ["./movie-details-page.component.scss"],
 })

@@ -1,9 +1,9 @@
-import {AsyncPipe} from "@angular/common";
-import { Component } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
-import { AppState} from "@store/index";
+import { AppState } from "@store/index";
 import { nowPlayingMoviesActions } from "@store/movies/actions";
 import { selectIsLoading, selectNowPlayingMovies } from "@store/movies/selectors";
 import { Observable } from "rxjs";
@@ -16,15 +16,18 @@ import { Observable } from "rxjs";
     AsyncPipe
   ],
   templateUrl: "./now-playing-movies-page.component.html",
-  styleUrl: "./now-playing-movies-page.component.scss"
+  styleUrls: ["./now-playing-movies-page.component.scss"]
 })
-export class NowPlayingMoviesPageComponent {
+export class NowPlayingMoviesPageComponent implements OnInit {
   movies$: Observable<Movie[]>;
   isLoading$: Observable<boolean>;
 
   constructor(private store: Store<AppState>) {
     this.movies$ = this.store.select(selectNowPlayingMovies);
     this.isLoading$ = this.store.select(selectIsLoading);
+  }
+
+  ngOnInit() {
     this.loadMovies();
   }
 

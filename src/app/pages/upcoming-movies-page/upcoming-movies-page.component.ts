@@ -1,5 +1,5 @@
-import { AsyncPipe} from "@angular/common";
-import { Component } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
@@ -16,15 +16,18 @@ import { Observable } from "rxjs";
     AsyncPipe
   ],
   templateUrl: "./upcoming-movies-page.component.html",
-  styleUrl: "./upcoming-movies-page.component.scss"
+  styleUrls: ["./upcoming-movies-page.component.scss"]
 })
-export class UpcomingMoviesPageComponent {
+export class UpcomingMoviesPageComponent implements OnInit {
   movies$: Observable<Movie[]>;
   isLoading$: Observable<boolean>;
 
   constructor(private store: Store<AppState>) {
     this.movies$ = this.store.select(selectUpcomingMovies);
     this.isLoading$ = this.store.select(selectIsLoading);
+  }
+
+  ngOnInit() {
     this.loadMovies();
   }
 

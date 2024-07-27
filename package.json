@@ -5,9 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:production": "ng build --configuration=production --base-href=/moviengine",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "jest",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix"
   },
@@ -26,7 +25,7 @@
     "angular-svg-icon": "^17.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "^0.14.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.8",
@@ -39,19 +38,15 @@
     "@angular/compiler-cli": "^17.3.0",
     "@ngrx/eslint-plugin": "^17.2.0",
     "@ngrx/store-devtools": "^17.2.0",
-    "@types/jasmine": "~5.1.0",
+    "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "7.11.0",
     "angular-cli-ghpages": "^2.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-simple-import-sort": "^12.1.0",
-    "jasmine-core": "~5.1.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "jest": "^29.7.0",
+    "jest-preset-angular": "^14.2.0",
     "typescript": "~5.4.2"
   }
 }

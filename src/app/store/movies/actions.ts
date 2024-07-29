@@ -21,7 +21,7 @@ const createLoadActions = (type: string) => ({
 
 const createUpdateActions = (type: string) => ({
   update: createAction(movieActionTypes.UPDATE(type), props<{ movieId: number }>()),
-  updateSuccess: createAction(movieActionTypes.UPDATE_SUCCESS(type)),
+  updateSuccess: createAction(movieActionTypes.UPDATE_SUCCESS(type), props<{ movieId: number }>()),
   updateFailure: createAction(movieActionTypes.UPDATE_FAILURE(type), props<{ error: string }>())
 });
 

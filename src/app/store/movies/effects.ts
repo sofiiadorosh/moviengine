@@ -87,8 +87,6 @@ export class MoviesEffects {
     );
   });
 
-
-
   loadWatchLaterMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(watchLaterActions.load),
@@ -109,19 +107,12 @@ export class MoviesEffects {
     );
   });
 
-
   updateFavoriteMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(favoriteMoviesActions.update),
       switchMap(action =>
         this.movieService.updateList("favorite", action.movieId).pipe(
-          map(() => favoriteMoviesActions.updateSuccess()),
-          switchMap(() => // Fetch updated favorite movies
-            this.movieService.getFavoritesMovies().pipe(
-              map(movies => favoriteMoviesActions.loadSuccess({ movies })),
-              catchError(error => of(favoriteMoviesActions.loadFailure({ error: error.message })))
-            )
-          ),
+          map(() => favoriteMoviesActions.updateSuccess({ movieId: action.movieId })),
           catchError(error => of(favoriteMoviesActions.updateFailure({ error: error.message })))
         )
       )
@@ -133,13 +124,7 @@ export class MoviesEffects {
       ofType(watchLaterActions.update),
       switchMap(action =>
         this.movieService.updateList("watchlist", action.movieId).pipe(
-          map(() => watchLaterActions.updateSuccess()),
-          switchMap(() =>
-            this.movieService.getWatchLaterMovies().pipe(
-              map(movies => watchLaterActions.loadSuccess({ movies })),
-              catchError(error => of(watchLaterActions.loadFailure({ error: error.message })))
-            )
-          ),
+          map(() => watchLaterActions.updateSuccess({ movieId: action.movieId })),
           catchError(error => of(watchLaterActions.updateFailure({ error: error.message })))
         )
       )

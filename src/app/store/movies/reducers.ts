@@ -61,13 +61,19 @@ export const moviesReducer = createReducer(
     ...state, isLoading: false, error
   })),
 
-  on(favoriteMoviesActions.update, (state, { movieId }): MoviesState => {
+  on(favoriteMoviesActions.update, (state): MoviesState => ({
+    ...state, isLoading: true
+  })),
+  on(favoriteMoviesActions.updateSuccess, (state, { movieId }): MoviesState => {
     const isFavorite = state.favoriteIds.includes(movieId);
     const updatedFavorites = isFavorite
       ? state.favoriteIds.filter(id => id !== movieId)
       : [...state.favoriteIds, movieId];
-    return { ...state, favoriteIds: updatedFavorites };
+    return { ...state, isLoading: false, favoriteIds: updatedFavorites };
   }),
+  on(favoriteMoviesActions.updateFailure, (state, { error }): MoviesState => ({
+    ...state, isLoading: false, error
+  })),
 
   on(favoriteMoviesActions.setFavoriteMovieIds, (state, { movieIds }): MoviesState => ({
     ...state,
@@ -84,13 +90,19 @@ export const moviesReducer = createReducer(
     ...state, isLoading: false, error
   })),
 
-  on(watchLaterActions.update, (state, { movieId }): MoviesState => {
+  on(watchLaterActions.update, (state): MoviesState => ({
+    ...state, isLoading: true
+  })),
+  on(watchLaterActions.updateSuccess, (state, { movieId }): MoviesState => {
     const isInWatchLater = state.watchLaterIds.includes(movieId);
     const updatedWatchLater = isInWatchLater
       ? state.watchLaterIds.filter(id => id !== movieId)
       : [...state.watchLaterIds, movieId];
-    return { ...state, watchLaterIds: updatedWatchLater };
+    return { ...state, isLoading: false, watchLaterIds: updatedWatchLater };
   }),
+  on(watchLaterActions.updateFailure, (state, { error }): MoviesState => ({
+    ...state, isLoading: false, error
+  })),
 
   on(watchLaterActions.setWatchLaterMovieIds, (state, { movieIds }): MoviesState => ({
     ...state,

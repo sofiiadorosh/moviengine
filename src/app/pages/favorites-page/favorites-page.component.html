@@ -1,7 +1,10 @@
 <section class="favorites">
-  @if (movies.length) {
+  @if ((movies$ | async); as movies) {
     <app-movies-list [movies]="movies"></app-movies-list>
   } @else {
     <p>Sorry, you have not add any movies to Favorites 😔</p>
+  }
+  @if ((isLoading$ | async)) {
+    <app-loader></app-loader>
   }
 </section>

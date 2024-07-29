@@ -1,32 +1,39 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
-import { MovieService } from "@services/movie/movie.service";
-import { Subscription } from "rxjs";
+import { Store } from "@ngrx/store";
+import { LoaderComponent } from "@shared/loader/loader.component";
+import { AppState } from "@store/index";
+import { nowPlayingMoviesActions } from "@store/movies/actions";
+import { selectIsLoading, selectNowPlayingMovies } from "@store/movies/selectors";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-now-playing-movies-page",
   standalone: true,
   imports: [
-    MoviesListComponent
+    MoviesListComponent,
+    AsyncPipe,
+    LoaderComponent
   ],
   templateUrl: "./now-playing-movies-page.component.html",
-  styleUrl: "./now-playing-movies-page.component.scss"
+  styleUrls: ["./now-playing-movies-page.component.scss"]
 })
-export class NowPlayingMoviesPageComponent implements OnInit, OnDestroy {
-  movies: Movie[] = [];
-  private moviesSubscription: Subscription = new Subscription();
+export class NowPlayingMoviesPageComponent implements OnInit {
+  movies$: Observable<Movie[]>;
+  isLoading$: Observable<boolean>;
 
-  constructor(private movieService: MovieService) {}
-
-  ngOnInit() {
-    this.moviesSubscription = this.movieService.getNowPlayingMovies().subscribe((results) =>
-      this.movies = results);
+  constructor(private store: Store<AppState>) {
+    this.movies$ = this.store.select(selectNowPlayingMovies);
+    this.isLoading$ = this.store.select(selectIsLoading);
   }
 
-  ngOnDestroy() {
-    if (this.moviesSubscription) {
-      this.moviesSubscription.unsubscribe();
-    }
+  ngOnInit() {
+    this.loadMovies();
+  }
+
+  loadMovies() {
+    this.store.dispatch(nowPlayingMoviesActions.load());
   }
 }

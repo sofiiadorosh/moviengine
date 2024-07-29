@@ -1,3 +1,8 @@
 <section class="upcoming">
-  <app-movies-list [movies]="movies"></app-movies-list>
+  @if ((movies$ | async); as movies) {
+    <app-movies-list [movies]="movies"></app-movies-list>
+  }
+  @if ((isLoading$ | async)) {
+    <app-loader></app-loader>
+  }
 </section>

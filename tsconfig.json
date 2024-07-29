@@ -50,6 +50,9 @@
       ],
       "@environments/*": [
         "./src/app/environments/*"
+      ],
+      "@store/*": [
+        "./src/app/store/*"
       ]
     }
   },

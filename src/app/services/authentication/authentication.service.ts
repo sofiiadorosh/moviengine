@@ -19,10 +19,12 @@ export class AuthenticationService {
       this.getOptions());
   }
 
-  askForPermission(token: string): Observable<RequestTokenResponse> {
+  askForPermission(credentials: { username: string, password: string, token: string }):
+  Observable<RequestTokenResponse> {
+    const { username, password, token } = credentials;
     const body = {
-      username: "sofidorosh",
-      password: "Thesadness86",
+      username,
+      password,
       request_token: token,
     };
     return this.httpClient.post<RequestTokenResponse>(

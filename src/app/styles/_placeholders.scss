@@ -10,3 +10,19 @@
   outline: none;
   cursor: pointer;
 }
+
+%button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+}

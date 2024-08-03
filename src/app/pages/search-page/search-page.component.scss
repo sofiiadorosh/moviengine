@@ -1,0 +1,86 @@
+@import "../../styles/shared.scss";
+
+.search {
+  padding: 24px 96px;
+
+  &__form {
+    position: relative;
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  &__field {
+    position: relative;
+    width: 100%;
+  }
+
+  &__label {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    padding: 4px;
+    font-family: $secondary-font-stack;
+    font-size: 16px;
+    color: $primary-dark;
+    background: $secondary-light-white;
+    pointer-events: none;
+    transition: transform 250ms $timing-function;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: $primary-dark;
+    background: transparent;
+    border: 1px solid $primary-dark;
+    outline: none;
+    border-radius: 6px;
+    transition: border-color 250ms $timing-function;
+
+    &::placeholder {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: $primary-dark;
+    }
+
+    &:focus ~ .search__label,
+    &:not(:placeholder-shown) ~ .search__label {
+      transform: translateY(-46px) scale(0.8);
+    }
+
+    &:focus,
+    &:not(:placeholder-shown) {
+      border-color: $green;
+    }
+    &:not(:focus) {
+      border-color: $primary-dark;
+    }
+  }
+
+  &__button {
+    @extend %button;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+
+    svg {
+      width: 36px;
+      height: 36px;
+      fill: $primary-dark;
+    }
+  }
+}
+
+.filter {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 24px 136px;
+}

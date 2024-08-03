@@ -6,7 +6,14 @@
   &__list {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 36px;
+  }
+
+  &__item {
+    &:first-child {
+      margin-right: auto;
+    }
   }
 
   &__link {
@@ -19,13 +26,23 @@
     line-height: 1.2;
     cursor: pointer;
 
+    &:hover:not(.header__link_active) {
+      color: $green;
+
+      svg {
+        fill: $green;
+      }
+    }
+
     svg {
       width: 32px;
       height: 32px;
+      fill: $primary-dark;
     }
 
     &_active {
       color: $green;
+      cursor: default;
 
       svg {
         fill: $green;

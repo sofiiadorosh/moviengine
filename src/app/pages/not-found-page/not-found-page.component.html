@@ -1,1 +1,16 @@
-<h1>Oops, but page you're looking for does not exist. Return to Home Page.</h1>
+<section class="not-found">
+  <app-container>
+    <div class="not-found__content">
+      <h1 class="not-found__heading">
+        Oops, but page you're looking for does not exist.<br>Return to
+        <a [routerLink]="RoutePaths.DEFAULT"
+           role="button"
+           class="not-found__link">
+          <span>Home</span>
+        </a>
+        Page.
+      </h1>
+      <img src="./assets/jpg/robo.jpg" alt="404 not found">
+    </div>
+  </app-container>
+</section>

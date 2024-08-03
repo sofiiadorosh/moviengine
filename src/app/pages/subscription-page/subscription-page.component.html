@@ -1,0 +1,46 @@
+<section class="subscription">
+  <h1 class="subscription__heading">Subscribe to our newsletter</h1>
+  <p class="subscription__subheading">
+    Join our subscribers list to get the latest news, updates and special offers delivered directly in your inbox.
+  </p>
+  <form [formGroup]="subscriptionForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="subscription__form">
+    <div class="subscription__content">
+      <h2 class="subscription__description">Contact information</h2>
+      <div class="subscription__list">
+        @for (field of fields; track field.id) {
+          <div class="subscription__field">
+            <input
+              [id]="field.id"
+              [type]="field.type"
+              [formControlName]="field.formControlName"
+              [placeholder]="field.placeholder"
+              class="subscription__input"
+            >
+            <label [for]="field.for" class="subscription__label">{{ field.label }}</label>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="subscription__content">
+      <h2 class="subscription__description">Preferences</h2>
+      <div class="subscription__field">
+        <input id="genres" type="text" formControlName="genres" placeholder="Sci-fi, Thriller" class="subscription__input">
+        <label for="genres" class="subscription__label">Favorite genres</label>
+        <app-dropdown [options]="Object.values(genreIds)" [orientation]="'horizontal'"></app-dropdown>
+      </div>
+    </div>
+    <div class="subscription__content">
+      <h2 class="subscription__description">Confirmation</h2>
+      <div class="agreement__field">
+        <label for="agreement" class="agreement__label">
+          <input id="agreement" type="checkbox" formControlName="agreement" class="agreement__input">
+          <span class="agreement__checkbox">
+            <svg-icon src="assets/svg/check.svg" class="agreement__icon"></svg-icon>
+          </span>
+          <span>I agree with our terms and conditions and privacy policy.</span>
+        </label>
+      </div>
+    </div>
+    <button class="subscription__button">Subscribe</button>
+  </form>
+</section>

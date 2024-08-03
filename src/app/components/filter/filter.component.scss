@@ -1,0 +1,162 @@
+@import "../../styles/shared.scss";
+
+.filter {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 280px;
+  padding: 16px 32px;
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sorting {
+    &__heading {
+      padding: 12px 16px;
+      font-family: $secondary-font-stack;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.4;
+      color: $primary-dark;
+      background-color: $secondary-dark-white;
+      border: 1px solid $primary-grey;
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+
+  &__heading {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .category {
+    &__list {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    &__item {
+      width: auto;
+      padding: 4px 8px;
+      color: $green;
+      background: rgba(0, 166, 152, 0.3);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+  }
+
+  &__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    clip-path: inset(100%);
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+    &:checked + .filter__checkbox svg {
+      opacity: 1;
+    }
+  }
+
+  &__label {
+    display: flex;
+    gap: 10px;
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  &__checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: 1.5px solid $primary-grey;
+    border-radius: 4px;
+    cursor: pointer;
+
+    svg {
+      width: 36px;
+      height: 36px;
+      fill: $green;
+      opacity: 0;
+      transition: opacity 250ms $timing-function;
+    }
+  }
+
+  &__star-list {
+    display: flex;
+  }
+
+  &__star {
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: transparent;
+      stroke: $primary-grey;
+    }
+
+    &_filled {
+      svg {
+        fill: $yellow;
+        stroke: $yellow;
+      }
+    }
+  }
+
+  .rating {
+    &__list {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &__button {
+    @extend %button;
+    margin-left: auto;
+    width: 120px;
+    padding: 12px 16px;
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    color: $primary-dark;
+    background-color: $secondary-dark-white;
+    border: 1px solid $primary-grey;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,18 @@
+<section class="login">
+  <div class="login__content">
+    <svg-icon src="assets/svg/tmdb.svg" class="login__picture"></svg-icon>
+    <h1 class="login__heading">Authorization required</h1>
+    <h2 class="login__subheading">Please sign in to TMDB to continue and unlock all features ✨</h2>
+    <form [formGroup]="loginForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="login__form">
+      <div class="login__field">
+        <input id="username" type="text" formControlName="username" placeholder=" " class="login__input">
+        <label for="username" class="login__label">Username</label>
+      </div>
+      <div class="login__field">
+        <input id="password" type="password" formControlName="password" placeholder=" " class="login__input">
+        <label for="password" class="login__label">Password</label>
+      </div>
+      <button class="login__button">Sign in</button>
+    </form>
+  </div>
+</section>

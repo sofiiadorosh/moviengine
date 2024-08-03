@@ -1,6 +1,10 @@
-<aside class="sidebar">
-  <a class="sidebar__logo">
-    <svg-icon src="assets/svg/cinema.svg"></svg-icon>
+<aside class="sidebar sidebar_hidden"
+       (mouseenter)="onSidebarHover(true)"
+       (mouseleave)="onSidebarHover(false)"
+       [class.sidebar_hidden]="!isHovered">
+  <a [routerLink]="RoutePaths.DEFAULT"
+    class="sidebar__logo">
+    <svg-icon src="assets/svg/moviengine.svg"></svg-icon>
     <span>Moviengine</span>
   </a>
   <ul class="sidebar__list">
@@ -9,6 +13,7 @@
         <a [routerLink]="item.routePath"
            routerLinkActive="sidebar__link_active"
            class="sidebar__link">
+          <svg-icon [src]="'assets/svg/' + item.routeIcon + '.svg'"></svg-icon>
           <span>{{ item.routeName }}</span>
         </a>
       </li>

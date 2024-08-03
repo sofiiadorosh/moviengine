@@ -1,0 +1,54 @@
+<div class="filter">
+  <div class="filter__content">
+    <h2 class="filter__heading sorting__heading">Sort by:</h2>
+    <app-dropdown [options]="sortParameters"></app-dropdown>
+  </div>
+  <div class="filter__content">
+    <h2 class="filter__heading">Categories</h2>
+    <ul class="filter__list category__list">
+      @for(category of categories; track category) {
+        <li class="filter__item category__item">{{ category }}</li>
+      }
+    </ul>
+  </div>
+  <div class="filter__content">
+    <h2 class="filter__heading">Genres</h2>
+    <ul class="filter__list">
+      @for(genre of Object.values(genreIds); track genre) {
+        <li class="filter__item">
+          <label [for]="genre" class="filter__label">
+            <input [id]="genre" type="checkbox" name="genre" class="filter__input">
+            <span class="filter__checkbox">
+              <svg-icon src="assets/svg/check.svg"></svg-icon>
+            </span>
+            <span>{{ genre }}</span>
+          </label>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="filter__content">
+    <h2 class="filter__heading">Rating</h2>
+    <ul class="filter__list rating__list">
+      @for(array of arrays; track $index) {
+        <li class="filter__item">
+          <label [for]="$index" class="filter__label">
+            <input [id]="$index" type="checkbox" class="filter__input">
+            <span class="filter__checkbox">
+              <svg-icon src="assets/svg/check.svg"></svg-icon>
+            </span>
+            <span class="filter__star-list">
+              @for(item of array; track $index) {
+                <span class="filter__star"
+                    [ngClass]="{'filter__star_filled': item, 'filter__star_empty': !item}">
+                  <svg-icon src="assets/svg/star.svg"></svg-icon>
+                </span>
+              }
+            </span>
+          </label>
+        </li>
+      }
+    </ul>
+  </div>
+  <button type="button" class="filter__button">Reset filters</button>
+</div>

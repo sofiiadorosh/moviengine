@@ -1,0 +1,8 @@
+<div class="dropdown"
+     [ngClass]="{ 'dropdown_horizontal': orientation === 'horizontal' }">
+  <ul class="dropdown__list">
+    @for(option of options; track option) {
+      <li class="dropdown__item">{{ option }}</li>
+    }
+  </ul>
+</div>

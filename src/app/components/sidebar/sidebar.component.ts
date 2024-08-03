@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { sidebarLinks } from "@constants/sidebar-links";
+import { RoutePaths } from "@models/route-paths.enum";
 import { SvgIconComponent } from "angular-svg-icon";
 
 @Component({
@@ -16,5 +17,10 @@ import { SvgIconComponent } from "angular-svg-icon";
 })
 export class SidebarComponent {
   protected readonly sidebarLinks = sidebarLinks;
+  protected readonly RoutePaths = RoutePaths;
+  isHovered = false;
 
+  onSidebarHover(state: boolean) {
+    this.isHovered = state;
+  }
 }

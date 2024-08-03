@@ -29,7 +29,8 @@ export class AuthEffects {
       ofType(AuthActions.requestTokenSuccess),
       switchMap(action => {
         const token = action.response.request_token;
-        return this.authService.askForPermission(token).pipe(
+        return this.authService.askForPermission({ username: "sofidorosh",
+          password: "Thesadness86",token }).pipe(
           map(() => AuthActions.askForPermissionSuccess({ token })),
           catchError(error => of(AuthActions.askForPermissionFailure({ error })))
         );

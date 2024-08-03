@@ -1,23 +1,47 @@
 @import "../../styles/shared.scss";
 
-:host {
-  width: 20%;
-  flex-shrink: 0;
-}
-
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 360px;
   height: 100%;
-  padding: 24px 36px;
+  padding: 4px 4px 24px;
+  background: $secondary-light-white;
+  z-index: 2;
+  transition: width 500ms $timing-function;
+
+  &_hidden {
+    width: 76px;
+
+    .sidebar__logo {
+      span {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+
+    .sidebar__item {
+      span {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
 
   &__logo {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 24px;
+    padding: 16px 16px;
+    cursor: pointer;
 
     svg {
       width: 36px;
       height: 36px;
+      fill: $primary-dark;
+      transition: fill 250ms $timing-function;
     }
 
     span {
@@ -25,6 +49,18 @@
       font-size: 21px;
       font-weight: 500;
       line-height: 1.2;
+      opacity: 1;
+      transition: opacity 250ms $timing-function;
+    }
+
+    &:hover {
+      svg {
+        fill: $primary-dark-white;
+      }
+
+      color: $primary-dark-white;
+      background-color: $green;
+      border-radius: 4px;
     }
   }
 
@@ -32,20 +68,41 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    height: calc(100% - 76px);
+  }
+
+  &__item {
+    &:last-child {
+      margin-top: auto;
+    }
   }
 
   &__link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding: 16px 16px;
 
+    svg {
+      width: 32px;
+      height: 32px;
+      fill: $primary-dark;
+      transition: fill 250ms $timing-function;
+    }
 
     span {
       font-family: $secondary-font-stack;
       font-weight: 500;
       line-height: 1.2;
+      opacity: 1;
+      white-space: nowrap;
+      transition: opacity 250ms $timing-function;
     }
 
     &_active {
+      svg {
+        fill: $primary-dark-white;
+      }
       color: $primary-dark-white;
       background-color: $green;
       border-radius: 4px;
@@ -53,6 +110,10 @@
     }
 
     &:hover {
+      svg {
+        fill: $primary-dark-white;
+      }
+
       color: $primary-dark-white;
       background-color: $green;
       border-radius: 4px;

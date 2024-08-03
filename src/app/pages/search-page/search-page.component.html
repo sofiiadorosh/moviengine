@@ -1,0 +1,22 @@
+<section class="search">
+  <app-container>
+    <form [formGroup]="searchForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="search__form">
+      <div class="search__field">
+        <input id="query" type="text" formControlName="query" placeholder=" " class="search__input">
+        <label for="query" class="search__label">Search movies</label>
+      </div>
+      <button class="search__button">
+        <svg-icon src="assets/svg/search.svg"></svg-icon>
+      </button>
+    </form>
+  </app-container>
+</section>
+<section class="search filter">
+  <app-filter></app-filter>
+  @if ((movies$ | async); as movies) {
+    <app-movies-list [movies]="movies"></app-movies-list>
+  }
+  @if ((isLoading$ | async)) {
+    <app-loader></app-loader>
+  }
+</section>

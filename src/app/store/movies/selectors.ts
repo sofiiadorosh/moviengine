@@ -55,7 +55,7 @@ export const selectMovieDetails = createSelector(
   (state: MoviesState) => state.movieDetails
 );
 
-export const selectMoviesError = createSelector(
+export const selectError = createSelector(
   selectMoviesState,
   (state: MoviesState) => state.error
 );

@@ -1,4 +1,6 @@
 import { Routes } from "@angular/router";
+import { isAuthorizedGuard } from "@guards/is-authorized/is-authorized.guard";
+import { loginRedirectGuard } from "@guards/login-redirect/login-redirect.guard";
 import { RoutePaths } from "@models/route-paths.enum";
 import { FavoritesPageComponent } from "@pages/favorites-page/favorites-page.component";
 import { HomePageComponent } from "@pages/home-page/home-page.component";
@@ -22,13 +24,13 @@ export const routes: Routes = [
       { path: RoutePaths.POPULAR, component: PopularMoviesPageComponent },
       { path: RoutePaths.TOP_RATE, component: TopRateMoviesPageComponent },
       { path: RoutePaths.UPCOMING, component: UpcomingMoviesPageComponent },
-      { path: RoutePaths.FAVORITES, component: FavoritesPageComponent },
-      { path: RoutePaths.WATCH_LATER, component: WatchLaterPageComponent },
+      { path: RoutePaths.FAVORITES, component: FavoritesPageComponent, canActivate: [isAuthorizedGuard] },
+      { path: RoutePaths.WATCH_LATER, component: WatchLaterPageComponent, canActivate: [isAuthorizedGuard] },
       { path: RoutePaths.MOVIE_ID, component: MovieDetailsPageComponent },
       { path: RoutePaths.SEARCH, component: SearchPageComponent },
       { path: RoutePaths.SUBSCRIPTION, component: SubscriptionPageComponent },
     ]
   },
-  { path: RoutePaths.AUTH, component: LoginPageComponent },
+  { path: RoutePaths.AUTH, component: LoginPageComponent, canActivate: [loginRedirectGuard] },
   { path: RoutePaths.NOT_FOUND, component: NotFoundPageComponent },
 ];

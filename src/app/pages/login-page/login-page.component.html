@@ -1,18 +1,56 @@
-<section class="login">
+<app-error [message]="error$ | async"></app-error>
+
+<section class="login" [ngClass]="{ 'login_disabled': isLoading$ | async }">
   <div class="login__content">
     <svg-icon src="assets/svg/tmdb.svg" class="login__picture"></svg-icon>
     <h1 class="login__heading">Authorization required</h1>
     <h2 class="login__subheading">Please sign in to TMDB to continue and unlock all features ✨</h2>
+    <h2 class="login__subheading login__subheading_last">Or press quick sign in to use default credentials</h2>
+
     <form [formGroup]="loginForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="login__form">
-      <div class="login__field">
-        <input id="username" type="text" formControlName="username" placeholder=" " class="login__input">
-        <label for="username" class="login__label">Username</label>
+      @for(control of ["username", "password"]; track control) {
+        <div class="login__field" >
+          <input id="{{ control }}"
+                 [type]="types[control]"
+                 formControlName="{{ control }}"
+                 placeholder=" "
+                 class="login__input"
+                 [readonly]="isLoading$ | async">
+          <label for="{{ control }}" class="login__label">{{ control.charAt(0).toUpperCase() + control.slice(1) }}</label>
+          @if(loginForm.get(control)?.invalid && loginForm.get(control)?.touched) {
+            <p class="login__error">
+              This field is required
+            </p>
+          }
+        </div>
+      }
+
+      <div class="login__button-wrapper">
+        <button type="submit"
+                [disabled]="isLoading$ | async"
+                class="login__button">
+          @if((isLoading$ | async) === false) {
+            <span>Sign in</span>
+          }
+          @if((isLoading$ | async) && !isQuickSignIn) {
+            <span class="login__loader login__loader_inverted"></span>
+          }
+        </button>
+        <div>
+          <span class="login__separator">or</span>
+        </div>
+        <button type="button"
+                (click)="onQuickSignInHandler()"
+                [disabled]="isLoading$ | async"
+                class="login__button login__button_outlined">
+          @if((isLoading$ | async) === false) {
+            <span>Quick Sign in</span>
+          }
+          @if((isLoading$ | async) && isQuickSignIn) {
+            <span class="login__loader"></span>
+          }
+        </button>
       </div>
-      <div class="login__field">
-        <input id="password" type="password" formControlName="password" placeholder=" " class="login__input">
-        <label for="password" class="login__label">Password</label>
-      </div>
-      <button class="login__button">Sign in</button>
     </form>
   </div>
 </section>

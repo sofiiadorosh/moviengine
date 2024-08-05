@@ -3,9 +3,7 @@ import { RouterOutlet } from "@angular/router";
 import { HeaderComponent } from "@components/header/header.component";
 import { SidebarComponent } from "@components/sidebar/sidebar.component";
 import { Store } from "@ngrx/store";
-import * as AuthActions from "@store/authentication/actions";
 import { selectSessionId } from "@store/authentication/selectors";
-import { AppState } from "@store/index";
 import { favoriteMoviesActions, watchLaterActions } from "@store/movies/actions";
 
 @Component({
@@ -18,20 +16,15 @@ import { favoriteMoviesActions, watchLaterActions } from "@store/movies/actions"
 export class AppComponent implements OnInit {
   sessionId$ = this.store.select(selectSessionId);
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.initializeAuthenticationProcess();
     this.sessionId$.subscribe(sessionId => {
       if (sessionId) {
         this.loadFavoriteMovies();
         this.loadWatchLaterMovies();
       }
     });
-  }
-
-  initializeAuthenticationProcess() {
-    this.store.dispatch(AuthActions.requestToken());
   }
 
   loadFavoriteMovies() {

@@ -23,10 +23,7 @@ export class MovieService {
   ) {}
 
   private getOptions(params: Record<string, string> = {}): { params: HttpParams } {
-    const accessParams = { api_key: environment.apiKey };
-    const allParams = { ...accessParams, ...params };
-    const httpParams = new HttpParams({ fromObject: allParams });
-    return { params: httpParams };
+    return { params: new HttpParams({ fromObject: params }) };
   }
 
   private getMovies(endpoint: string): Observable<Movie[]> {

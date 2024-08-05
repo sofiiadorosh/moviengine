@@ -14,12 +14,17 @@ export const selectSessionId = createSelector(
   (state: AuthState) => state.sessionId
 );
 
-export const selectAuthLoading = createSelector(
+export const selectIsAuthorized = createSelector(
   selectAuthState,
-  (state: AuthState) => state.isLoading
+  (state: AuthState) => state.isAuthorized
 );
 
-export const selectAuthError = createSelector(
+export const selectError = createSelector(
   selectAuthState,
   (state: AuthState) => state.error
+);
+
+export const selectIsLoading = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.isLoading
 );

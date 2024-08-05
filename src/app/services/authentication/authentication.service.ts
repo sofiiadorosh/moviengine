@@ -1,8 +1,8 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@environments/environment";
 import { CreateSessionIdResponse, RequestTokenResponse } from "@models/response.interface";
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -10,13 +10,8 @@ import { Observable } from "rxjs";
 export class AuthenticationService {
   constructor(private httpClient: HttpClient) {}
 
-  private getOptions() {
-    return { params: new HttpParams().set("api_key", environment.apiKey) };
-  }
-
   getRequestToken(): Observable<RequestTokenResponse> {
-    return this.httpClient.get<RequestTokenResponse>(`${environment.apiBaseUrl}/authentication/token/new`,
-      this.getOptions());
+    return this.httpClient.get<RequestTokenResponse>(`${environment.apiBaseUrl}/authentication/token/new`);
   }
 
   askForPermission(credentials: { username: string, password: string, token: string }):
@@ -29,8 +24,7 @@ export class AuthenticationService {
     };
     return this.httpClient.post<RequestTokenResponse>(
       `${environment.apiBaseUrl}/authentication/token/validate_with_login`,
-      body,
-      this.getOptions()
+      body
     );
   }
 
@@ -39,7 +33,17 @@ export class AuthenticationService {
       request_token: token,
     };
     return this.httpClient.post<CreateSessionIdResponse>(`${environment.apiBaseUrl}/authentication/session/new`,
-      body,
-      this.getOptions());
+      body
+    );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let message = "An unknown error occurred!";
+    if (error.error instanceof ErrorEvent) {
+      message = `Error: ${error.error.message}`;
+    } else {
+      message = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    return throwError(() => new Error(message));
   }
 }

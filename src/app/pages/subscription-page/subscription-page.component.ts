@@ -26,7 +26,7 @@ export class SubscriptionPageComponent {
 
   subscriptionForm: FormGroup = this.formBuilder.group(
     this.fields.reduce((group, field) => {
-      group[field.formControlName] = ["", Validators.required];
+      group[field.formControlName] = ["", field.required ? Validators.required : []];
       return group;
     }, {} as { [key: string]: [string, Validators] })
   );

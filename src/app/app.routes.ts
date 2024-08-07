@@ -28,7 +28,7 @@ export const routes: Routes = [
       { path: RoutePaths.WATCH_LATER, component: WatchLaterPageComponent, canActivate: [isAuthorizedGuard] },
       { path: RoutePaths.MOVIE_ID, component: MovieDetailsPageComponent },
       { path: RoutePaths.SEARCH, component: SearchPageComponent },
-      { path: RoutePaths.SUBSCRIPTION, component: SubscriptionPageComponent },
+      { path: RoutePaths.SUBSCRIPTION, component: SubscriptionPageComponent, canActivate: [isAuthorizedGuard] },
     ]
   },
   { path: RoutePaths.AUTH, component: LoginPageComponent, canActivate: [loginRedirectGuard] },

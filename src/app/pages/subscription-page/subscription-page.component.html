@@ -16,7 +16,12 @@
               [placeholder]="field.placeholder"
               class="subscription__input"
             >
-            <label [for]="field.for" class="subscription__label">{{ field.label }}</label>
+            <label [for]="field.for" class="subscription__label">
+              {{ field.label }}
+              @if (field.required) {
+                <span class="subscription__label_required">*</span>
+              }
+            </label>
           </div>
         }
       </div>

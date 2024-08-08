@@ -36,7 +36,9 @@ export class MovieItemComponent implements OnInit {
     private store: Store<AppState>,) {}
 
   ngOnInit() {
-    this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
+    this.imageUrl = this.item.backdrop_path
+      ? `${this.baseImageUrl}/${this.item.backdrop_path}`
+      : "./assets/webp/movie-placeholder.webp";
     this.genres = this.transformGenreIds(genreIds);
     this.rating = this.generateRatingArray();
     this.movieId = this.replaceId(this.item.id);

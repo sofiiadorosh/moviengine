@@ -1,32 +1,49 @@
-<div class="pagination">
-  <h3 class="pagination__heading">Page:</h3>
-  <button type="button" class="pagination__icon-button pagination__icon-button_left">
-    <svg-icon src="assets/svg/arrow.svg"></svg-icon>
-  </button>
-  <ul class="pagination__list">
-    @for(a of [1, 2, 3, 4]; track a) {
-      <li class="pagination__item"
-          [ngClass]="{ 'pagination__item_active': selectedPage === a }"
-      >
-        <button type="button" class="pagination__button">
-          {{ a }}
-        </button>
-      </li>
-    }
-    <li class="pagination__item pagination__item_inactive">
-      <button type="button" class="pagination__button">...</button>
-    </li>
-    @for(b of [5]; track b) {
-      <li class="pagination__item"
-          [ngClass]="{ 'pagination__item_active': selectedPage === b }"
-      >
-        <button type="button" class="pagination__button">
-          {{ b }}
-        </button>
-      </li>
-    }
-  </ul>
-  <button type="button" class="pagination__icon-button pagination__icon-button_right">
-    <svg-icon src="assets/svg/arrow.svg"></svg-icon>
-  </button>
+<div class="pagination__container">
+  <div class="pagination">
+    <h3 class="pagination__heading">Page:</h3>
+    <button type="button"
+            class="pagination__icon-button pagination__icon-button_left"
+            (click)="onSelectPageHandler(selectedPage - 1)"
+            [disabled]="selectedPage === 1">
+      <svg-icon src="assets/svg/arrow.svg"></svg-icon>
+    </button>
+    <ul class="pagination__list">
+      @for(page of getDisplayedPages(); track page) {
+        @if(page !== -1) {
+          <li class="pagination__item"
+              [ngClass]="{ 'pagination__item_active': selectedPage === page }"
+              (click)="onSelectPageHandler(page)"
+              (keydown)="onSelectPageHandler(page, $event)"
+              tabindex="0">
+            <button type="button" class="pagination__button">
+              {{ page }}
+            </button>
+          </li>
+        }
+        @if (page === -1) {
+          <li class="pagination__item pagination__item_inactive">
+            <button type="button" class="pagination__button">...</button>
+          </li>
+        }
+      }
+    </ul>
+    <button type="button"
+            class="pagination__icon-button pagination__icon-button_right"
+            (click)="onSelectPageHandler(selectedPage + 1)"
+            [disabled]="selectedPage === totalPages">
+      <svg-icon src="assets/svg/arrow.svg"></svg-icon>
+    </button>
+  </div>
+  @if (selectedPage !== totalPages) {
+    <button type="button"
+            class="pagination__show-button"
+            (click)="onShowMoreHandler()"
+    >
+      Show more
+    </button>
+  }
+  <div class="pagination__stats">
+    <span class="pagination__tag">{{ (movies$ | async)?.length || 0 }}</span>
+    <span class="pagination__label">movies</span>
+  </div>
 </div>

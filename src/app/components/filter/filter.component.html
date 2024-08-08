@@ -20,22 +20,6 @@
     }
   </div>
   <div class="filter__content">
-    <h2 class="filter__heading">Categories</h2>
-    <ul class="filter__list category__list">
-      @for(category of categories; track category) {
-        <li class="filter__item category__item"
-            [ngClass]="{'category__item_active': (category$ | async) === category}"
-            (click)="onSelectCategoryHandler(category)"
-            (keydown)="onSelectCategoryHandler(category, $event)"
-            tabindex="0"
-        >
-          {{ category }}
-        </li>
-
-      }
-    </ul>
-  </div>
-  <div class="filter__content">
     <h2 class="filter__heading">Genres</h2>
     <ul class="filter__list">
       @for(genre of Object.values(genreIds); track genre) {
@@ -67,7 +51,7 @@
             <input
               [id]="$index"
               type="checkbox"
-              [checked]="(rating$ | async)?.includes($index)"
+              [checked]="(rating$ | async)?.includes($index + 1)"
               (input)="onSelectRatingHandler($index)"
               class="filter__input"
             >

@@ -1,6 +1,6 @@
 import { AsyncPipe } from "@angular/common";
-import { Component, OnInit} from "@angular/core";
-import { FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FilterComponent } from "@components/filter/filter.component";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
@@ -8,12 +8,11 @@ import { Store } from "@ngrx/store";
 import { LoaderComponent } from "@shared/loader/loader.component";
 import { PaginationComponent } from "@shared/pagination/pagination.component";
 import * as filtersActions from "@store/filters/actions";
-import { selectPage } from "@store/filters/selectors";
 import { AppState } from "@store/index";
-import { searchedMoviesActions } from "@store/movies/actions";
-import { selectIsLoading, selectSearchedMovies } from "@store/movies/selectors";
+import { selectFilteredMovies, selectIsLoading } from "@store/movies/selectors";
 import { SvgIconComponent } from "angular-svg-icon";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
+import { debounceTime, takeUntil } from "rxjs/operators";
 
 @Component({
   selector: "app-search-page",
@@ -29,32 +28,46 @@ import { Observable } from "rxjs";
     PaginationComponent
   ],
   templateUrl: "./search-page.component.html",
-  styleUrl: "./search-page.component.scss"
+  styleUrls: ["./search-page.component.scss"]
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent implements OnInit, OnDestroy {
   movies$: Observable<Movie[]>;
   isLoading$: Observable<boolean>;
-  page$: Observable<number>;
   query = "";
+  error: string | null = null;
+
+  private querySubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
 
   constructor(private store: Store<AppState>) {
-    this.movies$ = this.store.select(selectSearchedMovies);
+    this.movies$ = this.store.select(selectFilteredMovies);
     this.isLoading$ = this.store.select(selectIsLoading);
-    this.page$ = this.store.select(selectPage);
   }
 
   ngOnInit() {
-    this.loadMovies();
+    this.querySubject.pipe(
+      debounceTime(300),
+      takeUntil(this.destroy$)
+    ).subscribe(query => {
+      if (query.length >= 3) {
+        this.error = null;
+        this.store.dispatch(filtersActions.setQuery({ query }));
+      } else {
+        this.error = "You need to type at least 3 characters";
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onSubmitHandler() {
-    console.log(this.query)
-    if (this.query.length > 3) {
-      this.store.dispatch(filtersActions.setQuery({ query: this.query }));
+    if (!this.query.trim().length) {
+      this.error = "We can not find something that is empty :(";
+    } else {
+      this.querySubject.next(this.query);
     }
-  }
-
-  loadMovies() {
-    this.store.dispatch(searchedMoviesActions.load());
   }
 }

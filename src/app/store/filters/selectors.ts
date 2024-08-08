@@ -9,11 +9,6 @@ export const selectQuery = createSelector(
   (state: FiltersState) => state.query
 );
 
-export const selectCategory = createSelector(
-  selectFiltersState,
-  (state: FiltersState) => state.category
-);
-
 export const selectGenres = createSelector(
   selectFiltersState,
   (state: FiltersState) => state.genres
@@ -32,6 +27,11 @@ export const selectSortType = createSelector(
 export const selectPage = createSelector(
   selectFiltersState,
   (state: FiltersState) => state.page
+);
+
+export const selectTotalPages = createSelector(
+  selectFiltersState,
+  (state: FiltersState) => state.totalPages
 );
 
 export const selectQueryAndPage = createSelector(

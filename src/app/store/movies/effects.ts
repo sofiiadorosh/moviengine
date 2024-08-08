@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { Store } from "@ngrx/store";
+import { Action, Store } from "@ngrx/store";
 import { MovieService } from "@services/movie/movie.service";
+import * as filtersActions from "@store/filters/actions";
 import { selectQueryAndPage } from "@store/filters/selectors";
-import { AppState } from "@store/index";
+import { AppState} from "@store/index";
 import {
   favoriteMoviesActions,
   movieDetailsActions,
@@ -14,7 +16,7 @@ import {
   upcomingMoviesActions,
   watchLaterActions,
 } from "@store/movies/actions";
-import { of, switchMap } from "rxjs";
+import { forkJoin, mergeMap, of, switchMap } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 
 @Injectable()
@@ -22,16 +24,24 @@ export class MoviesEffects {
   constructor(
     private actions$: Actions,
     private movieService: MovieService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router,
   ) {}
 
   loadNowPlayingMovies$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(nowPlayingMoviesActions.load),
       switchMap(() => {
-        return this.movieService.getNowPlayingMovies().pipe(
-          map(movies => nowPlayingMoviesActions.loadSuccess({ movies })),
-          catchError(error => of(nowPlayingMoviesActions.loadFailure({ error: error.message })))
+        return this.store.select(selectQueryAndPage).pipe(
+          switchMap(({ page }) => {
+            return this.movieService.getNowPlayingMovies(page).pipe(
+              switchMap(response => [
+                nowPlayingMoviesActions.loadSuccess({ movies: response.results }),
+                filtersActions.setTotalPages({ pages: response.total_pages })
+              ]),
+              catchError(error => of(nowPlayingMoviesActions.loadFailure({ error: error.message })))
+            );
+          })
         );
       })
     );
@@ -41,9 +51,16 @@ export class MoviesEffects {
     return this.actions$.pipe(
       ofType(popularMoviesActions.load),
       switchMap(() => {
-        return this.movieService.getPopularMovies().pipe(
-          map(movies => popularMoviesActions.loadSuccess({ movies })),
-          catchError(error => of(popularMoviesActions.loadFailure({ error: error.message })))
+        return this.store.select(selectQueryAndPage).pipe(
+          switchMap(({ page }) => {
+            return this.movieService.getPopularMovies(page).pipe(
+              switchMap(response => [
+                popularMoviesActions.loadSuccess({ movies: response.results }),
+                filtersActions.setTotalPages({ pages: response.total_pages })
+              ]),
+              catchError(error => of(popularMoviesActions.loadFailure({ error: error.message })))
+            );
+          })
         );
       })
     );
@@ -53,9 +70,16 @@ export class MoviesEffects {
     return this.actions$.pipe(
       ofType(topRatedMoviesActions.load),
       switchMap(() => {
-        return this.movieService.getTopRatedMovies().pipe(
-          map(movies => topRatedMoviesActions.loadSuccess({ movies })),
-          catchError(error => of(topRatedMoviesActions.loadFailure({ error: error.message })))
+        return this.store.select(selectQueryAndPage).pipe(
+          switchMap(({ page }) => {
+            return this.movieService.getTopRatedMovies(page).pipe(
+              switchMap(response => [
+                topRatedMoviesActions.loadSuccess({ movies: response.results }),
+                filtersActions.setTotalPages({ pages: response.total_pages })
+              ]),
+              catchError(error => of(topRatedMoviesActions.loadFailure({ error: error.message })))
+            );
+          })
         );
       })
     );
@@ -65,9 +89,16 @@ export class MoviesEffects {
     return this.actions$.pipe(
       ofType(upcomingMoviesActions.load),
       switchMap(() => {
-        return this.movieService.getUpcomingMovies().pipe(
-          map(movies => upcomingMoviesActions.loadSuccess({ movies })),
-          catchError(error => of(upcomingMoviesActions.loadFailure({ error: error.message })))
+        return this.store.select(selectQueryAndPage).pipe(
+          switchMap(({ page }) => {
+            return this.movieService.getUpcomingMovies(page).pipe(
+              switchMap(response => [
+                upcomingMoviesActions.loadSuccess({ movies: response.results }),
+                filtersActions.setTotalPages({ pages: response.total_pages })
+              ]),
+              catchError(error => of(upcomingMoviesActions.loadFailure({ error: error.message })))
+            );
+          })
         );
       })
     );
@@ -77,17 +108,22 @@ export class MoviesEffects {
     return this.actions$.pipe(
       ofType(favoriteMoviesActions.load),
       switchMap(() => {
-        return this.movieService.getFavoritesMovies().pipe(
-          map(movies => {
-            const movieIds = movies.map(movie => movie.id);
+        return this.store.select(selectQueryAndPage).pipe(
+          switchMap(({ page }) => {
+            return this.movieService.getFavoritesMovies(page).pipe(
+              switchMap(response => {
+                const movieIds = response.results.map(movie => movie.id);
 
-            return [
-              favoriteMoviesActions.loadSuccess({ movies }),
-              favoriteMoviesActions.setFavoriteMovieIds({ movieIds }),
-            ];
-          }),
-          switchMap(actions => actions),
-          catchError(error => of(favoriteMoviesActions.loadFailure({ error: error.message })))
+                return forkJoin([
+                  of(favoriteMoviesActions.loadSuccess({ movies: response.results })),
+                  of(favoriteMoviesActions.setFavoriteMovieIds({ movieIds })),
+                  of(filtersActions.setTotalPages({ pages: response.total_pages })),
+                ]);
+              }),
+              mergeMap(actions => actions),
+              catchError(error => of(favoriteMoviesActions.loadFailure({ error: error.message })))
+            );
+          })
         );
       })
     );
@@ -97,17 +133,22 @@ export class MoviesEffects {
     return this.actions$.pipe(
       ofType(watchLaterActions.load),
       switchMap(() => {
-        return this.movieService.getWatchLaterMovies().pipe(
-          map(movies => {
-            const movieIds = movies.map(movie => movie.id);
+        return this.store.select(selectQueryAndPage).pipe(
+          switchMap(({ page }) => {
+            return this.movieService.getWatchLaterMovies(page).pipe(
+              switchMap(response => {
+                const movieIds = response.results.map(movie => movie.id);
 
-            return [
-              watchLaterActions.loadSuccess({ movies }),
-              watchLaterActions.setWatchLaterMovieIds({ movieIds }),
-            ];
-          }),
-          switchMap(actions => actions),
-          catchError(error => of(watchLaterActions.loadFailure({ error: error.message })))
+                return forkJoin([
+                  of(watchLaterActions.loadSuccess({ movies: response.results })),
+                  of(watchLaterActions.setWatchLaterMovieIds({ movieIds })),
+                  of(filtersActions.setTotalPages({ pages: response.total_pages })),
+                ]);
+              }),
+              mergeMap(actions => actions),
+              catchError(error => of(watchLaterActions.loadFailure({ error: error.message })))
+            );
+          })
         );
       })
     );
@@ -149,19 +190,50 @@ export class MoviesEffects {
     );
   });
 
+  private loadMoviesBasedOnRoute(url: string): Action[] {
+    type MoviesActionKeys = "now-playing" | "popular" | "upcoming" | "top-rated" | "searched";
+
+    const moviesActions: Record<MoviesActionKeys, Action> = {
+      "now-playing": nowPlayingMoviesActions.load(),
+      "popular": popularMoviesActions.load(),
+      "upcoming": upcomingMoviesActions.load(),
+      "top-rated": topRatedMoviesActions.load(),
+      "searched": searchedMoviesActions.load(),
+    };
+
+    const actions: Action[] = [];
+
+    (Object.keys(moviesActions) as MoviesActionKeys[]).forEach(key => {
+      if (url.includes(key)) {
+        actions.push(moviesActions[key] ?? moviesActions["searched"]);
+      }
+    });
+
+    return actions;
+  }
+
   loadSearchedMovies$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(searchedMoviesActions.load),
-      switchMap(() =>
-        this.store.select(selectQueryAndPage).pipe(
+      ofType(filtersActions.setQuery),
+      switchMap(() => {
+        return this.store.select(selectQueryAndPage).pipe(
           switchMap(({ query, page }) => {
             return this.movieService.getMoviesByName(query, page).pipe(
-              map(movies => searchedMoviesActions.loadSuccess({ movies })),
+              map(response => {
+                const url = this.router.url;
+
+                return [
+                  searchedMoviesActions.loadSuccess({ movies: response.results }),
+                  filtersActions.setTotalPages({ pages: response.total_pages }),
+                  ...this.loadMoviesBasedOnRoute(url)
+                ];
+              }),
+              mergeMap(actions => actions),
               catchError(error => of(searchedMoviesActions.loadFailure({ error: error.message })))
             );
           })
-        )
-      )
+        );
+      })
     );
   });
 

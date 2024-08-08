@@ -11,23 +11,23 @@
                (input)="onSubmitHandler()"
                class="search__input" required>
         <label for="query" class="search__label">Search movies</label>
+        @if(error) {
+          <p class="search__error">
+            {{ error }}
+          </p>
+        }
       </div>
       <button class="search__button">
         <svg-icon src="assets/svg/search.svg"></svg-icon>
       </button>
     </form>
     @if(movies$ | async; as movies) {
-      <div class="search__movies">
-        <app-movies-list [movies]="movies"></app-movies-list>
-        <div class="search__controls">
-          <app-pagination [selectedPage]="(page$ | async)!"></app-pagination>
-          <button type="button" class="search__show-button">Show more</button>
-          <div class="search__stats">
-            <span class="search__tag">20</span>
-            <span class="search__tag-label">movies</span>
-          </div>
+      @if(movies.length) {
+        <div class="search__movies">
+          <app-movies-list [movies]="movies"></app-movies-list>
+          <app-pagination></app-pagination>
         </div>
-      </div>
+      }
     }
     @if(isLoading$ | async) {
       <app-loader></app-loader>

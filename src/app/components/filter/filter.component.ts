@@ -1,14 +1,12 @@
 import { AsyncPipe, NgClass } from "@angular/common";
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { categories } from "@constants/categories";
 import { genreIds } from "@constants/genre-ids";
 import { sortParameters } from "@constants/sort-parameters";
-import { Categories } from "@models/categories.enum";
 import { SortParameters } from "@models/sort-parameters.enum";
 import { Store } from "@ngrx/store";
 import { DropdownComponent } from "@shared/dropdown/dropdown.component";
-import { resetFilters, setCategory, setGenre, setRating, setSortType } from "@store/filters/actions";
-import { selectCategory, selectGenres, selectRating, selectSortType } from "@store/filters/selectors";
+import { resetFilters, setGenre, setRating, setSortType } from "@store/filters/actions";
+import { selectGenres, selectRating, selectSortType } from "@store/filters/selectors";
 import { AppState } from "@store/index";
 import { SvgIconComponent } from "angular-svg-icon";
 import { Observable } from "rxjs";
@@ -26,22 +24,19 @@ import { Observable } from "rxjs";
   styleUrl: "./filter.component.scss"
 })
 export class FilterComponent implements OnInit, OnDestroy {
-  protected readonly categories = categories;
   protected readonly Object = Object;
   protected readonly genreIds = genreIds;
   protected readonly sortParameters = sortParameters;
   arrays: number[][] = this.generateArrays(5);
   sortType$: Observable<SortParameters>;
-  category$: Observable<Categories>;
   genres$: Observable<string[]>;
   rating$: Observable<number[]>;
   isDropdownOpened = false;
 
-  @ViewChild("dropdown", { static: false }) dropdown!: ElementRef;
+  @ViewChild("dropdown") dropdown!: ElementRef;
 
   constructor(private store: Store<AppState>) {
     this.sortType$ = this.store.select(selectSortType);
-    this.category$ = this.store.select(selectCategory);
     this.genres$ = this.store.select(selectGenres);
     this.rating$ = this.store.select(selectRating);
   }
@@ -83,11 +78,6 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   onSelectSortTypeHandler(e: SortParameters) {
     this.store.dispatch(setSortType({ sortType: e }));
-  }
-
-  onSelectCategoryHandler(category: Categories, e?: KeyboardEvent) {
-    if (e && e.code !== "Enter" && e.code !== "Space") return;
-    this.store.dispatch(setCategory({ category }))
   }
 
   onSelectGenreHandler(genre: string) {

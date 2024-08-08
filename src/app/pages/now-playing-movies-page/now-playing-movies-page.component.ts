@@ -4,6 +4,7 @@ import { MoviesListComponent } from "@components/movies-list/movies-list.compone
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
 import { LoaderComponent } from "@shared/loader/loader.component";
+import { PaginationComponent } from "@shared/pagination/pagination.component";
 import { AppState } from "@store/index";
 import { nowPlayingMoviesActions } from "@store/movies/actions";
 import { selectIsLoading, selectNowPlayingMovies } from "@store/movies/selectors";
@@ -15,7 +16,8 @@ import { Observable } from "rxjs";
   imports: [
     MoviesListComponent,
     AsyncPipe,
-    LoaderComponent
+    LoaderComponent,
+    PaginationComponent
   ],
   templateUrl: "./now-playing-movies-page.component.html",
   styleUrls: ["./now-playing-movies-page.component.scss"]

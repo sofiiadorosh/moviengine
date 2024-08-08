@@ -12,6 +12,7 @@
     flex-direction: column;
     align-items: center;
     gap: 36px;
+    width: 100%;
   }
 
   &__form {
@@ -74,6 +75,14 @@
     }
   }
 
+  &__error {
+    position: absolute;
+    bottom: -16px;
+    left: 0;
+    font-size: 12px;
+    color: $red;
+  }
+
   &__button {
     @extend %button;
     position: absolute;
@@ -97,46 +106,7 @@
   &__movies {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 36px;
     height: 100%;
-  }
-
-  &__controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__show-button {
-    @extend %button;
-    width: 160px;
-    height: 54px;
-    font-family: $secondary-font-stack;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.4;
-    color: $white;
-    background-color: $green;
-    border-radius: 16px;
-  }
-
-  &__stats {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  &__tag {
-    padding: 4px 8px;
-    color: $green;
-    background: rgba(0, 166, 152, 0.3);
-    border-radius: 12px;
-  }
-
-  &__tag-label {
-    font-family: $secondary-font-stack;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 1.4;
   }
 }

@@ -1,4 +1,3 @@
-import { Categories } from "@models/categories.enum";
 import { SortParameters } from "@models/sort-parameters.enum";
 import { createReducer, on } from "@ngrx/store";
 import { FiltersState, initialState } from "@store/filters/state";
@@ -11,10 +10,7 @@ const toggleArrayItem = <T>(array: T[], item: T): T[] =>
 export const filtersReducer = createReducer(
   initialState,
   on(FiltersActions.setQuery, (state, { query }): FiltersState => ({
-    ...state, query
-  })),
-  on(FiltersActions.setCategory, (state, { category }): FiltersState => ({
-    ...state, category
+    ...state, query, page: 1
   })),
   on(FiltersActions.setGenre, (state, { genre }): FiltersState => ({
     ...state, genres: toggleArrayItem(state.genres, genre)
@@ -27,7 +23,8 @@ export const filtersReducer = createReducer(
   })),
   on(FiltersActions.resetFilters, (): FiltersState => ({
     ...initialState,
-    category: Categories.ALL,
+    genres: [],
+    rating: [],
     sortType: SortParameters.DEFAULT,
   })),
   on(FiltersActions.setPage, (state, { page }): FiltersState => ({
@@ -35,6 +32,9 @@ export const filtersReducer = createReducer(
   })),
   on(FiltersActions.setNextPage, (state): FiltersState => ({
     ...state, page: state.page + 1,
-  }))
+  })),
+  on(FiltersActions.setTotalPages, (state, { pages }): FiltersState => ({
+    ...state, totalPages: pages
+  })),
 )
 

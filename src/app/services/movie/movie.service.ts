@@ -112,4 +112,11 @@ export class MovieService {
     return this.httpClient.get<MovieDetails>(`${environment.apiBaseUrl}/movie/${id}`,
       this.getOptions());
   }
+
+  getMoviesByName(name: string, page: number) {
+    const params: Record<string, string> = { query: name, page: page.toString() };
+    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}/search/movie`,
+      this.getOptions(params)).pipe(map((response) => response.results));
+  }
+
 }

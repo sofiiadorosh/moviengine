@@ -6,14 +6,13 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 280px;
+  width: 300px;
   padding: 16px 32px;
 
   &__content {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 16px;
   }
 
   .sorting {
@@ -33,6 +32,7 @@
   }
 
   &__heading {
+    margin-bottom: 16px;
     font-size: 22px;
     font-weight: 700;
     line-height: 1.4;
@@ -61,10 +61,22 @@
     &__item {
       width: auto;
       padding: 4px 8px;
+      text-transform: lowercase;
       color: $green;
       background: rgba(0, 166, 152, 0.3);
       border-radius: 12px;
       cursor: pointer;
+
+      &_active {
+        color: $white;
+        background-color: $green;
+        cursor: default;
+      }
+
+      &:hover:not(.category__item_active) {
+        color: $white;
+        background-color: $green;
+      }
     }
   }
 
@@ -146,8 +158,8 @@
   &__button {
     @extend %button;
     margin-left: auto;
-    width: 120px;
-    padding: 12px 16px;
+    width: 140px;
+    height: 54px;
     font-family: $secondary-font-stack;
     font-weight: 400;
     font-size: 14px;
@@ -156,7 +168,5 @@
     background-color: $secondary-dark-white;
     border: 1px solid $primary-grey;
     border-radius: 4px;
-    outline: none;
-    cursor: pointer;
   }
 }

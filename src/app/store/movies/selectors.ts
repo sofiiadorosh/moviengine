@@ -47,12 +47,17 @@ export const selectWatchLaterMoviesIds = createSelector(
 export const selectIsMovieLiked = (movieId: number) =>
   createSelector(selectFavoriteMoviesIds, (favoriteIds: number[]) => favoriteIds.includes(movieId));
 
-export const selectIsMovieInWatchLater = (movieId: number) =>
-  createSelector(selectWatchLaterMoviesIds, (watchLaterIds: number[]) => watchLaterIds.includes(movieId));
-
 export const selectMovieDetails = createSelector(
   selectMoviesState,
   (state: MoviesState) => state.movieDetails
+);
+
+export const selectIsMovieInWatchLater = (movieId: number) =>
+  createSelector(selectWatchLaterMoviesIds, (watchLaterIds: number[]) => watchLaterIds.includes(movieId));
+
+export const selectSearchedMovies = createSelector(
+  selectMoviesState,
+  (state: MoviesState) => state.searched
 );
 
 export const selectError = createSelector(

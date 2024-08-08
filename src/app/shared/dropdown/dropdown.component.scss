@@ -59,13 +59,20 @@
   &__list {
     display: flex;
     flex-direction: column;
+    gap: 2px;
   }
 
   &__item {
     padding: 8px 10px;
     border-radius: 4px;
 
-    &:hover {
+    &_active {
+      color: $white;
+      background-color: $green;
+      cursor: default;
+    }
+
+    &:hover:not(.dropdown__item_active) {
       color: $white;
       background-color: $green;
     }

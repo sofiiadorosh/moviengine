@@ -1,6 +1,7 @@
 import { SortParameters } from "@models/sort-parameters.enum";
 
 export const sortParameters = [
+  SortParameters.DEFAULT,
   SortParameters.A_TO_Z,
   SortParameters.Z_TO_A,
   SortParameters.RATING_HIGH_TO_LOW,

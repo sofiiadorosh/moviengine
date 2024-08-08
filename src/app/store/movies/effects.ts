@@ -1,10 +1,15 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
 import { MovieService } from "@services/movie/movie.service";
+import { selectQueryAndPage } from "@store/filters/selectors";
+import { AppState } from "@store/index";
 import {
-  favoriteMoviesActions, movieDetailsActions,
+  favoriteMoviesActions,
+  movieDetailsActions,
   nowPlayingMoviesActions,
   popularMoviesActions,
+  searchedMoviesActions,
   topRatedMoviesActions,
   upcomingMoviesActions,
   watchLaterActions,
@@ -16,7 +21,8 @@ import { catchError, map } from "rxjs/operators";
 export class MoviesEffects {
   constructor(
     private actions$: Actions,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private store: Store<AppState>
   ) {}
 
   loadNowPlayingMovies$ = createEffect(() => {
@@ -140,6 +146,22 @@ export class MoviesEffects {
           catchError(error => of(movieDetailsActions.loadFailure({ error: error.message })))
         );
       })
+    );
+  });
+
+  loadSearchedMovies$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(searchedMoviesActions.load),
+      switchMap(() =>
+        this.store.select(selectQueryAndPage).pipe(
+          switchMap(({ query, page }) => {
+            return this.movieService.getMoviesByName(query, page).pipe(
+              map(movies => searchedMoviesActions.loadSuccess({ movies })),
+              catchError(error => of(searchedMoviesActions.loadFailure({ error: error.message })))
+            );
+          })
+        )
+      )
     );
   });
 

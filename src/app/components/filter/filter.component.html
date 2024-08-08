@@ -1,13 +1,37 @@
 <div class="filter">
   <div class="filter__content">
-    <h2 class="filter__heading sorting__heading">Sort by:</h2>
-    <app-dropdown [options]="sortParameters"></app-dropdown>
+    <h2 class="filter__heading sorting__heading"
+        tabindex="0"
+        (click)="onDropdownHandler($event)"
+        (keydown)="onDropdownHandler($event)"
+        aria-haspopup="true"
+        aria-expanded="false">
+      Sort by: {{ sortType$ | async }}
+    </h2>
+    @if(isDropdownOpened) {
+      <ng-container #dropdown>
+        <app-dropdown
+          [options]="sortParameters"
+          [selectedOption]="(sortType$ | async)!"
+          (chosenOption)="onSelectSortTypeHandler($event)"
+        >
+        </app-dropdown>
+      </ng-container>
+    }
   </div>
   <div class="filter__content">
     <h2 class="filter__heading">Categories</h2>
     <ul class="filter__list category__list">
       @for(category of categories; track category) {
-        <li class="filter__item category__item">{{ category }}</li>
+        <li class="filter__item category__item"
+            [ngClass]="{'category__item_active': (category$ | async) === category}"
+            (click)="onSelectCategoryHandler(category)"
+            (keydown)="onSelectCategoryHandler(category, $event)"
+            tabindex="0"
+        >
+          {{ category }}
+        </li>
+
       }
     </ul>
   </div>
@@ -17,7 +41,14 @@
       @for(genre of Object.values(genreIds); track genre) {
         <li class="filter__item">
           <label [for]="genre" class="filter__label">
-            <input [id]="genre" type="checkbox" name="genre" class="filter__input">
+            <input
+              [id]="genre"
+              type="checkbox"
+              name="genre"
+              [checked]="(genres$ | async)?.includes(genre)"
+              (input)="onSelectGenreHandler(genre)"
+              class="filter__input"
+            >
             <span class="filter__checkbox">
               <svg-icon src="assets/svg/check.svg"></svg-icon>
             </span>
@@ -33,7 +64,13 @@
       @for(array of arrays; track $index) {
         <li class="filter__item">
           <label [for]="$index" class="filter__label">
-            <input [id]="$index" type="checkbox" class="filter__input">
+            <input
+              [id]="$index"
+              type="checkbox"
+              [checked]="(rating$ | async)?.includes($index)"
+              (input)="onSelectRatingHandler($index)"
+              class="filter__input"
+            >
             <span class="filter__checkbox">
               <svg-icon src="assets/svg/check.svg"></svg-icon>
             </span>
@@ -50,5 +87,10 @@
       }
     </ul>
   </div>
-  <button type="button" class="filter__button">Reset filters</button>
+  <button type="button"
+          class="filter__button"
+          (click)="onResetFiltersHandler()"
+  >
+    Reset filters
+  </button>
 </div>

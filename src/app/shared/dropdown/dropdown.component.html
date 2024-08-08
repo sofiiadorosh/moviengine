@@ -2,7 +2,14 @@
      [ngClass]="{ 'dropdown_horizontal': orientation === 'horizontal' }">
   <ul class="dropdown__list">
     @for(option of options; track option) {
-      <li class="dropdown__item">{{ option }}</li>
+      <li class="dropdown__item"
+          [ngClass]="{'dropdown__item_active': selectedOption === option}"
+          (click)="onOptionClickHandler(option)"
+          (keydown)="onOptionClickHandler(option, $event)"
+          tabindex="0"
+      >
+        {{ option }}
+      </li>
     }
   </ul>
 </div>

@@ -1,0 +1,32 @@
+<div class="pagination">
+  <h3 class="pagination__heading">Page:</h3>
+  <button type="button" class="pagination__icon-button pagination__icon-button_left">
+    <svg-icon src="assets/svg/arrow.svg"></svg-icon>
+  </button>
+  <ul class="pagination__list">
+    @for(a of [1, 2, 3, 4]; track a) {
+      <li class="pagination__item"
+          [ngClass]="{ 'pagination__item_active': selectedPage === a }"
+      >
+        <button type="button" class="pagination__button">
+          {{ a }}
+        </button>
+      </li>
+    }
+    <li class="pagination__item pagination__item_inactive">
+      <button type="button" class="pagination__button">...</button>
+    </li>
+    @for(b of [5]; track b) {
+      <li class="pagination__item"
+          [ngClass]="{ 'pagination__item_active': selectedPage === b }"
+      >
+        <button type="button" class="pagination__button">
+          {{ b }}
+        </button>
+      </li>
+    }
+  </ul>
+  <button type="button" class="pagination__icon-button pagination__icon-button_right">
+    <svg-icon src="assets/svg/arrow.svg"></svg-icon>
+  </button>
+</div>

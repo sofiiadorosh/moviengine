@@ -6,7 +6,7 @@
      (keydown)="navigateToMovieDetails()">
     <img [src]="imageUrl" [alt]="item.title" class="movie__picture">
     <div class="movie__information">
-      <h3 class="movie__title">{{ item.title }}</h3>
+      <h2 class="movie__title">{{ item.title }}</h2>
       <p class="movie__overview">{{ item.overview | truncateDescription:maxOverviewLength }}</p>
       <ul class="movie__controls-list">
         <li>

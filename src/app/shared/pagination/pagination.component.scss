@@ -1,0 +1,66 @@
+@import "../../styles/shared.scss";
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__heading {
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__item {
+    width: 20px;
+    height: 20px;
+
+    &_active {
+      .pagination__button {
+        color: $green;
+        cursor: default;
+      }
+    }
+    &_inactive {
+      .pagination__button {
+        cursor: default;
+      }
+    }
+
+    &:hover:not(.pagination__item_active):not(.pagination__item_inactive) {
+      .pagination__button {
+        color: $green;
+      }
+    }
+  }
+
+  &__button {
+    @extend %button;
+    transition: color 250ms $timing-function;
+  }
+
+  &__icon-button {
+    @extend %icon-button;
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &_left {
+      transform: rotateZ(90deg);
+    }
+    &_right {
+      transform: rotateZ(-90deg);
+    }
+  }
+}

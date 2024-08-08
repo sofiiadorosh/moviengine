@@ -11,6 +11,7 @@ const movieCategories = {
   UPCOMING: "Upcoming",
   FAVORITE: "Favorite",
   WATCH_LATER: "Watch Later",
+  SEARCHED: "Searched"
 }
 
 const createLoadActions = (type: string) => ({
@@ -53,5 +54,7 @@ export const watchLaterActions = {
     props<{ movieIds: number[] }>()
   )
 };
+
+export const searchedMoviesActions = createLoadActions(movieCategories.SEARCHED);
 
 export const movieDetailsActions = createMovieDetailsLoadActions();

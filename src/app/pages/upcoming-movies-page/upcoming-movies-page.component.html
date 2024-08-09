@@ -1,6 +1,7 @@
 <section class="upcoming">
   @if ((movies$ | async); as movies) {
     <app-movies-list [movies]="movies"></app-movies-list>
+    <app-pagination></app-pagination>
   }
   @if ((isLoading$ | async)) {
     <app-loader></app-loader>

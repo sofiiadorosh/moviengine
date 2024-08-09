@@ -1,9 +1,11 @@
 import { AsyncPipe } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
 import { LoaderComponent } from "@shared/loader/loader.component";
+import {PaginationComponent} from "@shared/pagination/pagination.component";
+import * as filtersActions from "@store/filters/actions";
 import { AppState } from "@store/index";
 import { upcomingMoviesActions } from "@store/movies/actions";
 import { selectIsLoading, selectUpcomingMovies } from "@store/movies/selectors";
@@ -15,12 +17,13 @@ import { Observable } from "rxjs";
   imports: [
     MoviesListComponent,
     AsyncPipe,
-    LoaderComponent
+    LoaderComponent,
+    PaginationComponent
   ],
   templateUrl: "./upcoming-movies-page.component.html",
   styleUrls: ["./upcoming-movies-page.component.scss"]
 })
-export class UpcomingMoviesPageComponent implements OnInit {
+export class UpcomingMoviesPageComponent implements OnInit, OnDestroy {
   movies$: Observable<Movie[]>;
   isLoading$: Observable<boolean>;
 
@@ -35,5 +38,9 @@ export class UpcomingMoviesPageComponent implements OnInit {
 
   loadMovies() {
     this.store.dispatch(upcomingMoviesActions.load());
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(filtersActions.resetPage());
   }
 }

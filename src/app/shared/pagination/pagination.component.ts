@@ -7,11 +7,12 @@ import { setNextPage, setPage } from "@store/filters/actions";
 import { selectPage, selectTotalPages } from "@store/filters/selectors";
 import { AppState } from "@store/index";
 import {
+  selectFavoriteMovies,
   selectFilteredMovies,
   selectNowPlayingMovies,
   selectPopularMovies,
   selectTopRatedMovies,
-  selectUpcomingMovies,
+  selectUpcomingMovies, selectWatchLaterMovies,
 } from "@store/movies/selectors";
 import { SvgIconComponent } from "angular-svg-icon";
 import { Observable } from "rxjs";
@@ -35,7 +36,9 @@ export class PaginationComponent implements OnInit {
     "now-playing": selectNowPlayingMovies,
     popular: selectPopularMovies,
     upcoming: selectUpcomingMovies,
-    "top-rated": selectTopRatedMovies,
+    "top-rate": selectTopRatedMovies,
+    favorites: selectFavoriteMovies,
+    "watch-later": selectWatchLaterMovies,
     filtered: selectFilteredMovies,
   };
 

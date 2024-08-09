@@ -3,6 +3,8 @@
 }
 
 .top-rate {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
   padding: 24px 96px;
 }

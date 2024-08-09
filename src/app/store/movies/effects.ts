@@ -37,7 +37,7 @@ export class MoviesEffects {
             return this.movieService.getNowPlayingMovies(page).pipe(
               switchMap(response => [
                 nowPlayingMoviesActions.loadSuccess({ movies: response.results }),
-                filtersActions.setTotalPages({ pages: response.total_pages })
+                filtersActions.setTotalPages({ pages: response.total_pages > 500 ? 500 : response.total_pages })
               ]),
               catchError(error => of(nowPlayingMoviesActions.loadFailure({ error: error.message })))
             );
@@ -56,7 +56,7 @@ export class MoviesEffects {
             return this.movieService.getPopularMovies(page).pipe(
               switchMap(response => [
                 popularMoviesActions.loadSuccess({ movies: response.results }),
-                filtersActions.setTotalPages({ pages: response.total_pages })
+                filtersActions.setTotalPages({ pages: response.total_pages > 500 ? 500 : response.total_pages })
               ]),
               catchError(error => of(popularMoviesActions.loadFailure({ error: error.message })))
             );
@@ -75,7 +75,7 @@ export class MoviesEffects {
             return this.movieService.getTopRatedMovies(page).pipe(
               switchMap(response => [
                 topRatedMoviesActions.loadSuccess({ movies: response.results }),
-                filtersActions.setTotalPages({ pages: response.total_pages })
+                filtersActions.setTotalPages({ pages: response.total_pages > 500 ? 500 : response.total_pages })
               ]),
               catchError(error => of(topRatedMoviesActions.loadFailure({ error: error.message })))
             );
@@ -94,7 +94,7 @@ export class MoviesEffects {
             return this.movieService.getUpcomingMovies(page).pipe(
               switchMap(response => [
                 upcomingMoviesActions.loadSuccess({ movies: response.results }),
-                filtersActions.setTotalPages({ pages: response.total_pages })
+                filtersActions.setTotalPages({ pages: response.total_pages > 500 ? 500 : response.total_pages })
               ]),
               catchError(error => of(upcomingMoviesActions.loadFailure({ error: error.message })))
             );
@@ -117,7 +117,7 @@ export class MoviesEffects {
                 return forkJoin([
                   of(favoriteMoviesActions.loadSuccess({ movies: response.results })),
                   of(favoriteMoviesActions.setFavoriteMovieIds({ movieIds })),
-                  of(filtersActions.setTotalPages({ pages: response.total_pages })),
+                  of(filtersActions.setTotalPages({ pages: response.total_pages > 500 ? 500 : response.total_pages })),
                 ]);
               }),
               mergeMap(actions => actions),
@@ -142,7 +142,7 @@ export class MoviesEffects {
                 return forkJoin([
                   of(watchLaterActions.loadSuccess({ movies: response.results })),
                   of(watchLaterActions.setWatchLaterMovieIds({ movieIds })),
-                  of(filtersActions.setTotalPages({ pages: response.total_pages })),
+                  of(filtersActions.setTotalPages({ pages: response.total_pages > 500 ? 500 : response.total_pages })),
                 ]);
               }),
               mergeMap(actions => actions),
@@ -224,7 +224,7 @@ export class MoviesEffects {
 
                 return [
                   searchedMoviesActions.loadSuccess({ movies: response.results }),
-                  filtersActions.setTotalPages({ pages: response.total_pages }),
+                  filtersActions.setTotalPages({ pages: response.total_pages > 500 ? 500 : response.total_pages }),
                   ...this.loadMoviesBasedOnRoute(url)
                 ];
               }),

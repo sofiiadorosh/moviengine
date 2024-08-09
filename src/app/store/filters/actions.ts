@@ -39,3 +39,15 @@ export const setTotalPages = createAction(
   filtersActionTypes.SET_TOTAL_PAGES,
   props<{ pages: number }>()
 );
+
+export const resetQuery = createAction(
+  filtersActionTypes.RESET_QUERY,
+);
+
+export const resetPage = createAction(
+  filtersActionTypes.RESET_PAGE,
+);
+
+export const resetQueryAndPage = createAction(
+  filtersActionTypes.RESET_QUERY_AND_PAGE,
+);

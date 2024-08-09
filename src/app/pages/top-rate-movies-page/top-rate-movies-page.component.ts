@@ -1,9 +1,11 @@
 import { AsyncPipe } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
 import { LoaderComponent } from "@shared/loader/loader.component";
+import { PaginationComponent } from "@shared/pagination/pagination.component";
+import * as filtersActions from "@store/filters/actions";
 import { AppState } from "@store/index";
 import { topRatedMoviesActions } from "@store/movies/actions";
 import { selectIsLoading, selectTopRatedMovies } from "@store/movies/selectors";
@@ -15,12 +17,13 @@ import { Observable } from "rxjs";
   imports: [
     MoviesListComponent,
     AsyncPipe,
-    LoaderComponent
+    LoaderComponent,
+    PaginationComponent
   ],
   templateUrl: "./top-rate-movies-page.component.html",
   styleUrls: ["./top-rate-movies-page.component.scss"]
 })
-export class TopRateMoviesPageComponent implements OnInit {
+export class TopRateMoviesPageComponent implements OnInit, OnDestroy {
   movies$: Observable<Movie[]>;
   isLoading$: Observable<boolean>;
 
@@ -36,4 +39,8 @@ export class TopRateMoviesPageComponent implements OnInit {
   loadMovies() {
     this.store.dispatch(topRatedMoviesActions.load());
   }
+  ngOnDestroy() {
+    this.store.dispatch(filtersActions.resetPage());
+  }
+
 }

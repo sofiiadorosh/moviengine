@@ -59,6 +59,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.store.dispatch(filtersActions.resetQueryAndPage());
     this.destroy$.next();
     this.destroy$.complete();
   }

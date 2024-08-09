@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
-import { setNextPage, setPage } from "@store/filters/actions";
+import { setPage } from "@store/filters/actions";
 import { selectPage, selectTotalPages } from "@store/filters/selectors";
 import { AppState } from "@store/index";
 import {
@@ -71,11 +71,6 @@ export class PaginationComponent implements OnInit {
   onSelectPageHandler(page: number, e?: KeyboardEvent) {
     if (e && e.code !== "Enter" && e.code !== "Space") return;
     this.store.dispatch(setPage({ page }));
-    this.scrollToTop();
-  }
-
-  onShowMoreHandler() {
-    this.store.dispatch(setNextPage());
     this.scrollToTop();
   }
 

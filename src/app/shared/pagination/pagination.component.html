@@ -34,14 +34,6 @@
       <svg-icon src="assets/svg/arrow.svg"></svg-icon>
     </button>
   </div>
-  @if (selectedPage !== totalPages) {
-    <button type="button"
-            class="pagination__show-button"
-            (click)="onShowMoreHandler()"
-    >
-      Show more
-    </button>
-  }
   <div class="pagination__stats">
     <span class="pagination__tag">{{ (movies$ | async)?.length || 0 }}</span>
     <span class="pagination__label">movies</span>

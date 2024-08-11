@@ -1,51 +1,175 @@
-<section class="subscription">
-  <h1 class="subscription__heading">Subscribe to our newsletter</h1>
-  <p class="subscription__subheading">
-    Join our subscribers list to get the latest news, updates and special offers delivered directly in your inbox.
-  </p>
-  <form [formGroup]="subscriptionForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="subscription__form">
-    <div class="subscription__content">
-      <h2 class="subscription__description">Contact information</h2>
-      <div class="subscription__list">
-        @for (field of fields; track field.id) {
-          <div class="subscription__field">
-            <input
-              [id]="field.id"
-              [type]="field.type"
-              [formControlName]="field.formControlName"
-              [placeholder]="field.placeholder"
-              class="subscription__input"
-            >
-            <label [for]="field.for" class="subscription__label">
-              {{ field.label }}
-              @if (field.required) {
-                <span class="subscription__label_required">*</span>
+@if(isSubscribed$ | async) {
+  <app-subscription-success
+  (unsubscribe)="onQuestionWindowHandler()">
+  </app-subscription-success>
+  @if(showModal) {
+    <app-modal (closeModal)="onQuestionWindowHandler()">
+      <p class="unsubscription__heading">Are you sure you want to unsubscribe?</p>
+      <div class="unsubscription__button-container">
+        <button type="button"
+                class="unsubscription__cancel"
+                (click)="onQuestionWindowHandler()">
+          Cancel
+        </button>
+        <button type="button"
+                class="unsubscription__unsubscribe"
+                (click)="onUnsubscribeHandler()">
+          Unsubscribe
+        </button>
+      </div>
+    </app-modal>
+  }
+} @else {
+  <section class="subscription">
+    <h1 class="subscription__heading">Subscribe to our newsletter</h1>
+    <p class="subscription__subheading">
+      Join our subscribers list to get the latest news, updates and special offers delivered directly in your inbox.
+    </p>
+    <form [formGroup]="subscriptionForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="subscription__form">
+      <div class="subscription__content">
+        <h2 class="subscription__description">Contact information</h2>
+        <div class="subscription__list">
+          @for (field of fields; track field.id) {
+            <div class="subscription__field">
+              <input
+                [id]="field.id"
+                [type]="field.type"
+                [formControlName]="field.formControlName"
+                [placeholder]="field.placeholder"
+                (input)="onInputHandler(field.formControlName)"
+                (focus)="onDropdownHandler(field.formControlName)"
+                class="subscription__input"
+              >
+              <label [for]="field.for" class="subscription__label">
+                {{ field.label }}
+                @if (field.required) {
+                  <span class="subscription__label_required">*</span>
+                }
+              </label>
+              @if(field.formControlName === "country") {
+                <div class="subscription__control">
+                  <div class="subscription__divider"></div>
+                  <button
+                    id="subscription-country-button"
+                    type="button"
+                    (click)="onClickHandler('country', $event)"
+                    class="subscription__control-button"
+                  >
+                    <svg-icon
+                      src="assets/svg/arrow.svg"
+                      class="subscription__control-icon"
+                    ></svg-icon>
+                  </button>
+                </div>
+                @if (isCountryDropdownOpened) {
+                  <div #countryDropdown>
+                    <app-dropdown
+                      [options]="filteredCountries"
+                      (chosenOption)="onSelectCountryHandler($event)">
+                    </app-dropdown>
+                  </div>
+                }
               }
-            </label>
+              @if(field.formControlName === "city") {
+                <div class="subscription__control">
+                  <div class="subscription__divider"></div>
+                  <button
+                    id="subscription-city-button"
+                    type="button"
+                    (click)="onClickHandler('country', $event)"
+                    [disabled]="subscriptionForm.get('city')?.disabled"
+                    class="subscription__control-button"
+                  >
+                    <svg-icon
+                      src="assets/svg/arrow.svg"
+                      class="subscription__control-icon"
+                    ></svg-icon>
+                  </button>
+                </div>
+                @if (isCityDropdownOpened) {
+                  <div #cityDropdown>
+                    <app-dropdown
+                      [options]="filteredCities"
+                      (chosenOption)="onSelectCityHandler($event)">
+                    </app-dropdown>
+                  </div>
+                }
+              }
+              @if(getErrorMessage(field.formControlName)) {
+                <p class="subscription__error">{{ getErrorMessage(field.formControlName) }}</p>
+              }
+            </div>
+          }
+        </div>
+      </div>
+      <div class="subscription__content">
+        <h2 class="subscription__description">Preferences</h2>
+        <div class="subscription__field">
+          <div
+            class="subscription__input subscription__input_outer"
+            tabindex="0"
+            (click)="onClickHandler('genres', $event)"
+            (keydown)="onClickHandler('genres', $event)">
+            @for(genre of selectedGenres; track genre) {
+              <div class="subscription__genre"
+                   tabindex="0"
+                   (click)="onDeselectGenreHandler(genre)"
+                   (keydown)="onDeselectGenreHandler(genre)">
+                <span>{{ genre }}</span>
+                <svg-icon src="assets/svg/cross.svg" class="subscription__control-button subscription__genre-button"></svg-icon>
+              </div>
+            }
+            <input
+              id="genre-query"
+              type="text"
+              formControlName="genre-query"
+              placeholder="Sci-fi, Thriller"
+              (input)="onSearchGenreHandler()"
+              (keydown)="onSearchGenreHandler($event)"
+              (focus)="onDropdownHandler('genres')"
+              class="subscription__input subscription__input_inner"
+            >
+            <input
+              id="genres"
+              type="text"
+              formControlName="genres"
+              class="subscription__input_hidden"
+            >
           </div>
-        }
+          <label for="genres" class="subscription__label">Favorite genres</label>
+          @if(isGenresDropdownOpened) {
+            <div #genresDropdown>
+              <app-dropdown
+                [options]="filteredGenres"
+                [orientation]="'horizontal'"
+                (chosenOption)="onSelectGenreHandler($event)">
+              </app-dropdown>
+            </div>
+          }
+          @if(genreError) {
+            <p class="subscription__error">{{ genreError }}</p>
+          }
+          @if(getErrorMessage('genres')) {
+            <p class="subscription__error">{{ getErrorMessage('genres') }}</p>
+          }
+        </div>
       </div>
-    </div>
-    <div class="subscription__content">
-      <h2 class="subscription__description">Preferences</h2>
-      <div class="subscription__field">
-        <input id="genres" type="text" formControlName="genres" placeholder="Sci-fi, Thriller" class="subscription__input">
-        <label for="genres" class="subscription__label">Favorite genres</label>
-<!--        <app-dropdown [options]="Object.values(genreIds)" [orientation]="'horizontal'"></app-dropdown>-->
-      </div>
-    </div>
-    <div class="subscription__content">
-      <h2 class="subscription__description">Confirmation</h2>
-      <div class="agreement__field">
-        <label for="agreement" class="agreement__label">
-          <input id="agreement" type="checkbox" formControlName="agreement" class="agreement__input">
-          <span class="agreement__checkbox">
+      <div class="subscription__content">
+        <h2 class="subscription__description">Confirmation</h2>
+        <div class="agreement__field">
+          <label for="agreement" class="agreement__label">
+            <input id="agreement" type="checkbox" formControlName="agreement" class="agreement__input">
+            <span class="agreement__checkbox">
             <svg-icon src="assets/svg/check.svg" class="agreement__icon"></svg-icon>
           </span>
-          <span>I agree with our terms and conditions and privacy policy.</span>
-        </label>
+            <span>I agree with our terms and conditions and privacy policy.</span>
+          </label>
+          @if(getErrorMessage('agreement')) {
+            <p class="subscription__error">{{ getErrorMessage('agreement') }}</p>
+          }
+        </div>
       </div>
-    </div>
-    <button class="subscription__button">Subscribe</button>
-  </form>
-</section>
+      <button class="subscription__button">Subscribe</button>
+    </form>
+  </section>
+}

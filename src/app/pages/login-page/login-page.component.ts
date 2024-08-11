@@ -8,6 +8,7 @@ import { ContainerComponent } from "@shared/container/container.component";
 import { ErrorComponent } from "@shared/error/error.component";
 import * as AuthActions from "@store/authentication/actions";
 import { selectError, selectIsAuthorized, selectIsLoading } from "@store/authentication/selectors";
+import { AppState } from "@store/index";
 import { SvgIconComponent } from "angular-svg-icon";
 import { Observable } from "rxjs";
 
@@ -41,7 +42,7 @@ export class LoginPageComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store,
+    private store: Store<AppState>,
     private router: Router
   ) {
     this.isAuthorized$ = this.store.select(selectIsAuthorized);

@@ -9,14 +9,14 @@
       Sort by: {{ sortType$ | async }}
     </h2>
     @if(isDropdownOpened) {
-      <ng-container #dropdown>
+      <div #dropdown>
         <app-dropdown
           [options]="sortParameters"
           [selectedOption]="(sortType$ | async)!"
           (chosenOption)="onSelectSortTypeHandler($event)"
         >
         </app-dropdown>
-      </ng-container>
+      </div>
     }
   </div>
   <div class="filter__content">

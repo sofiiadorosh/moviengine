@@ -23,7 +23,7 @@ export class MovieService {
   }
 
   private getMovies(endpoint: string, page: number): Observable<MovieListResponse> {
-    const params: Record<string, string> = { page: page.toString() }; // Ensure page is always included
+    const params: Record<string, string> = { page: page.toString() };
     return this.httpClient.get<MovieListResponse>(
       `${environment.apiBaseUrl}${endpoint}`,
       this.getOptions(params)

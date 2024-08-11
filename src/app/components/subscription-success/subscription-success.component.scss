@@ -1,0 +1,50 @@
+@import "../../styles/shared.scss";
+
+.success {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 24px 96px;
+
+  &__heading {
+    margin-bottom: 24px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__subheading {
+    margin-bottom: 12px;
+    font-family: $secondary-font-stack;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    width: 100%;
+  }
+
+  &__unsubscribe {
+    @extend %button;
+    width: 100%;
+    height: 65px;
+    font-size: 18px;
+    text-decoration: underline;
+  }
+
+  &__unlock {
+    @extend %button;
+    width: 100%;
+    height: 65px;
+    font-size: 18px;
+    color: $white;
+    background-color: $primary-dark;
+    border-radius: 16px;
+  }
+}

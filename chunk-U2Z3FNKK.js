@@ -1,0 +1,1 @@
+var A=function(r){return r.DEFAULT="",r.AUTH="auth",r.NOW_PLAYING="now-playing",r.POPULAR="popular",r.TOP_RATE="top-rate",r.UPCOMING="upcoming",r.FAVORITES="favorites",r.WATCH_LATER="watch-later",r.MOVIE_ID="movie/:id",r.SUBSCRIPTION="subscription",r.SEARCH="search",r.NOT_FOUND="**",r}(A||{});export{A as a};

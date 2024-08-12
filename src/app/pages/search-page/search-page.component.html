@@ -27,6 +27,10 @@
           <app-movies-list [movies]="movies"></app-movies-list>
           <app-pagination></app-pagination>
         </div>
+      } @else if((isLoading$ | async) && !movies.length && query) {
+        <div>We couldn't find any results for your search. Please try again with different keywords</div>
+      } @else {
+        <div>Unlock movies by typing in the search box above!</div>
       }
     }
     @if(isLoading$ | async) {

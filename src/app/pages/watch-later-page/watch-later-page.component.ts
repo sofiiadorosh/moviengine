@@ -1,5 +1,5 @@
-import {AsyncPipe} from "@angular/common";
-import { Component, OnDestroy } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
@@ -23,7 +23,7 @@ import { Observable } from "rxjs";
   templateUrl: "./watch-later-page.component.html",
   styleUrl: "./watch-later-page.component.scss"
 })
-export class WatchLaterPageComponent implements OnDestroy {
+export class WatchLaterPageComponent implements OnInit, OnDestroy {
   movies$: Observable<Movie[]>;
   isLoading$: Observable<boolean>;
 
@@ -33,8 +33,16 @@ export class WatchLaterPageComponent implements OnDestroy {
     this.loadMovies();
   }
 
+  ngOnInit() {
+    this.scrollToTop();
+  }
+
   loadMovies() {
     this.store.dispatch(watchLaterActions.load());
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   ngOnDestroy() {

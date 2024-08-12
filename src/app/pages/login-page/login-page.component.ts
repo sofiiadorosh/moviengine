@@ -1,7 +1,8 @@
 import { AsyncPipe, NgClass } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import { loginFields } from "@constants/login-fields";
 import { RoutePaths } from "@models/route-paths.enum";
 import { Store} from "@ngrx/store";
 import { ContainerComponent } from "@shared/container/container.component";
@@ -27,6 +28,7 @@ import { Observable } from "rxjs";
   styleUrls: ["./login-page.component.scss"]
 })
 export class LoginPageComponent {
+  protected readonly fields = loginFields;
   isAuthorized$: Observable<boolean>;
   isLoading$: Observable<boolean>;
   error$: Observable<string | null>
@@ -35,15 +37,13 @@ export class LoginPageComponent {
     username: ["", Validators.required],
     password: ["", Validators.required],
   });
-  types: { [key: string]: string } = {
-    username: "text",
-    password: "password"
-  };
+  isPasswordVisible = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {
     this.isAuthorized$ = this.store.select(selectIsAuthorized);
     this.isLoading$ = this.store.select(selectIsLoading);
@@ -78,8 +78,17 @@ export class LoginPageComponent {
   redirectToHome() {
     this.isAuthorized$.subscribe(isAuthorized => {
       if (isAuthorized) {
-        this.router.navigate([RoutePaths.DEFAULT]);
+        const returnUrl = this.route.snapshot.queryParams["returnUrl"] || RoutePaths.DEFAULT;
+        this.router.navigate([returnUrl]);
       }
     });
+  }
+
+  onShowPasswordHandler() {
+    this.isPasswordVisible = !this.isPasswordVisible;
+    const passwordField = this.fields.find(field => field.formControlName === "password");
+    if (passwordField) {
+      passwordField.type = this.isPasswordVisible ? "text" : "password";
+    }
   }
 }

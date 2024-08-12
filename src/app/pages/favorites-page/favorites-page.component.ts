@@ -1,5 +1,5 @@
 import { AsyncPipe } from "@angular/common";
-import { Component, OnDestroy } from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
 import { Movie } from "@models/movie.interface";
 import { Store} from "@ngrx/store";
@@ -22,13 +22,21 @@ import { Observable } from "rxjs";
   templateUrl: "./favorites-page.component.html",
   styleUrl: "./favorites-page.component.scss"
 })
-export class FavoritesPageComponent implements OnDestroy {
+export class FavoritesPageComponent implements OnInit, OnDestroy {
   movies$: Observable<Movie[]>;
   isLoading$: Observable<boolean>;
 
   constructor(private store: Store<AppState>) {
     this.movies$ = this.store.select(selectFavoriteMovies);
     this.isLoading$ = this.store.select(selectIsLoading);
+  }
+
+  ngOnInit() {
+    this.scrollToTop();
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   ngOnDestroy() {

@@ -4,7 +4,7 @@ import { MoviesListComponent } from "@components/movies-list/movies-list.compone
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
 import { LoaderComponent } from "@shared/loader/loader.component";
-import {PaginationComponent} from "@shared/pagination/pagination.component";
+import { PaginationComponent } from "@shared/pagination/pagination.component";
 import * as filtersActions from "@store/filters/actions";
 import { AppState } from "@store/index";
 import { upcomingMoviesActions } from "@store/movies/actions";
@@ -34,10 +34,15 @@ export class UpcomingMoviesPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadMovies();
+    this.scrollToTop();
   }
 
   loadMovies() {
     this.store.dispatch(upcomingMoviesActions.load());
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   ngOnDestroy() {

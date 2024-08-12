@@ -2,9 +2,8 @@
 
 .dropdown {
   position: absolute;
-  left: 50%;
-  bottom: -18px;
-  transform: translate(-50%, 90%);
+  bottom: -2px;
+  transform: translateY(100%);
   width: 100%;
   min-width: 160px;
   max-height: 150px;
@@ -23,8 +22,6 @@
   &_horizontal {
     height: auto;
     padding: 12px 8px;
-    bottom: -4px;
-    transform: translate(-50%, 100%);
 
     .dropdown__list {
       flex-direction: row;
@@ -45,6 +42,13 @@
         background-color: $green;
       }
     }
+  }
+
+  &__default {
+    padding: 8px 10px;
+    color: $green;
+    background: rgba(0, 166, 152, 0.3);
+    border-radius: 12px;
   }
 
   &::-webkit-scrollbar {

@@ -8,23 +8,31 @@
     <h2 class="login__subheading login__subheading_last">Or press quick sign in to use default credentials</h2>
 
     <form [formGroup]="loginForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="login__form">
-      @for(control of ["username", "password"]; track control) {
-        <div class="login__field" >
-          <input id="{{ control }}"
-                 [type]="types[control]"
-                 formControlName="{{ control }}"
-                 placeholder=" "
+      @for(field of fields; track field) {
+        <div class="login__field">
+          <input [id]="field.id"
+                 [type]="field.type"
+                 [formControlName]="field.formControlName"
+                 [placeholder]="field.placeholder"
                  class="login__input"
                  [readonly]="isLoading$ | async">
-          <label for="{{ control }}" class="login__label">{{ control.charAt(0).toUpperCase() + control.slice(1) }}</label>
-          @if(loginForm.get(control)?.invalid && loginForm.get(control)?.touched) {
+          <label [for]="field.for" class="login__label">{{ field.label }}</label>
+          <svg-icon [src]="'assets/svg/' + field.icon + '.svg'" class="login__icon"></svg-icon>
+          @if(field.formControlName === "password") {
+            <button type="button" class="login__eye" (click)="onShowPasswordHandler()">
+              <svg-icon [src]="isPasswordVisible ? 'assets/svg/open-eye.svg' : 'assets/svg/closed-eye.svg'"
+                        class="login__eye-icon"
+                        [ngClass]="{'login__eye-icon_closed': !isPasswordVisible, 'login__eye-icon_open': isPasswordVisible}">
+              </svg-icon>
+            </button>
+          }
+          @if(loginForm.get(field.formControlName)?.invalid && loginForm.get(field.formControlName)?.touched) {
             <p class="login__error">
               This field is required
             </p>
           }
         </div>
       }
-
       <div class="login__button-wrapper">
         <button type="submit"
                 [disabled]="isLoading$ | async"
@@ -44,7 +52,7 @@
                 [disabled]="isLoading$ | async"
                 class="login__button login__button_outlined">
           @if((isLoading$ | async) === false) {
-            <span>Quick Sign in</span>
+            <span>Quick Sign in 🚀</span>
           }
           @if((isLoading$ | async) && isQuickSignIn) {
             <span class="login__loader"></span>

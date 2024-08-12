@@ -34,10 +34,15 @@ export class PopularMoviesPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadMovies();
+    this.scrollToTop();
   }
 
   loadMovies() {
     this.store.dispatch(popularMoviesActions.load());
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   ngOnDestroy() {

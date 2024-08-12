@@ -34,10 +34,15 @@ export class NowPlayingMoviesPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadMovies();
+    this.scrollToTop();
   }
 
   loadMovies() {
     this.store.dispatch(nowPlayingMoviesActions.load());
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   ngOnDestroy() {

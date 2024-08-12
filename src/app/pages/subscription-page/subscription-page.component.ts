@@ -5,19 +5,17 @@ import { MovieItemComponent } from "@components/movie-item/movie-item.component"
 import { SubscriptionSuccessComponent } from "@components/subscription-success/subscription-success.component";
 import { genreIds } from "@constants/genre-ids";
 import { subscriptionFields } from "@constants/subscription-fields";
-import { City } from "@models/city.interface";
-import { Country } from "@models/country.interface";
 import { Subscription } from "@models/subscription.interface";
 import { Store } from "@ngrx/store";
+import { CountryCityService } from "@services/country-city/country-city.service";
 import { DropdownComponent } from "@shared/dropdown/dropdown.component";
 import { ModalComponent } from "@shared/modal/modal.component";
-import {countriesActions, setCity, setCountry} from "@store/country-city/actions";
-import { selectCities, selectCountries, selectCountry } from "@store/country-city/selectors";
 import { AppState } from "@store/index";
 import { setSubscriptionFields } from "@store/subscription/actions";
 import * as subscriptionActions from "@store/subscription/actions";
 import { selectData, selectIsSubscribed } from "@store/subscription/selectors";
 import { SvgIconComponent } from "angular-svg-icon";
+import { ICity,ICountry } from "country-state-city"
 import { Observable } from "rxjs";
 
 @Component({
@@ -38,14 +36,14 @@ import { Observable } from "rxjs";
 })
 export class SubscriptionPageComponent implements OnInit, OnDestroy {
   protected readonly fields = subscriptionFields;
-  protected readonly genreIds = genreIds;
-  countries$: Observable<Country[]>;
-  cities$: Observable<City[]>;
   data$: Observable<Subscription>;
   isSubscribed$: Observable<boolean>;
-  selectedCountry$: Observable<Country | null>;
-  filteredCountries: Country[] = [];
-  filteredCities: City[] = [];
+  countries: ICountry[] = [];
+  cities: ICity[] = [];
+  filteredCountries: ICountry[] = [];
+  filteredCities: ICity[]  = [];
+  selectedCountry: ICountry | null = null;
+  selectedCity: ICity | null = null;
   genres: string[] = [];
   filteredGenres: string[] = [];
   selectedGenres: string[] = [];
@@ -76,25 +74,37 @@ export class SubscriptionPageComponent implements OnInit, OnDestroy {
   );
 
   constructor(private formBuilder: FormBuilder,
-    private store: Store<AppState>,) {
-    this.countries$ = this.store.select(selectCountries);
-    this.cities$ = this.store.select(selectCities);
-    this.selectedCountry$ = this.store.select(selectCountry);
+    private store: Store<AppState>,
+    private countryCityService: CountryCityService) {
     this.data$ = this.store.select(selectData);
     this.isSubscribed$ = this.store.select((selectIsSubscribed));
   }
 
   ngOnInit() {
     this.addAdditionalControls();
-    this.store.dispatch(countriesActions.load());
 
     this.genres = Object.values(genreIds);
     this.filteredGenres = this.genres;
     document.addEventListener("click", this.onClickOutsideHandler.bind(this));
 
+    this.countries = this.countryCityService.getCountries();
+    this.filteredCountries = this.countries;
+
     this.subscriptionForm.get("country")?.valueChanges.subscribe(country => {
       const cityControl = this.subscriptionForm.get("city");
-      return country ? cityControl?.enable() : cityControl?.disable();
+
+      if (country) {
+        cityControl?.enable();
+        const selectedCountry = this.countries.find(item => item.name === country);
+        if (selectedCountry) {
+          this.countryCityService.getCitiesByCountry(selectedCountry.isoCode).subscribe(cities => {
+            this.cities = cities;
+            this.filteredCities = cities;
+          });
+        }
+      } else {
+        cityControl?.disable();
+      }
     });
 
     this.data$.subscribe(data => {
@@ -225,42 +235,32 @@ export class SubscriptionPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectCountryHandler(country: Country) {
+  onSelectCountryHandler(country: ICountry) {
     this.isCountryDropdownOpened = false;
     this.subscriptionForm.get("country")?.setValue(country.name);
-    this.store.dispatch(setCountry({ country }));
+    this.selectedCountry = country;
   }
 
-  onSelectCityHandler(city: City) {
+  onSelectCityHandler(city: ICity) {
     this.isCityDropdownOpened = false;
     this.subscriptionForm.get("city")?.setValue(city.name);
-    this.store.dispatch(setCity({ city }));
+    this.selectedCity = city;
   }
 
   onInputHandler(name: string): void {
     const input = this.subscriptionForm.get(name);
     const inputValue = input?.value.toLowerCase();
 
-    const inputs: { [key: string]: (value: string) => void } = {
-      country: (countryValue) => {
-        this.countries$.subscribe(countries => {
-          this.filteredCountries = countries.filter(country =>
-            country.name.toLowerCase().includes(countryValue)
-          );
-        });
-      },
-      city: (cityValue) => {
-        this.cities$.subscribe(cities => {
-          this.filteredCities = cities.filter(city =>
-            city.name.toLowerCase().includes(cityValue)
-          );
-        });
-      },
-    };
+    if (name === "country") {
+      this.filteredCountries = this.countries.filter(country =>
+        country.name.toLowerCase().includes(inputValue)
+      );
+    }
 
-    const action = inputs[name];
-    if (action) {
-      action(inputValue);
+    if (name === "city") {
+      this.filteredCities = this.cities.filter(city =>
+        city.name.toLowerCase().includes(inputValue)
+      );
     }
   }
 

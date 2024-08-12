@@ -51,7 +51,9 @@ export class MovieDetailsPageComponent implements OnInit {
 
       this.movie$.subscribe((movie) => {
         if (movie) {
-          this.imageUrl = `${this.baseImageUrl}${movie.poster_path}`;
+          this.imageUrl = movie.poster_path
+            ? `${this.baseImageUrl}/${movie.poster_path}`
+            : "./assets/webp/movie-placeholder.webp";
           this.backdropUrl = `${this.baseImageUrl}${movie.backdrop_path}`;
           this.rating = this.generateRatingArray(movie.vote_average);
         }

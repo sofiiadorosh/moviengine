@@ -10,7 +10,7 @@ export const subscriptionFields: Input[] = [
   { id: "country", for: "country", label: "State / Country", type: "text", formControlName: "country",
     placeholder: "Illinois", required: true },
   { id: "city", for: "city", label: "Town / City", type: "text", formControlName: "city",
-    placeholder: "Chicago", required: true },
+    placeholder: "Chicago", required: false },
   { id: "address", for: "address", label: "Address", type: "text", formControlName: "address",
     placeholder: "155 North Michigan Avenue", required: true },
   { id: "zip", for: "zip", label: "Zip / Postal code", type: "text", formControlName: "zip",

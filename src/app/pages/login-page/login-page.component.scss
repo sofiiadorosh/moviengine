@@ -63,7 +63,7 @@
   &__label {
     position: absolute;
     top: 50%;
-    left: 16px;
+    left: 48px;
     transform: translateY(-50%);
     padding: 4px;
     font-family: $secondary-font-stack;
@@ -76,7 +76,7 @@
 
   &__input {
     width: 100%;
-    padding: 16px;
+    padding: 16px 52px;
     font-size: 18px;
     font-weight: 400;
     line-height: 1.5;
@@ -108,12 +108,62 @@
     }
   }
 
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    stroke: $green;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
   &__error {
     position: absolute;
     bottom: -16px;
     left: 0;
     font-size: 12px;
     color: $red;
+  }
+
+  &__eye {
+    @extend %icon-button;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+  }
+
+  &__eye-icon {
+    width: 28px;
+    height: 28px;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    &_open {
+      position: absolute;
+      top: 0;
+      left: 0;
+      svg {
+        stroke: $green;
+      }
+    }
+
+    &_closed {
+      svg {
+        fill: $green;
+      }
+    }
   }
 
   &__button-wrapper {

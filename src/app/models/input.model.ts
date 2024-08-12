@@ -6,4 +6,5 @@ export interface Input {
   formControlName: string,
   placeholder: string,
   required: boolean,
+  icon?: string,
 }

@@ -34,11 +34,17 @@ export class TopRateMoviesPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadMovies();
+    this.scrollToTop();
   }
 
   loadMovies() {
     this.store.dispatch(topRatedMoviesActions.load());
   }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   ngOnDestroy() {
     this.store.dispatch(filtersActions.resetPage());
   }

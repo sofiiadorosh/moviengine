@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from "@angular/common";
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { SortParameters } from "@models/sort-parameters.enum";
 import { ICity,ICountry } from "country-state-city"
 
@@ -11,7 +11,8 @@ import { ICity,ICountry } from "country-state-city"
     AsyncPipe
   ],
   templateUrl: "./dropdown.component.html",
-  styleUrls: ["./dropdown.component.scss"]
+  styleUrls: ["./dropdown.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DropdownComponent<T = SortParameters | ICountry | ICity | string> {
   @Input() orientation: "vertical" | "horizontal" = "vertical";

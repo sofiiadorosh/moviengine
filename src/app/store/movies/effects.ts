@@ -159,10 +159,16 @@ export class MoviesEffects {
       ofType(favoriteMoviesActions.update),
       switchMap(action =>
         this.movieService.updateList("favorite", action.movieId).pipe(
-          map(() => favoriteMoviesActions.updateSuccess({ movieId: action.movieId })),
+          switchMap(() => {
+            return forkJoin([
+              of(favoriteMoviesActions.updateSuccess({ movieId: action.movieId })),
+              of(favoriteMoviesActions.load())
+            ]);
+          }),
+          mergeMap(actions => actions),
           catchError(error => of(favoriteMoviesActions.updateFailure({ error: error.message })))
         )
-      )
+      ),
     );
   });
 
@@ -171,10 +177,16 @@ export class MoviesEffects {
       ofType(watchLaterActions.update),
       switchMap(action =>
         this.movieService.updateList("watchlist", action.movieId).pipe(
-          map(() => watchLaterActions.updateSuccess({ movieId: action.movieId })),
+          switchMap(() => {
+            return forkJoin([
+              of(watchLaterActions.updateSuccess({ movieId: action.movieId })),
+              of(watchLaterActions.load())
+            ]);
+          }),
+          mergeMap(actions => actions),
           catchError(error => of(watchLaterActions.updateFailure({ error: error.message })))
         )
-      )
+      ),
     );
   });
 

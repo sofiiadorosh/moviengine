@@ -16,7 +16,7 @@ import { Observable } from "rxjs";
     RouterLink
   ],
   templateUrl: "./subscription-success.component.html",
-  styleUrl: "./subscription-success.component.scss"
+  styleUrl: "./subscription-success.component.scss",
 })
 export class SubscriptionSuccessComponent {
   @Output() unsubscribe = new EventEmitter<void>;

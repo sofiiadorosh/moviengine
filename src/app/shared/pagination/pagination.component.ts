@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Movie } from "@models/movie.interface";
 import { Store } from "@ngrx/store";
@@ -24,6 +24,7 @@ import { switchMap } from "rxjs/operators";
   imports: [SvgIconComponent, NgClass, AsyncPipe],
   templateUrl: "./pagination.component.html",
   styleUrls: ["./pagination.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent implements OnInit {
   movies$: Observable<Movie[]>;

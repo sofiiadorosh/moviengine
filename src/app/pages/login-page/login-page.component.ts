@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass } from "@angular/common";
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { loginFields } from "@constants/login-fields";
 import { RoutePaths } from "@models/route-paths.enum";
 import { Store} from "@ngrx/store";
@@ -25,7 +25,8 @@ import { Observable } from "rxjs";
     ErrorComponent
   ],
   templateUrl: "./login-page.component.html",
-  styleUrls: ["./login-page.component.scss"]
+  styleUrls: ["./login-page.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
   protected readonly fields = loginFields;

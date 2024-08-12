@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit} from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { MovieDetails } from "@models/movie-details.interface";
 import { Store } from "@ngrx/store";
@@ -25,6 +25,7 @@ import { Observable, of } from "rxjs";
   imports: [SvgIconComponent, CommonModule, LoaderComponent],
   templateUrl: "./movie-details-page.component.html",
   styleUrls: ["./movie-details-page.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovieDetailsPageComponent implements OnInit {
   movie$: Observable<MovieDetails | null>;

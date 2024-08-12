@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from "@angular/common";
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { genreIds } from "@constants/genre-ids";
 import { sortParameters } from "@constants/sort-parameters";
 import { SortParameters } from "@models/sort-parameters.enum";
@@ -21,7 +21,8 @@ import { Observable } from "rxjs";
     AsyncPipe
   ],
   templateUrl: "./filter.component.html",
-  styleUrl: "./filter.component.scss"
+  styleUrl: "./filter.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterComponent implements OnInit, OnDestroy {
   protected readonly Object = Object;

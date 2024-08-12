@@ -1,5 +1,5 @@
 import { AsyncPipe } from "@angular/common";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FilterComponent } from "@components/filter/filter.component";
 import { MoviesListComponent } from "@components/movies-list/movies-list.component";
@@ -28,7 +28,8 @@ import { debounceTime, takeUntil } from "rxjs/operators";
     PaginationComponent
   ],
   templateUrl: "./search-page.component.html",
-  styleUrls: ["./search-page.component.scss"]
+  styleUrls: ["./search-page.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchPageComponent implements OnInit, OnDestroy {
   movies$: Observable<Movie[]>;

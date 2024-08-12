@@ -1,5 +1,5 @@
 import { AsyncPipe } from "@angular/common";
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MovieItemComponent } from "@components/movie-item/movie-item.component";
 import { SubscriptionSuccessComponent } from "@components/subscription-success/subscription-success.component";
@@ -32,7 +32,8 @@ import { Observable } from "rxjs";
     AsyncPipe
   ],
   templateUrl: "./subscription-page.component.html",
-  styleUrls: ["./subscription-page.component.scss"]
+  styleUrls: ["./subscription-page.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscriptionPageComponent implements OnInit, OnDestroy {
   protected readonly fields = subscriptionFields;

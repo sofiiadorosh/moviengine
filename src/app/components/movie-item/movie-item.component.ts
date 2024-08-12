@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { genreIds } from "@constants/genre-ids";
 import { Movie } from "@models/movie.interface";
@@ -20,6 +20,7 @@ import { Observable, of } from "rxjs";
   imports: [CommonModule, SvgIconComponent, TruncateDescriptionPipe, RouterLink],
   templateUrl: "./movie-item.component.html",
   styleUrl: "./movie-item.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieItemComponent implements OnInit {
   @Input() item!: Movie;

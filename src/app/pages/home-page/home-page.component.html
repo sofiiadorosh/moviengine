@@ -1,3 +1,70 @@
 <section class="home">
-  <h1>Welcome to Moviengine</h1>
+<app-container>
+  <h1 class="home__heading">Welcome to Moviengine – <br>Your Ultimate Movie Destination!</h1>
+  <div class="home__content home__content_horizontal">
+    <div class="home__main">
+      <h2 class="home__subheading home__subheading_left">Discover, Stream, and <span class="home__subheading_colored">Enjoy</span>!</h2>
+      <p class="home__description">
+        Discover your next favorite movie 💫
+      </p>
+      <a [routerLink]="popularRoute" class="home__button">Get Started Today!</a>
+    </div>
+    <svg-icon src="assets/svg/hero.svg"></svg-icon>
+  </div>
+</app-container>
+</section>
+<section class="home home_colored">
+  <app-container>
+    <div class="home__content home__content_centered">
+      <h2 class="home__subheading">Why Choose Moviengine?</h2>
+      <ul class="home__list">
+        <li class="home__item">
+          <div class="home__circle">
+            <svg-icon src="assets/svg/check.svg" class="home__icon"></svg-icon>
+          </div>
+          <div class="home__tip">
+            <p class="home__tip home__tip_bold">Extensive Library:</p>
+            <p>Browse through thousands of movies across various genres, including the latest releases, classic favorites, and hidden gems.</p>
+          </div>
+        </li>
+        <li class="home__item">
+          <div class="home__circle">
+            <svg-icon src="assets/svg/check.svg" class="home__icon"></svg-icon>
+          </div>
+          <div class="home__tip">
+            <p class="home__tip home__tip_bold">Personalized Recommendations:</p>
+            <p>Our advanced algorithm analyzes your viewing habits to provide you with tailored suggestions, ensuring you never miss a movie you'll love.</p>
+          </div>
+        </li>
+        <li class="home__item">
+          <div class="home__circle">
+            <svg-icon src="assets/svg/check.svg" class="home__icon"></svg-icon>
+          </div>
+          <div class="home__tip">
+            <p class="home__tip home__tip_bold">High-Quality Streaming:</p>
+            <p>Enjoy seamless streaming in HD with minimal buffering. Whether you’re watching on your TV, tablet, or smartphone, we deliver an unparalleled viewing experience.</p>
+          </div>
+        </li>
+        <li class="home__item">
+          <div class="home__circle">
+            <svg-icon src="assets/svg/check.svg" class="home__icon"></svg-icon>
+          </div>
+          <div class="home__tip">
+            <p class="home__tip home__tip_bold">Watchlists & Favorites:</p>
+            <p>Create your own watchlist and save your favorite movies for easy access later. Keep track of what you want to watch next!</p>
+          </div>
+        </li>
+        <li class="home__item">
+          <div class="home__circle">
+            <svg-icon src="assets/svg/check.svg" class="home__icon"></svg-icon>
+          </div>
+          <div class="home__tip">
+            <p class="home__tip home__tip_bold">Community & Reviews:</p>
+            <p>Join our vibrant community of movie enthusiasts! Share your thoughts, write reviews, and discuss your favorite films with fellow users.</p>
+          </div>
+        </li>
+      </ul>
+      <a [routerLink]="popularRoute" class="home__button home__button_dark">Unlock Movies!</a>
+    </div>
+  </app-container>
 </section>

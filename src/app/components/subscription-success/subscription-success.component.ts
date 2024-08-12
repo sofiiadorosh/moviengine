@@ -30,6 +30,4 @@ export class SubscriptionSuccessComponent {
   onUnsubscribeHandler() {
     this.unsubscribe.emit();
   }
-
-  protected readonly RouterLink = RouterLink;
 }

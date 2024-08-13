@@ -13,7 +13,7 @@ import { FavoritesPageComponent } from "./favorites-page.component";
 describe("FavoritesPageComponent", () => {
   let component: FavoritesPageComponent;
   let fixture: ComponentFixture<FavoritesPageComponent>;
-  let store: MockStore;
+  let store: MockStore<AppState>;
   let selectMockFavoriteMovies: MemoizedSelector<AppState, Movie[]>;
   let selectMockIsLoading: MemoizedSelector<AppState, boolean>;
 

@@ -13,7 +13,7 @@ import { WatchLaterPageComponent } from "./watch-later-page.component";
 describe("WatchLaterPageComponent", () => {
   let component: WatchLaterPageComponent;
   let fixture: ComponentFixture<WatchLaterPageComponent>;
-  let store: MockStore;
+  let store: MockStore<AppState>;
   let selectMockWatchLaterMovies: MemoizedSelector<AppState, Movie[]>;
   let selectMockIsLoading: MemoizedSelector<AppState, boolean>;
 

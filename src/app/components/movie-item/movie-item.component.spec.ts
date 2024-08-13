@@ -3,8 +3,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
 import { movies } from "@constants/movies";
 import { Movie } from "@models/movie.interface";
-import { Store } from "@ngrx/store";
-import { provideMockStore } from "@ngrx/store/testing";
+import { MockStore, provideMockStore } from "@ngrx/store/testing";
 import { TruncateDescriptionPipe } from "@pipes/truncate-description/truncate-description.pipe";
 import { AppState } from "@store/index";
 import { favoriteMoviesActions, watchLaterActions } from "@store/movies/actions";
@@ -17,7 +16,7 @@ import { MovieItemComponent } from "./movie-item.component";
 describe("MovieItemComponent", () => {
   let component: MovieItemComponent;
   let fixture: ComponentFixture<MovieItemComponent>;
-  let store: Store<AppState>;
+  let store: MockStore<AppState>;
   let router: Router;
 
   const mockMovie: Movie = movies[0];
@@ -44,7 +43,7 @@ describe("MovieItemComponent", () => {
 
     fixture = TestBed.createComponent(MovieItemComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(Store);
+    store = TestBed.inject(MockStore);
     router = TestBed.inject(Router);
     component.item = mockMovie;
     fixture.detectChanges();

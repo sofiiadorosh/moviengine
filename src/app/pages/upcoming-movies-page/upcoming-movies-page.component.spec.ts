@@ -13,7 +13,7 @@ import { UpcomingMoviesPageComponent } from "./upcoming-movies-page.component";
 describe("UpcomingMoviesPageComponent", () => {
   let component: UpcomingMoviesPageComponent;
   let fixture: ComponentFixture<UpcomingMoviesPageComponent>;
-  let store: MockStore;
+  let store: MockStore<AppState>;
   let selectMockUpcomingMovies: MemoizedSelector<AppState, Movie[]>;
   let selectMockIsLoading: MemoizedSelector<AppState, boolean>;
 

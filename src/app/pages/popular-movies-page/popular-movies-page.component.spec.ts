@@ -13,7 +13,7 @@ import { PopularMoviesPageComponent } from "./popular-movies-page.component";
 describe("PopularMoviesPageComponent", () => {
   let component: PopularMoviesPageComponent;
   let fixture: ComponentFixture<PopularMoviesPageComponent>;
-  let store: MockStore;
+  let store: MockStore<AppState>;
   let selectMockPopularMovies: MemoizedSelector<AppState, Movie[]>;
   let selectMockIsLoading: MemoizedSelector<AppState, boolean>;
 

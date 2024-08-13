@@ -13,7 +13,7 @@ import { TopRateMoviesPageComponent } from "./top-rate-movies-page.component";
 describe("TopRateMoviesPageComponent", () => {
   let component: TopRateMoviesPageComponent;
   let fixture: ComponentFixture<TopRateMoviesPageComponent>;
-  let store: MockStore;
+  let store: MockStore<AppState>;
   let selectMockTopRatedMovies: MemoizedSelector<AppState, Movie[]>;
   let selectMockIsLoading: MemoizedSelector<AppState, boolean>;
 

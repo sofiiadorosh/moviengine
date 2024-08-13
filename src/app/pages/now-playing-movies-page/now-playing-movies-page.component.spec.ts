@@ -13,7 +13,7 @@ import { NowPlayingMoviesPageComponent } from "./now-playing-movies-page.compone
 describe("NowPlayingMoviesPageComponent", () => {
   let component: NowPlayingMoviesPageComponent;
   let fixture: ComponentFixture<NowPlayingMoviesPageComponent>;
-  let store: MockStore;
+  let store: MockStore<AppState>;
   let selectMockNowPlayingMovies: MemoizedSelector<AppState, Movie[]>;
   let selectMockIsLoading: MemoizedSelector<AppState, boolean>;
 

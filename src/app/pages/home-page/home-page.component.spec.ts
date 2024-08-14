@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideRouter } from "@angular/router";
+import { provideAngularSvgIcon } from "angular-svg-icon";
 
 import { HomePageComponent } from "./home-page.component";
 
@@ -8,10 +11,16 @@ describe("HomePageComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePageComponent]
-    })
-      .compileComponents();
-    
+      imports: [
+        HttpClientTestingModule,
+        HomePageComponent,
+      ],
+      providers: [
+        provideAngularSvgIcon(),
+        provideRouter([]),
+      ],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

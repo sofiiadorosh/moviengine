@@ -53,9 +53,13 @@ describe("MovieService", () => {
     service.getPopularMovies().subscribe({
       next: (data) => {
         expect(data).toEqual([]);
+        done();
       },
       error: (error: HttpErrorResponse) => {
         expect(error).toBeTruthy();
+        expect(error.status).toEqual(500);
+        expect(error.statusText).toEqual("Server Error");
+        done();
       }
     });
 
@@ -63,6 +67,5 @@ describe("MovieService", () => {
       `${environment.apiBaseUrl}/movie/popular?api_key=${environment.apiKey}`
     );
     req.flush(null, { status: 500, statusText: "Server Error" });
-    done();
   });
 });

@@ -27,7 +27,7 @@ describe("AuthenticationService", () => {
     expect(service).toBeTruthy();
   });
 
-  it("should get request token", () => {
+  it("should get request token", (done) => {
     const dummyTokenResponse: RequestTokenResponse = {
       success: true,
       expires_at: "2024-12-31",
@@ -36,6 +36,7 @@ describe("AuthenticationService", () => {
 
     service.getRequestToken().subscribe(response => {
       expect(response).toEqual(dummyTokenResponse);
+      done();
     });
 
     const req = httpMock.expectOne(
@@ -44,7 +45,7 @@ describe("AuthenticationService", () => {
     req.flush(dummyTokenResponse);
   });
 
-  it("should ask for permission", () => {
+  it("should ask for permission", (done) => {
     const dummyTokenResponse: RequestTokenResponse = {
       success: true,
       expires_at: "2024-12-31",
@@ -53,6 +54,7 @@ describe("AuthenticationService", () => {
 
     service.askForPermission("dummy_token").subscribe(response => {
       expect(response).toEqual(dummyTokenResponse);
+      done();
     });
 
     const req = httpMock.expectOne(
@@ -66,7 +68,7 @@ describe("AuthenticationService", () => {
     req.flush(dummyTokenResponse);
   });
 
-  it("should create session id", () => {
+  it("should create session id", (done) => {
     const dummySessionResponse: CreateSessionIdResponse = {
       success: true,
       session_id: "dummy_session_id"
@@ -74,6 +76,7 @@ describe("AuthenticationService", () => {
 
     service.createSessionId("dummy_token").subscribe(response => {
       expect(response).toEqual(dummySessionResponse);
+      done();
     });
 
     const req = httpMock.expectOne(

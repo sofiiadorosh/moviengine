@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ContainerComponent } from "./container.component";
@@ -8,9 +9,11 @@ describe("ContainerComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContainerComponent],
-    })
-      .compileComponents();
+      imports: [
+        HttpClientTestingModule,
+        ContainerComponent,
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ContainerComponent);
     component = fixture.componentInstance;

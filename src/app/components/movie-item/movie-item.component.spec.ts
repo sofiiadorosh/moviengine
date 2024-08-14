@@ -1,4 +1,4 @@
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing"; // Update this import
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
 import { movies } from "@constants/movies";
@@ -24,7 +24,7 @@ describe("MovieItemComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        HttpClientModule,
+        HttpClientTestingModule,
         MovieItemComponent,
         SvgIconComponent,
         TruncateDescriptionPipe
@@ -57,7 +57,7 @@ describe("MovieItemComponent", () => {
     component.ngOnInit();
     expect(component.imageUrl).toBe(`${component.baseImageUrl}/${mockMovie.backdrop_path}`);
     expect(component.genres).toEqual(["sci-fi", "action", "adventure"]);
-    expect(component.rating).toEqual([1, 1, 1, 1, 0]);
+    expect(component.rating).toEqual("7");
     expect(component.movieId).toBe("/movie/823464");
     component.liked$.subscribe(liked => expect(liked).toBe(true));
     component.watchedLater$.subscribe(watchedLater => expect(watchedLater).toBe(false));

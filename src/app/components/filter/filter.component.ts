@@ -25,10 +25,9 @@ import { Observable } from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterComponent implements OnInit, OnDestroy {
-  protected readonly Object = Object;
-  protected readonly genreIds = genreIds;
   protected readonly sortParameters = sortParameters;
-  arrays: number[][] = this.generateArrays(5);
+  protected readonly genres = Object(genreIds);
+  ratingList: number[][] = this.generateArrays(5);
   sortType$: Observable<SortParameters>;
   genres$: Observable<string[]>;
   rating$: Observable<number[]>;

@@ -136,25 +136,20 @@ export class SubscriptionPageComponent implements OnInit, OnDestroy {
   }
 
   private onClickOutsideHandler(e: MouseEvent) {
-    const isClickInsideGenresDropdown = this.genresDropdown?.nativeElement.contains(e.target);
-    const isClickInsideCountryDropdown = this.countryDropdown?.nativeElement.contains(e.target);
-    const isClickInsideCityDropdown = this.cityDropdown?.nativeElement.contains(e.target);
-    const isClickInsideGenresInput = (e.target as HTMLElement).id === "genres";
-    const isClickInsideCountryInput = (e.target as HTMLElement).id === "country";
-    const isClickInsideCityInput = (e.target as HTMLElement).id === "city";
-    const isClickInsideCountryButton = (e.target as HTMLElement).id === "subscription-country-button";
-    const isClickInsideCityButton = (e.target as HTMLElement).id === "subscription-city-button";
+    const clickTargets = [
+      this.genresDropdown?.nativeElement,
+      this.countryDropdown?.nativeElement,
+      this.cityDropdown?.nativeElement,
+      document.getElementById("genres"),
+      document.getElementById("country"),
+      document.getElementById("city"),
+      document.getElementById("subscription-country-button"),
+      document.getElementById("subscription-city-button")
+    ];
 
-    if (
-      !isClickInsideGenresDropdown &&
-      !isClickInsideCountryDropdown &&
-      !isClickInsideCityDropdown &&
-      !isClickInsideGenresInput &&
-      !isClickInsideCountryInput &&
-      !isClickInsideCityInput &&
-      !isClickInsideCountryButton &&
-      !isClickInsideCityButton
-    ) {
+    const isClickInside = clickTargets.some(target => target?.contains(e.target));
+
+    if (!isClickInside) {
       this.isGenresDropdownOpened = false;
       this.isCountryDropdownOpened = false;
       this.isCityDropdownOpened = false;

@@ -12,7 +12,8 @@ import {
   selectNowPlayingMovies,
   selectPopularMovies,
   selectTopRatedMovies,
-  selectUpcomingMovies, selectWatchLaterMovies,
+  selectUpcomingMovies,
+  selectWatchLaterMovies,
 } from "@store/movies/selectors";
 import { SvgIconComponent } from "angular-svg-icon";
 import { Observable } from "rxjs";
@@ -30,6 +31,7 @@ export class PaginationComponent implements OnInit {
   movies$: Observable<Movie[]>;
   selectedPage$: Observable<number>;
   totalPages$: Observable<number>;
+  pages: number[] = [];
   selectedPage = 1;
   totalPages = 1;
 
@@ -61,8 +63,17 @@ export class PaginationComponent implements OnInit {
       )
       .subscribe();
 
-    this.totalPages$.subscribe((pages) => (this.totalPages = pages));
-    this.selectedPage$.subscribe((page) => (this.selectedPage = page));
+    this.totalPages$.subscribe((pages) => {
+      this.totalPages = pages;
+      this.pages = this.getDisplayedPages();
+    });
+
+    this.selectedPage$.subscribe((page) => {
+      this.selectedPage = page;
+      this.pages = this.getDisplayedPages();
+    });
+
+    this.pages = this.getDisplayedPages();
   }
 
   selectMovies(key: keyof typeof this.moviesSelectors) {

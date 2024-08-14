@@ -22,7 +22,7 @@
   <div class="filter__content">
     <h2 class="filter__heading">Genres</h2>
     <ul class="filter__list">
-      @for(genre of Object.values(genreIds); track genre) {
+      @for(genre of genres; track genre) {
         <li class="filter__item">
           <label [for]="genre" class="filter__label">
             <input
@@ -45,7 +45,7 @@
   <div class="filter__content">
     <h2 class="filter__heading">Rating</h2>
     <ul class="filter__list rating__list">
-      @for(array of arrays; track $index) {
+      @for(starList of ratingList; track $index) {
         <li class="filter__item">
           <label [for]="$index" class="filter__label">
             <input
@@ -59,9 +59,9 @@
               <svg-icon src="assets/svg/check.svg"></svg-icon>
             </span>
             <span class="filter__star-list">
-              @for(item of array; track $index) {
+              @for(star of starList; track $index) {
                 <span class="filter__star"
-                    [ngClass]="{'filter__star_filled': item, 'filter__star_empty': !item}">
+                    [ngClass]="{'filter__star_filled': star, 'filter__star_empty': !star}">
                   <svg-icon src="assets/svg/star.svg"></svg-icon>
                 </span>
               }

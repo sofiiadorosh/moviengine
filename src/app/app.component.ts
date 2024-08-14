@@ -6,6 +6,7 @@ import { Store } from "@ngrx/store";
 import { selectSessionId } from "@store/authentication/selectors";
 import { AppState } from "@store/index";
 import { favoriteMoviesActions, watchLaterActions } from "@store/movies/actions";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-root",
@@ -20,12 +21,14 @@ export class AppComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.sessionId$.subscribe(sessionId => {
-      if (sessionId) {
-        this.loadFavoriteMovies();
-        this.loadWatchLaterMovies();
-      }
-    });
+    this.sessionId$
+      .pipe(take(1))
+      .subscribe(sessionId => {
+        if (sessionId) {
+          this.loadFavoriteMovies();
+          this.loadWatchLaterMovies();
+        }
+      });
   }
 
   loadFavoriteMovies() {

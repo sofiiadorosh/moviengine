@@ -4,10 +4,10 @@
      class="movie__link"
      (click)="navigateToMovieDetails()"
      (keydown)="navigateToMovieDetails()">
-    <img [src]="imageUrl" [alt]="item.title" class="movie__picture">
+    <img [src]="imageUrl" [alt]="item?.title" class="movie__picture">
     <div class="movie__information">
-      <h2 class="movie__title">{{ item.title }}</h2>
-      <p class="movie__overview">{{ item.overview | truncateDescription:maxOverviewLength }}</p>
+      <h2 class="movie__title">{{ item?.title }}</h2>
+      <p class="movie__overview">{{ item?.overview | truncateDescription:maxOverviewLength }}</p>
       <ul class="movie__controls-list">
         <li>
           <ul class="movie__controls-list movie__controls-list_left">
@@ -16,7 +16,7 @@
                       title="Add to Favorites"
                       [ngClass]="{ 'movie__controls-button_active': liked$ | async }"
                       class="movie__controls-button"
-                      (click)="onAddToFavorites(item.id, $event)">
+                      (click)="item ? onAddToFavorites(item.id, $event) : null">
                 <svg-icon src="assets/svg/heart.svg"></svg-icon>
               </button>
             </li>
@@ -25,7 +25,7 @@
                       title="Add to Watch Later"
                       [ngClass]="{ 'movie__controls-button_active': watchedLater$ | async }"
                       class="movie__controls-button"
-                      (click)="onAddToWatchLater(item.id, $event)">
+                      (click)="item ? onAddToWatchLater(item.id, $event) : null">
                 <svg-icon src="assets/svg/add.svg"></svg-icon>
               </button>
             </li>
@@ -35,15 +35,14 @@
           <button type="button"
                   title="Show more Information"
                   class="movie__controls-button"
-                  (click)="navigateToMovieDetails()">
+                  (click)="item ? navigateToMovieDetails() : null">
             <svg-icon src="assets/svg/information.svg"></svg-icon>
           </button>
         </li>
       </ul>
       <ul class="movie__rating">
         @for (item of rating; track $index) {
-          <li class="movie__star"
-              [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
+          <li class="movie__star" [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
             <svg-icon src="assets/svg/star.svg"></svg-icon>
           </li>
         }

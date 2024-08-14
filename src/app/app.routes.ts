@@ -1,6 +1,8 @@
 import { Routes } from "@angular/router";
 import { isAuthorizedGuard } from "@guards/is-authorized/is-authorized.guard";
 import { loginRedirectGuard } from "@guards/login-redirect/login-redirect.guard";
+import { movieResolverGuard } from "@guards/movie-resolver/movie-resolver.guard";
+import { moviesListResolverGuard } from "@guards/movies-list-resolver/movies-list-resolver.guard";
 import { RoutePaths } from "@models/route-paths.enum";
 import { LayoutComponent } from "@shared/layout/layout.component";
 
@@ -17,24 +19,36 @@ export const routes: Routes = [
       },
       {
         path: RoutePaths.NOW_PLAYING,
+        resolve: {
+          movies: moviesListResolverGuard,
+        },
         loadComponent: () =>
           import("@pages/now-playing-movies-page/now-playing-movies-page.component")
             .then(component => component.NowPlayingMoviesPageComponent)
       },
       {
         path: RoutePaths.POPULAR,
+        resolve: {
+          movies: moviesListResolverGuard,
+        },
         loadComponent: () =>
           import("@pages/popular-movies-page/popular-movies-page.component")
             .then(component => component.PopularMoviesPageComponent)
       },
       {
         path: RoutePaths.TOP_RATE,
+        resolve: {
+          movies: moviesListResolverGuard,
+        },
         loadComponent: () =>
           import("@pages/top-rate-movies-page/top-rate-movies-page.component")
             .then(component => component.TopRateMoviesPageComponent)
       },
       {
         path: RoutePaths.UPCOMING,
+        resolve: {
+          movies: moviesListResolverGuard,
+        },
         loadComponent: () =>
           import("@pages/upcoming-movies-page/upcoming-movies-page.component")
             .then(component => component.UpcomingMoviesPageComponent)
@@ -55,6 +69,10 @@ export const routes: Routes = [
       },
       {
         path: RoutePaths.MOVIE_ID,
+        resolve: {
+          movie: movieResolverGuard,
+        },
+
         loadComponent: () =>
           import("@pages/movie-details-page/movie-details-page.component")
             .then(component => component.MovieDetailsPageComponent)

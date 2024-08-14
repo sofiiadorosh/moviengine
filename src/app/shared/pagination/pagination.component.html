@@ -8,7 +8,7 @@
       <svg-icon src="assets/svg/arrow.svg"></svg-icon>
     </button>
     <ul class="pagination__list">
-      @for(page of getDisplayedPages(); track page) {
+      @for(page of pages; track page) {
         @if(page !== -1) {
           <li class="pagination__item"
               [ngClass]="{ 'pagination__item_active': selectedPage === page }"

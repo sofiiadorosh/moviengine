@@ -1,0 +1,17 @@
+<section class="success">
+  <img src="./assets/png/yay.png" alt="Yay">
+  <h2 class="success__heading">Congratulations!</h2>
+  <p class="success__subheading">Hi {{ (data$ | async)?.["firstName"] || ""}},</p>
+  <p class="success__subheading">You have successfully subscribed to our newsletters!</p>
+  <p class="success__subheading">If you would like to unsubscribe please use the link below.</p>
+  <div class="success__button-container">
+    <button type="button"
+            class="success__unsubscribe"
+            (click)="onUnsubscribeHandler()">
+      Unsubscribe
+    </button>
+    <a [routerLink]="popularRoute" class="success__unlock">
+      Unlock movies
+    </a>
+  </div>
+</section>

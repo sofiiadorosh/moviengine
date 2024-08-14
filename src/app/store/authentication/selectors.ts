@@ -1,8 +1,9 @@
-import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { createSelector } from "@ngrx/store";
+import { AppState } from "@store/index";
 
 import { AuthState } from "./state";
 
-export const selectAuthState = createFeatureSelector<AuthState>("auth");
+export const selectAuthState = (state: AppState) => state.auth;
 
 export const selectToken = createSelector(
   selectAuthState,
@@ -14,12 +15,17 @@ export const selectSessionId = createSelector(
   (state: AuthState) => state.sessionId
 );
 
-export const selectAuthLoading = createSelector(
+export const selectIsAuthorized = createSelector(
   selectAuthState,
-  (state: AuthState) => state.isLoading
+  (state: AuthState) => state.isAuthorized
 );
 
-export const selectAuthError = createSelector(
+export const selectError = createSelector(
   selectAuthState,
   (state: AuthState) => state.error
+);
+
+export const selectIsLoading = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.isLoading
 );

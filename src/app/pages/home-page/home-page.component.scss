@@ -1,10 +1,141 @@
-.home {
-  height: 100%;
-  padding: 24px 36px;
+@import "../../styles/shared.scss";
 
-  h1 {
-    font-size: 28px;
-    font-weight: 500;
-    line-height: 1.2;
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 96px;
+
+  &_colored {
+    background: $secondary-light-white;
+  }
+
+  &__heading {
+    margin-bottom: 24px;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__subheading {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+
+    &_left {
+      text-align: left;
+    }
+
+    &_colored {
+      padding: 4px 12px;
+      line-height: 1.2;
+      color: $white;
+      background-color: $yellow;
+      border-radius: 12px;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &:not(:last-child) {
+      margin-bottom: 36px;
+    }
+
+    &_centered {
+      align-items: center;
+    }
+
+    &_horizontal {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+  }
+
+  &__description {
+    font-family: $secondary-font-stack;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  &__button {
+    @extend %button;
+    width: 100%;
+    height: 65px;
+    font-size: 18px;
+    color: $white;
+    background: $green;
+    border-radius: 16px;
+
+    &_dark {
+      background: $primary-dark;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 800px;
+    margin-bottom: 24px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: 1.5px solid $primary-grey;
+    border-radius: 4px;
+  }
+
+  &__icon {
+    width: 36px;
+    height: 36px;
+    fill: $green;
+
+    svg {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  &__tip {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: $secondary-font-stack;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+
+    &_bold {
+      font-size: 18px;
+      font-family: $primary-font-stack;
+      font-weight: 700;
+    }
   }
 }

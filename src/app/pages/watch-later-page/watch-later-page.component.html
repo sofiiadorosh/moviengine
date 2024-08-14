@@ -1,6 +1,7 @@
 <section class="watch-later">
   @if ((movies$ | async); as movies) {
     <app-movies-list [movies]="movies"></app-movies-list>
+    <app-pagination></app-pagination>
   } @else {
     <p>Sorry, you have not add any movies to Watch Later 😔</p>
   }

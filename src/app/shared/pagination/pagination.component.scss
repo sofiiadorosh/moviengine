@@ -1,0 +1,122 @@
+@import "../../styles/shared.scss";
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__heading {
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+
+    &_active {
+      .pagination__button {
+        color: $green;
+        cursor: default;
+      }
+    }
+    &_inactive {
+      .pagination__button {
+        cursor: default;
+      }
+    }
+
+    &:hover:not(.pagination__item_active):not(.pagination__item_inactive) {
+      .pagination__button {
+        color: $green;
+      }
+    }
+  }
+
+  &__button {
+    @extend %button;
+    transition: color 250ms $timing-function;
+  }
+
+  &__icon-button {
+    @extend %icon-button;
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: $primary-dark;
+      transition: fill 250ms $timing-function;
+    }
+
+    &:hover {
+      svg {
+        fill: $green;
+      }
+    }
+
+    &:disabled {
+      cursor: default;
+      svg {
+        fill: $secondary-grey;
+      }
+    }
+
+    &_left {
+      transform: rotateZ(90deg);
+    }
+    &_right {
+      transform: rotateZ(-90deg);
+    }
+  }
+
+  &__show-button {
+    @extend %button;
+    width: 160px;
+    height: 54px;
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.4;
+    color: $white;
+    background-color: $green;
+    border-radius: 16px;
+  }
+
+  &__stats {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__tag {
+    padding: 4px 8px;
+    color: $green;
+    background: rgba(0, 166, 152, 0.3);
+    border-radius: 12px;
+  }
+
+  &__label {
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}

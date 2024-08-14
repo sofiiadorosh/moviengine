@@ -1,0 +1,317 @@
+@import "../../styles/shared.scss";
+
+.subscription {
+  padding: 24px 96px;
+
+  &__heading {
+    margin-bottom: 12px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__subheading {
+    margin-bottom: 24px;
+    font-family: $secondary-font-stack;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 736px;
+    margin: 0 auto;
+    padding: 48px 32px;
+    background: $primary-light-white;
+    border-radius: 16px;
+    box-shadow: 0 4px 48px rgba(0, 166, 152, 0.1);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__description {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(8, 60px);
+    gap: 32px;
+
+    @media screen and (min-width: 768px) {
+      grid-template-columns: repeat(2, 319px);
+      grid-template-rows: repeat(4, 60px);
+    }
+  }
+
+  &__field {
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+
+    &:nth-child(3) {
+      grid-column: 1 / span 2;
+    }
+  }
+
+  &__label {
+    font-family: $secondary-font-stack;
+    font-weight: 600;
+    line-height: 1.5;
+
+    &_required {
+      color: $red;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: $secondary-font-stack;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    color: $primary-dark;
+    background-color: $secondary-dark-white;
+    border: 1px solid $primary-grey;
+    border-radius: 12px;
+    outline: none;
+
+    &_outer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 16px;
+
+      &:focus-within {
+        border-color: $green;
+      }
+    }
+
+    &_inner {
+      width: 100px;
+      padding: 8px 0;
+      border: none;
+    }
+
+    &_hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      white-space: nowrap;
+      border: 0;
+      clip-path: inset(100%);
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+    }
+
+    &:focus {
+      border-color: $green;
+    }
+
+    &:disabled + .subscription__label {
+      color: $secondary-grey;
+    }
+
+    &::placeholder {
+      font-family: $secondary-font-stack;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.34;
+      color: $secondary-grey;
+    }
+  }
+
+  &__genre {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 8px;
+    text-transform: lowercase;
+    color: $green;
+    background: rgba(0, 166, 152, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $green;
+    }
+  }
+
+  &__control {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__divider {
+    width: 1px;
+    height: 20px;
+    background-color: $primary-grey;
+  }
+
+  &__control-button {
+    @extend %button;
+    width: 28px;
+    height: 28px;
+    color: $primary-dark;
+    border-radius: 50%;
+    transition: background-color 250ms $timing-function;
+
+    &:disabled {
+      color: $secondary-grey;
+      cursor: default;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: $primary-grey;
+    }
+  }
+
+  &__control-icon {
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+  }
+
+  &__genre-button {
+    width: 20px;
+    height: 20px;
+  }
+
+  &__button {
+    @extend %button;
+    width: 100%;
+    height: 65px;
+    font-size: 18px;
+    color: $white;
+    background-color: $primary-dark;
+    border-radius: 16px;
+  }
+
+  &__error {
+    position: absolute;
+    bottom: -16px;
+    left: 0;
+    font-size: 12px;
+    color: $red;
+  }
+
+  .agreement {
+    &__field {
+      position: relative;
+      padding: 12px 16px;
+      background: $secondary-dark-white;
+      border: 1px solid $primary-grey;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    &__input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      white-space: nowrap;
+      clip-path: inset(100%);
+      clip: rect(0 0 0 0);
+      overflow: hidden;
+      &:checked + .agreement__checkbox > .agreement__icon {
+        opacity: 1;
+      }
+    }
+    &__label {
+      display: flex;
+      gap: 10px;
+      font-family: $secondary-font-stack;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    &__checkbox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background-color: transparent;
+      border: 1.5px solid $primary-grey;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    &__icon {
+      fill: $green;
+      opacity: 0;
+      transition: opacity 250ms $timing-function;
+      svg {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  }
+}
+
+.unsubscription {
+  &__heading {
+    margin-bottom: 20px;
+    font-family: $secondary-font-stack;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: center;
+  }
+  &__button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  &__cancel {
+    @extend %button;
+    width: 240px;
+    height: 65px;
+    font-size: 18px;
+    color: $primary-dark;
+    background-color: transparent;
+    border: 2px solid $primary-dark;
+    border-radius: 16px;
+  }
+  &__unsubscribe {
+    @extend %button;
+    width: 240px;
+    height: 65px;
+    font-size: 18px;
+    color: $white;
+    background-color: $primary-dark;
+    border-radius: 16px;
+  }
+}

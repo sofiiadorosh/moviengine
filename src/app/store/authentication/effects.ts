@@ -15,10 +15,17 @@ export class AuthEffects {
   requestToken$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.requestToken),
-      switchMap(() => {
+      switchMap(action => {
         return this.authService.getRequestToken().pipe(
-          map(response => AuthActions.requestTokenSuccess({ response })),
-          catchError(error => of(AuthActions.requestTokenFailure({ error })))
+          map(response => AuthActions.requestTokenSuccess({
+            response,
+            username: action.username,
+            password: action.password
+          })),
+          catchError((error: Error) => {
+            const message = error.message || "Request token failed";
+            return of(AuthActions.requestTokenFailure({ error: message }));
+          })
         );
       })
     );
@@ -28,10 +35,14 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.requestTokenSuccess),
       switchMap(action => {
+        const { username, password } = action;
         const token = action.response.request_token;
-        return this.authService.askForPermission(token).pipe(
+        return this.authService.askForPermission({ username, password, token }).pipe(
           map(() => AuthActions.askForPermissionSuccess({ token })),
-          catchError(error => of(AuthActions.askForPermissionFailure({ error })))
+          catchError((error: Error) => {
+            const message = error.message || "Permission request failed";
+            return of(AuthActions.askForPermissionFailure({ error: message }));
+          })
         );
       })
     );
@@ -44,7 +55,10 @@ export class AuthEffects {
         const token = action.token;
         return this.authService.createSessionId(token).pipe(
           map(response => AuthActions.createSessionIdSuccess({ response })),
-          catchError(error => of(AuthActions.createSessionIdFailure({ error })))
+          catchError((error: Error) => {
+            const message = error.message || "Session creation failed";
+            return of(AuthActions.createSessionIdFailure({ error: message }));
+          })
         );
       })
     );

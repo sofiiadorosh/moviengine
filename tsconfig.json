@@ -53,6 +53,12 @@
       ],
       "@store/*": [
         "./src/app/store/*"
+      ],
+      "@interceptors/*": [
+        "./src/app/interceptors/*"
+      ],
+      "@guards/*": [
+        "./src/app/guards/*"
       ]
     }
   },

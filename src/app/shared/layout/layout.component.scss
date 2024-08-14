@@ -1,0 +1,11 @@
+main {
+  width: 100%;
+}
+
+.layout {
+  &__body {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+  }
+}

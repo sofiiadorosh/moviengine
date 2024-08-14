@@ -4,9 +4,11 @@ import {
   movieDetailsActions,
   nowPlayingMoviesActions,
   popularMoviesActions,
+  searchedMoviesActions,
   topRatedMoviesActions,
   upcomingMoviesActions,
-  watchLaterActions } from "@store/movies/actions";
+  watchLaterActions
+} from "@store/movies/actions";
 import { initialState, MoviesState } from "@store/movies/state";
 
 export const moviesReducer = createReducer(
@@ -116,6 +118,16 @@ export const moviesReducer = createReducer(
     ...state, isLoading: false, movieDetails: movie
   })),
   on(movieDetailsActions.loadFailure, (state, { error }): MoviesState => ({
+    ...state, isLoading: false, error
+  })),
+
+  on(searchedMoviesActions.load, (state): MoviesState => ({
+    ...state, isLoading: true
+  })),
+  on(searchedMoviesActions.loadSuccess, (state, { movies }): MoviesState => ({
+    ...state, isLoading: false, searched: movies
+  })),
+  on(searchedMoviesActions.loadFailure, (state, { error }): MoviesState => ({
     ...state, isLoading: false, error
   })),
 );

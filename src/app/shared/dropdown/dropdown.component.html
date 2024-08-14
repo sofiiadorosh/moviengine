@@ -1,0 +1,22 @@
+<div class="dropdown" [ngClass]="{ 'dropdown_horizontal': orientation === 'horizontal' }">
+  @if (options.length) {
+    <ul class="dropdown__list">
+      @for(option of options; track option) {
+        <li class="dropdown__item"
+            [ngClass]="{'dropdown__item_active': selectedOption === option}"
+            (click)="onOptionClickHandler(option, $event)"
+            (keydown)="onOptionClickHandler(option, $event)"
+            tabindex="0"
+        >
+          @if(isCountry(option) || isCity(option)) {
+            {{ option.name }}
+          } @else {
+            {{ option }}
+          }
+        </li>
+      }
+    </ul>
+  } @else {
+    <div class="dropdown__default">No matches found...</div>
+  }
+</div>

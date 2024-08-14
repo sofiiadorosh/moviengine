@@ -16,7 +16,7 @@ export const authReducer = createReducer(
     ...state, error, isLoading: false })),
   on(AuthActions.createSessionId, (state): AuthState => ({ ...state, isLoading: true, error: null })),
   on(AuthActions.createSessionIdSuccess, (state, { response }): AuthState => ({
-    ...state, sessionId: response.session_id, isLoading: false })),
+    ...state, sessionId: response.session_id, isAuthorized: true, isLoading: false })),
   on(AuthActions.createSessionIdFailure, (state, { error }): AuthState => ({
     ...state, error, isLoading: false }))
 );

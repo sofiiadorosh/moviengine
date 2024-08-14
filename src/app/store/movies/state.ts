@@ -11,6 +11,7 @@ export interface MoviesState {
   favoriteIds: number[],
   watchLaterIds: number[],
   movieDetails: MovieDetails | null,
+  searched: Movie[],
   error: string | null,
   isLoading: boolean,
 }
@@ -25,6 +26,7 @@ export const initialState: MoviesState = {
   favoriteIds: [],
   watchLaterIds: [],
   movieDetails: null,
+  searched: [],
   error: null,
   isLoading: false,
 }

@@ -1,0 +1,20 @@
+@import "../../styles/shared.scss";
+
+.error {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  padding: 16px;
+  background: $red;
+  border-radius: 12px;
+
+  &__description {
+    font-family: $secondary-font-stack;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: $white;
+  }
+}

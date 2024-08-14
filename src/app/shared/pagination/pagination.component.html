@@ -1,0 +1,41 @@
+<div class="pagination__container">
+  <div class="pagination">
+    <h3 class="pagination__heading">Page:</h3>
+    <button type="button"
+            class="pagination__icon-button pagination__icon-button_left"
+            (click)="onSelectPageHandler(selectedPage - 1)"
+            [disabled]="selectedPage === 1">
+      <svg-icon src="assets/svg/arrow.svg"></svg-icon>
+    </button>
+    <ul class="pagination__list">
+      @for(page of pages; track page) {
+        @if(page !== -1) {
+          <li class="pagination__item"
+              [ngClass]="{ 'pagination__item_active': selectedPage === page }"
+              (click)="onSelectPageHandler(page)"
+              (keydown)="onSelectPageHandler(page, $event)"
+              tabindex="0">
+            <button type="button" class="pagination__button">
+              {{ page }}
+            </button>
+          </li>
+        }
+        @if (page === -1) {
+          <li class="pagination__item pagination__item_inactive">
+            <button type="button" class="pagination__button">...</button>
+          </li>
+        }
+      }
+    </ul>
+    <button type="button"
+            class="pagination__icon-button pagination__icon-button_right"
+            (click)="onSelectPageHandler(selectedPage + 1)"
+            [disabled]="selectedPage === totalPages">
+      <svg-icon src="assets/svg/arrow.svg"></svg-icon>
+    </button>
+  </div>
+  <div class="pagination__stats">
+    <span class="pagination__tag">{{ (movies$ | async)?.length || 0 }}</span>
+    <span class="pagination__label">movies</span>
+  </div>
+</div>

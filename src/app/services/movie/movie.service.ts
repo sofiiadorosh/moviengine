@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@environments/environment";
-import { Movie } from "@models/movie.interface";
 import { MovieDetails } from "@models/movie-details.interface";
 import { MovieListResponse } from "@models/response.interface";
 import { Store } from "@ngrx/store";
@@ -9,53 +8,51 @@ import { selectSessionId } from "@store/authentication/selectors";
 import { AppState } from "@store/index";
 import {
   selectFavoriteMoviesIds,
-  selectWatchLaterMoviesIds
+  selectWatchLaterMoviesIds,
 } from "@store/movies/selectors";
-import { map, Observable, of, switchMap, take } from "rxjs";
+import { Observable, of, switchMap, take, throwError } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class MovieService {
-  constructor(
-    private httpClient: HttpClient,
-    private store: Store<AppState>
-  ) {}
+  constructor(private httpClient: HttpClient, private store: Store<AppState>) {}
 
   private getOptions(params: Record<string, string> = {}): { params: HttpParams } {
-    const accessParams = { api_key: environment.apiKey };
-    const allParams = { ...accessParams, ...params };
-    const httpParams = new HttpParams({ fromObject: allParams });
-    return { params: httpParams };
+    return { params: new HttpParams({ fromObject: params }) };
   }
 
-  private getMovies(endpoint: string): Observable<Movie[]> {
-    return this.httpClient.get<MovieListResponse>(`${environment.apiBaseUrl}${endpoint}`, this.getOptions())
-      .pipe(map((response) => response.results));
+  private getMovies(endpoint: string, page: number): Observable<MovieListResponse> {
+    const params: Record<string, string> = { page: page.toString() };
+    return this.httpClient.get<MovieListResponse>(
+      `${environment.apiBaseUrl}${endpoint}`,
+      this.getOptions(params)
+    );
   }
 
-  getNowPlayingMovies(): Observable<Movie[]> {
-    return this.getMovies("/movie/now_playing");
+  getNowPlayingMovies(page: number): Observable<MovieListResponse> {
+    return this.getMovies("/movie/now_playing", page);
   }
 
-  getPopularMovies(): Observable<Movie[]> {
-    return this.getMovies("/movie/popular");
+  getPopularMovies(page: number): Observable<MovieListResponse> {
+    return this.getMovies("/movie/popular", page);
   }
 
-  getTopRatedMovies(): Observable<Movie[]> {
-    return this.getMovies("/movie/top_rated");
+  getTopRatedMovies(page: number): Observable<MovieListResponse> {
+    return this.getMovies("/movie/top_rated", page);
   }
 
-  getUpcomingMovies(): Observable<Movie[]> {
-    return this.getMovies("/movie/upcoming");
+  getUpcomingMovies(page: number): Observable<MovieListResponse> {
+    return this.getMovies("/movie/upcoming", page);
   }
 
   updateList(listType: "favorite" | "watchlist", id: number) {
-    const selector = listType === "favorite" ? selectFavoriteMoviesIds : selectWatchLaterMoviesIds;
+    const selector =
+      listType === "favorite" ? selectFavoriteMoviesIds : selectWatchLaterMoviesIds;
 
     return this.store.select(selector).pipe(
       take(1),
-      switchMap(ids => {
+      switchMap((ids) => {
         const movieInList = ids.includes(id);
         const body = {
           media_type: "movie",
@@ -65,7 +62,7 @@ export class MovieService {
 
         return this.store.select(selectSessionId).pipe(
           take(1),
-          switchMap(sessionId => {
+          switchMap((sessionId) => {
             if (sessionId) {
               const params: Record<string, string> = { session_id: sessionId };
               return this.httpClient.post(
@@ -81,38 +78,50 @@ export class MovieService {
     );
   }
 
-  getFavoritesMovies(): Observable<Movie[]> {
+  getFavoritesMovies(page: number): Observable<MovieListResponse> {
     return this.store.select(selectSessionId).pipe(
       take(1),
-      switchMap(sessionId => {
+      switchMap((sessionId) => {
         if (sessionId) {
-          const params: Record<string, string> = { session_id: sessionId };
+          const params: Record<string, string> = { session_id: sessionId, page: page.toString() };
           return this.httpClient.get<MovieListResponse>(
             `${environment.apiBaseUrl}/account/${environment.accountId}/favorite/movies`,
-            this.getOptions(params)).pipe(map((response) => response.results));
+            this.getOptions(params)
+          );
         }
-        return of([]);
+        return throwError(() => new Error("Session ID not found."));
       })
     );
   }
 
-  getWatchLaterMovies(): Observable<Movie[]> {
+  getWatchLaterMovies(page: number): Observable<MovieListResponse> {
     return this.store.select(selectSessionId).pipe(
       take(1),
-      switchMap(sessionId => {
+      switchMap((sessionId) => {
         if (sessionId) {
-          const params: Record<string, string> = { session_id: sessionId };
+          const params: Record<string, string> = { session_id: sessionId, page: page.toString() };
           return this.httpClient.get<MovieListResponse>(
             `${environment.apiBaseUrl}/account/${environment.accountId}/watchlist/movies`,
-            this.getOptions(params)).pipe(map((response) => response.results));
+            this.getOptions(params)
+          );
         }
-        return of([]);
+        return throwError(() => new Error("Session ID not found."));
       })
     );
   }
 
   getMovieById(id: number): Observable<MovieDetails> {
-    return this.httpClient.get<MovieDetails>(`${environment.apiBaseUrl}/movie/${id}`,
-      this.getOptions());
+    return this.httpClient.get<MovieDetails>(
+      `${environment.apiBaseUrl}/movie/${id}`,
+      this.getOptions()
+    );
+  }
+
+  getMoviesByName(name: string, page: number): Observable<MovieListResponse> {
+    const params: Record<string, string> = { query: name, page: page.toString() };
+    return this.httpClient.get<MovieListResponse>(
+      `${environment.apiBaseUrl}/search/movie`,
+      this.getOptions(params)
+    );
   }
 }

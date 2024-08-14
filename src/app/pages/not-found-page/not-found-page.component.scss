@@ -1,0 +1,25 @@
+@import "../../styles/shared.scss";
+
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 24px 36px;
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+  }
+
+  &__heading {
+    text-align: center;
+  }
+
+  &__link {
+    color: $green;
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,80 @@
+<div class="filter">
+  <div class="filter__content">
+    <h2 class="filter__heading sorting__heading"
+        tabindex="0"
+        (click)="onDropdownHandler($event)"
+        (keydown)="onDropdownHandler($event)"
+        aria-haspopup="true"
+        aria-expanded="false">
+      Sort by: {{ sortType$ | async }}
+    </h2>
+    @if(isDropdownOpened) {
+      <div #dropdown>
+        <app-dropdown
+          [options]="sortParameters"
+          [selectedOption]="(sortType$ | async)!"
+          (chosenOption)="onSelectSortTypeHandler($event)"
+        >
+        </app-dropdown>
+      </div>
+    }
+  </div>
+  <div class="filter__content">
+    <h2 class="filter__heading">Genres</h2>
+    <ul class="filter__list">
+      @for(genre of genres; track genre) {
+        <li class="filter__item">
+          <label [for]="genre" class="filter__label">
+            <input
+              [id]="genre"
+              type="checkbox"
+              name="genre"
+              [checked]="(genres$ | async)?.includes(genre)"
+              (input)="onSelectGenreHandler(genre)"
+              class="filter__input"
+            >
+            <span class="filter__checkbox">
+              <svg-icon src="assets/svg/check.svg"></svg-icon>
+            </span>
+            <span>{{ genre }}</span>
+          </label>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="filter__content">
+    <h2 class="filter__heading">Rating</h2>
+    <ul class="filter__list rating__list">
+      @for(starList of ratingList; track $index) {
+        <li class="filter__item">
+          <label [for]="$index" class="filter__label">
+            <input
+              [id]="$index"
+              type="checkbox"
+              [checked]="(rating$ | async)?.includes($index + 1)"
+              (input)="onSelectRatingHandler($index)"
+              class="filter__input"
+            >
+            <span class="filter__checkbox">
+              <svg-icon src="assets/svg/check.svg"></svg-icon>
+            </span>
+            <span class="filter__star-list">
+              @for(star of starList; track $index) {
+                <span class="filter__star"
+                    [ngClass]="{'filter__star_filled': star, 'filter__star_empty': !star}">
+                  <svg-icon src="assets/svg/star.svg"></svg-icon>
+                </span>
+              }
+            </span>
+          </label>
+        </li>
+      }
+    </ul>
+  </div>
+  <button type="button"
+          class="filter__button"
+          (click)="onResetFiltersHandler()"
+  >
+    Reset filters
+  </button>
+</div>

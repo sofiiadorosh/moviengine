@@ -3,6 +3,8 @@
 }
 
 .now-playing {
-  height: 100%;
-  padding: 24px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: 24px 96px;
 }

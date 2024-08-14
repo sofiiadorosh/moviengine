@@ -1,0 +1,40 @@
+<section class="search">
+  <app-filter></app-filter>
+  <div class="search__content">
+    <form #searchForm="ngForm" autocomplete="off" (ngSubmit)="onSubmitHandler()" class="search__form">
+      <div class="search__field">
+        <input id="query"
+               type="text"
+               name="query"
+               [(ngModel)]="query"
+               placeholder=" "
+               (input)="onSubmitHandler()"
+               class="search__input" required>
+        <label for="query" class="search__label">Search movies</label>
+        @if(error) {
+          <p class="search__error">
+            {{ error }}
+          </p>
+        }
+      </div>
+      <button class="search__button">
+        <svg-icon src="assets/svg/search.svg"></svg-icon>
+      </button>
+    </form>
+    @if(movies$ | async; as movies) {
+      @if(movies.length) {
+        <div class="search__movies">
+          <app-movies-list [movies]="movies"></app-movies-list>
+          <app-pagination></app-pagination>
+        </div>
+      } @else if((isLoading$ | async) && !movies.length && query) {
+        <div>We couldn't find any results for your search. Please try again with different keywords</div>
+      } @else {
+        <div>Unlock movies by typing in the search box above!</div>
+      }
+    }
+    @if(isLoading$ | async) {
+      <app-loader></app-loader>
+    }
+  </div>
+</section>

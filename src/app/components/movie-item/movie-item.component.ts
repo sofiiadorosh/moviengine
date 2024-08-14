@@ -27,7 +27,7 @@ export class MovieItemComponent implements OnInit {
   maxOverviewLength = 178;
   imageUrl!: string;
   genres!: string[];
-  rating!: number[];
+  rating!: string;
   movieId!: string;
   liked$: Observable<boolean> = of(false);
   watchedLater$: Observable<boolean> = of(false);
@@ -38,7 +38,7 @@ export class MovieItemComponent implements OnInit {
   ngOnInit() {
     this.imageUrl = `${this.baseImageUrl}/${this.item.backdrop_path}`;
     this.genres = this.transformGenreIds(genreIds);
-    this.rating = this.generateRatingArray();
+    this.rating = this.item.vote_average.toFixed();
     this.movieId = this.replaceId(this.item.id);
     this.liked$ = this.store.select(selectIsMovieLiked(this.item.id));
     this.watchedLater$ = this.store.select(selectIsMovieInWatchLater(this.item.id));
@@ -63,12 +63,6 @@ export class MovieItemComponent implements OnInit {
 
   transformGenreIds(genres: Record<number, string>): string[] {
     return this.item.genre_ids.map((id) => genres[id].toLowerCase());
-  }
-
-  generateRatingArray(): number[] {
-    const rate = Math.round(this.item.vote_average / 2);
-    return Array.from({ length: 5 }, (_, i) => i + 1)
-      .map((number) => (number <= rate ? 1 : 0));
   }
 
   replaceId(id: number) {

@@ -12,7 +12,7 @@
                       [ngClass]="{ 'movie__controls-button_active': liked$ | async }"
                       class="movie__controls-button"
                       (click)="onAddToFavorites(movie.id)">
-                <svg-icon src="assets/svg/heart.svg"></svg-icon>
+                F
               </button>
             </li>
             <li>
@@ -21,20 +21,15 @@
                       [ngClass]="{ 'movie__controls-button_active': watchedLater$ | async }"
                       class="movie__controls-button"
                       (click)="onAddToWatchLater(movie.id)">
-                <svg-icon src="assets/svg/add.svg"></svg-icon>
+                WL
               </button>
             </li>
           </ul>
         </div>
         <img [src]="imageUrl" [alt]="movie.title" class="movie__picture">
-        <ul class="movie__rating">
-          @for (item of rating; track $index) {
-            <li class="movie__star"
-                [ngClass]="{'movie__star_filled': item, 'movie__star_empty': !item}">
-              <svg-icon src="assets/svg/star.svg"></svg-icon>
-            </li>
-          }
-        </ul>
+        <div class="movie__rating">
+          Rating: {{ rating }}
+        </div>
         <ul class="movie__genres">
           @for (item of movie.genres; track $index) {
             <li>{{ item.name }}</li>

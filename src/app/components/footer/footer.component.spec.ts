@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { FooterComponent } from "./footer.component";
@@ -8,10 +9,12 @@ describe("FooterComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FooterComponent]
-    })
-      .compileComponents();
-    
+      imports: [
+        HttpClientTestingModule,
+        FooterComponent
+      ]
+    }).compileComponents();
+
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -34,7 +34,7 @@ export class MovieDetailsPageComponent implements OnInit {
   baseImageUrl = "https://image.tmdb.org/t/p/original";
   imageUrl!: string;
   backdropUrl!: string;
-  rating: number[] = [];
+  rating = "0";
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {
     this.movie$ = this.store.select(selectMovieDetails);
@@ -53,15 +53,10 @@ export class MovieDetailsPageComponent implements OnInit {
         if (movie) {
           this.imageUrl = `${this.baseImageUrl}${movie.poster_path}`;
           this.backdropUrl = `${this.baseImageUrl}${movie.backdrop_path}`;
-          this.rating = this.generateRatingArray(movie.vote_average);
+          this.rating = movie.vote_average.toFixed();
         }
       });
     });
-  }
-
-  generateRatingArray(voteAverage: number): number[] {
-    const rate = Math.round(voteAverage / 2);
-    return Array.from({ length: 5 }, (_, i) => (i < rate ? 1 : 0));
   }
 
   private onUpdateList(id: number, listType: "favorite" | "watchlist") {

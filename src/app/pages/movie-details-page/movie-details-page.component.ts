@@ -37,26 +37,28 @@ export class MovieDetailsPageComponent implements OnInit {
   rating: number[] = [];
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {
-    this.movie$ = this.route.data.pipe(map(data => data["movie"])); // Use the resolved movie data
+    this.movie$ = of(null);
     this.isLoading$ = this.store.select(selectIsLoading);
   }
 
   ngOnInit() {
-    const movieId = Number(this.route.snapshot.paramMap.get("id"));
+    this.route.paramMap.subscribe((params) => {
+      const movieId = Number(params.get("id"));
 
-    // Select the liked and watch later status based on movieId
-    this.liked$ = this.store.select(selectIsMovieLiked(movieId));
-    this.watchedLater$ = this.store.select(selectIsMovieInWatchLater(movieId));
+      this.movie$ = this.route.data.pipe(map(data => data["movie"]));
 
-    // Subscribe to movie$ observable to get movie details
-    this.movie$.subscribe((movie) => {
-      if (movie) {
-        this.imageUrl = movie.poster_path
-          ? `${this.baseImageUrl}/${movie.poster_path}`
-          : "./assets/webp/movie-placeholder.webp";
-        this.backdropUrl = `${this.baseImageUrl}${movie.backdrop_path}`;
-        this.rating = this.generateRatingArray(movie.vote_average);
-      }
+      this.liked$ = this.store.select(selectIsMovieLiked(movieId));
+      this.watchedLater$ = this.store.select(selectIsMovieInWatchLater(movieId));
+
+      this.movie$.subscribe((movie) => {
+        if (movie) {
+          this.imageUrl = movie.poster_path
+            ? `${this.baseImageUrl}/${movie.poster_path}`
+            : "./assets/webp/movie-placeholder.webp";
+          this.backdropUrl = `${this.baseImageUrl}${movie.backdrop_path}`;
+          this.rating = this.generateRatingArray(movie.vote_average);
+        }
+      });
     });
   }
 

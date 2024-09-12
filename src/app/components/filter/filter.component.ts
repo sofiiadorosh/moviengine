@@ -26,7 +26,7 @@ import { Observable } from "rxjs";
 })
 export class FilterComponent implements OnInit, OnDestroy {
   protected readonly sortParameters = sortParameters;
-  protected readonly genres = Object(genreIds);
+  protected readonly genres = Object.values(genreIds);
   ratingList: number[][] = this.generateArrays(5);
   sortType$: Observable<SortParameters>;
   genres$: Observable<string[]>;
